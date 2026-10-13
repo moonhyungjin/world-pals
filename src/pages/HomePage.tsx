@@ -1,6 +1,8 @@
 import { CONFIG } from '../config';
 import { Character } from '../components/Character';
+import { CharacterPicker } from '../components/CharacterPicker';
 import type { Content } from '../data/content';
+import { activeCharacter, isNewPlayer, selectableCharacters } from '../features/characters/characterEngine';
 import { activeCompanion } from '../features/companions/companionEngine';
 import { canCreateChallenge } from '../features/challenge/challenge';
 import { countReviewable, hasCompletedToday } from '../features/quiz/quizEngine';
@@ -13,10 +15,13 @@ type Props = {
   onStart: () => void;
   onReview: () => void;
   onMakeChallenge: () => void;
+  onPickCharacter: (id: string) => void;
   onOpenLab?: () => void;
 };
 
-export function HomePage({ progress, content, onStart, onReview, onMakeChallenge, onOpenLab }: Props) {
+export function HomePage({ progress, content, onStart, onReview, onMakeChallenge, onPickCharacter, onOpenLab }: Props) {
+  const characters = selectableCharacters(content);
+  const hero = activeCharacter(content, progress);
   const today = todayString();
   const doneToday = hasCompletedToday(progress, today);
   const canChallenge = canCreateChallenge(progress, today);
@@ -30,6 +35,18 @@ export function HomePage({ progress, content, onStart, onReview, onMakeChallenge
       <p className="speech">
         {doneToday ? '오늘 탐험은 완료! 한 번 더 연습해 볼까요?' : '오늘은 어디를 탐험할까요?'}
       </p>
+      {isNewPlayer(progress) && characters.length > 1 && (
+        <section className="card welcome-pick" aria-labelledby="welcome-title">
+          <h2 id="welcome-title">함께 탐험할 친구를 골라요!</h2>
+          <p className="hint">나중에 꾸미기에서 언제든 바꿀 수 있어요.</p>
+          <CharacterPicker characters={characters} activeId={hero?.id ?? null} onPick={onPickCharacter} />
+          {hero && (
+            <p className="char-desc">
+              <strong>{hero.nameKo}</strong> · {hero.descriptionKo}
+            </p>
+          )}
+        </section>
+      )}
       <button type="button" className="btn primary big" onClick={onStart}>
         {doneToday ? '다시 연습하기' : '오늘의 탐험 시작!'}
       </button>

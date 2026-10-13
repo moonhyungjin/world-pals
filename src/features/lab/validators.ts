@@ -1,7 +1,8 @@
 import type { Content } from '../../data/content';
+import { CHARACTER_ASSET_KEYS } from '../characters/characterAssets';
 
 export type Severity = 'error' | 'warning';
-export type ContentKind = 'country' | 'question' | 'badge' | 'cosmetic' | 'companion';
+export type ContentKind = 'country' | 'question' | 'badge' | 'cosmetic' | 'companion' | 'character';
 
 export type Issue = { severity: Severity; kind: ContentKind; id: string; message: string };
 
@@ -152,6 +153,22 @@ export function validateContent(content: Content): Issue[] {
     if (n > 1 && countryById.has(countryId)) {
       add('warning', 'companion', countryId, `국가 "${countryId}"에 탐험 친구가 ${n}마리 연결돼 있어요. 보통은 나라마다 한 마리예요.`);
     }
+  }
+  // ---- 캐릭터 ----
+  for (const id of new Set(duplicates(content.characters.map((c) => c.id)))) {
+    add('error', 'character', id, `캐릭터 ID "${id}"가 중복돼요.`);
+  }
+  for (const c of content.characters) {
+    if (blank(c.id)) add('error', 'character', c.id, '캐릭터 ID가 비어 있어요.');
+    if (blank(c.nameKo)) add('error', 'character', c.id, '이름을 입력해 주세요.');
+    if (blank(c.descriptionKo)) add('warning', 'character', c.id, '설명이 비어 있어요.');
+    if (!STATUSES.includes(c.status)) add('error', 'character', c.id, `상태 "${c.status}"를 알 수 없어요.`);
+    if (!CHARACTER_ASSET_KEYS.includes(c.assetKey)) {
+      add('error', 'character', c.id, `그림 파일 "${c.assetKey}"이(가) 없어요. 사용할 수 있는 그림: ${CHARACTER_ASSET_KEYS.join(', ')}`);
+    }
+  }
+  if (!content.characters.some((c) => c.status === 'verified')) {
+    add('warning', 'character', '(캐릭터)', '검수 완료된 캐릭터가 없어서 게임은 기본 그림(여우)을 써요.');
   }
   return issues;
 }

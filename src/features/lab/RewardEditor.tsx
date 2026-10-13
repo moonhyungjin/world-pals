@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Character } from '../../components/Character';
 import type { Content } from '../../data/content';
 import type { Badge, BadgeCondition, Cosmetic, CosmeticSlot } from '../../types/reward';
+import { CharacterEditor } from './CharacterEditor';
 import { CompanionEditor } from './CompanionEditor';
 import { replaceById, uniqueId } from './labOps';
 import { EntityList, Field, IssueList, StatusSelect, rowFlag } from './labUi';
@@ -19,13 +20,14 @@ const CONDITION_LABEL: Record<BadgeCondition['type'], string> = {
 };
 
 export function RewardEditor({ content, onChange, issues, focusId }: Props) {
-  const [kind, setKind] = useState<'cosmetic' | 'badge' | 'companion'>('cosmetic');
+  const [kind, setKind] = useState<'cosmetic' | 'badge' | 'companion' | 'character'>('cosmetic');
   useEffect(() => {
     if (!focusId) return;
     if (content.badges.some((b) => b.id === focusId)) setKind('badge');
     else if (content.companions.some((c) => c.id === focusId)) setKind('companion');
+    else if (content.characters.some((c) => c.id === focusId)) setKind('character');
     else setKind('cosmetic');
-  }, [focusId, content.badges, content.companions]);
+  }, [focusId, content.badges, content.companions, content.characters]);
 
   return (
     <div>
@@ -39,6 +41,9 @@ export function RewardEditor({ content, onChange, issues, focusId }: Props) {
         <button type="button" role="tab" aria-selected={kind === 'companion'} className={kind === 'companion' ? 'active' : ''} onClick={() => setKind('companion')}>
           탐험 친구 ({content.companions.length})
         </button>
+        <button type="button" role="tab" aria-selected={kind === 'character'} className={kind === 'character' ? 'active' : ''} onClick={() => setKind('character')}>
+          캐릭터 ({content.characters.length})
+        </button>
       </div>
       <p className="lab-note">
         별은 설정값(<code>src/config.ts</code>)으로, 국가 도장은 국가 발견 시 자동으로 지급돼요. 여기서는 장식과 배지를 편집해요.
@@ -46,6 +51,7 @@ export function RewardEditor({ content, onChange, issues, focusId }: Props) {
       {kind === 'cosmetic' && <CosmeticEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
       {kind === 'badge' && <BadgeEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
       {kind === 'companion' && <CompanionEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
+      {kind === 'character' && <CharacterEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
     </div>
   );
 }

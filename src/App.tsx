@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BottomNavigation, type NavTab } from './components/BottomNavigation';
+import { CharacterContext } from './components/CharacterContext';
 import { content } from './data/content';
-import { applyChallengeBonus, bonusResultText, bonusStatus, markChallengeMade, type BonusOutcome } from './features/challenge/bonus';
+import { applyChallengeBonus, applyCreateBonus, bonusResultText, bonusStatus, markChallengeMade, type BonusOutcome } from './features/challenge/bonus';
 import {
   canCreateChallenge,
   challengeCodeFromHash,
@@ -12,6 +13,7 @@ import {
 import { ChallengeIntroPage } from './features/challenge/ChallengeIntroPage';
 import { ChallengeMakePage } from './features/challenge/ChallengeMakePage';
 import { ChallengeResultExtras, ChallengeUnlockedNotice } from './features/challenge/ChallengeResultExtras';
+import { activeCharacter, setCharacter } from './features/characters/characterEngine';
 import { CustomizePage } from './features/customization/CustomizePage';
 import { PassportPage } from './features/passport/PassportPage';
 import { buildReviewSession, buildSession, type SessionSummary } from './features/quiz/quizEngine';
@@ -169,6 +171,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
   };
 
   return (
+    <CharacterContext.Provider value={activeCharacter(content, progress)}>
     <main className={`app ${fullScreen ? '' : 'with-nav'}`}>
       {saveFailed && (
         <p className="notice" role="alert">
@@ -182,6 +185,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
           onStart={start}
           onReview={startReview}
           onMakeChallenge={openMake}
+          onPickCharacter={(id) => update(setCharacter(progress, content, id))}
           onOpenLab={LAB_ENABLED ? onOpenLab : undefined}
         />
       )}
@@ -198,7 +202,13 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
           content={content}
           today={todayString()}
           onBack={goHome}
-          onCreated={(code) => update(markChallengeMade(readStoredProgress() ?? progress, code))}
+          onCreated={(code) => {
+            // 내가 만든 도전장으로 기록(직접 풀어도 별 없음) + 오늘 첫 도전장이면 만들기 보너스 별
+            const made = markChallengeMade(readStoredProgress() ?? progress, code);
+            const bonus = applyCreateBonus(made, todayString());
+            update(bonus.progress);
+            return bonus.stars;
+          }}
         />
       )}
       {screen.name === 'challengeIntro' &&
@@ -245,5 +255,6 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
       )}
       {!fullScreen && <BottomNavigation current={screen.name as NavTab} onChange={(name) => setScreen({ name })} />}
     </main>
+    </CharacterContext.Provider>
   );
 }

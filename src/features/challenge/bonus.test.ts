@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { defaultProgress, sanitizeProgress } from '../../lib/saveData';
-import { applyChallengeBonus, bonusResultText, bonusStatus, challengeKey, markChallengeMade } from './bonus';
+import { applyChallengeBonus, applyCreateBonus, bonusResultText, bonusStatus, challengeKey, markChallengeMade } from './bonus';
 
 const D = '2026-10-13';
 const CODE = 'KRc.JPf.FRc~1';
@@ -86,5 +86,26 @@ describe('도전장 보너스 별', () => {
     const p = sanitizeProgress({ challengeBonusDate: 5, challengeBonusToday: -3 });
     expect(p.challengeBonusDate).toBe('');
     expect(p.challengeBonusToday).toBe(0);
+  });
+});
+
+describe('도전장 만들기 보너스 (만든 사람, 하루 한 번)', () => {
+  it('오늘 처음 만들면 별 2개, 같은 날 또 만들면 없고, 다음 날에는 다시 받는다', () => {
+    const first = applyCreateBonus(defaultProgress(), D);
+    expect(first.stars).toBe(2);
+    expect(first.progress.totalStars).toBe(2);
+    const again = applyCreateBonus(first.progress, D);
+    expect(again.stars).toBe(0);
+    expect(again.progress).toBe(first.progress);
+    const tomorrow = applyCreateBonus(first.progress, '2026-10-14');
+    expect(tomorrow.stars).toBe(2);
+    expect(tomorrow.progress.totalStars).toBe(4);
+  });
+  it('입력 진행 기록을 바꾸지 않고, 푸는 사람 보너스 상한과는 따로 센다', () => {
+    const p = defaultProgress();
+    const r = applyCreateBonus(p, D);
+    expect(p).toEqual(defaultProgress());
+    expect(r.progress.challengeBonusToday).toBe(0);
+    expect(bonusStatus(r.progress, CODE, D)).toEqual({ kind: 'available', remaining: 6 });
   });
 });

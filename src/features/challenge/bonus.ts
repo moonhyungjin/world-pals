@@ -55,6 +55,29 @@ export function markChallengeMade(progress: PlayerProgress, code: string): Playe
   return { ...progress, rewardEventIds: [...progress.rewardEventIds, madeEvent(key)] };
 }
 
+const createBonusEvent = (today: string) => `challenge-create-bonus:${today}`;
+
+/**
+ * 도전장을 만든 사람에게 하루 한 번 주는 보너스 별. 입력을 바꾸지 않는다.
+ * 서버가 없어서 "친구가 풀었는지"는 알 수 없으므로, 링크를 만드는 순간(하루 첫 번째)에만 준다.
+ */
+export function applyCreateBonus(
+  progress: PlayerProgress,
+  today: string,
+  config: { challengeCreateBonusStars: number } = CONFIG,
+): { progress: PlayerProgress; stars: number } {
+  if (progress.rewardEventIds.includes(createBonusEvent(today))) return { progress, stars: 0 };
+  const stars = config.challengeCreateBonusStars;
+  return {
+    progress: {
+      ...progress,
+      totalStars: progress.totalStars + stars,
+      rewardEventIds: [...progress.rewardEventIds, createBonusEvent(today)],
+    },
+    stars,
+  };
+}
+
 export type BonusOutcome = { stars: number; status: BonusStatus };
 
 /**

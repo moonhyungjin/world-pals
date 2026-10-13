@@ -16,6 +16,7 @@ export type PlayerProgress = {
   totalAnswered: number;
   reviewCorrectCount: number; // 복습 대상 문제를 다시 맞힌 횟수
   rewardEventIds: string[];
+  characterId: string | null; // 고른 주인공 캐릭터 (null이면 첫 번째 캐릭터)
   companionId: string | null; // 지금 함께 다니는 탐험 친구 (만난 친구 중에서만)
   challengeBonusDate: string; // 도전장 보너스 별을 마지막으로 받은 날짜
   challengeBonusToday: number; // 그날 이미 받은 도전장 보너스 별

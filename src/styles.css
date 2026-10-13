@@ -272,3 +272,27 @@ h1 { margin: 0; text-align: center; }
 .detail-friend { font-weight: 700; }
 .new-friends li { min-width: 84px; }
 .bonus-line { font-weight: 800; color: #b45309; background: #fff6d6; border-radius: 12px; padding: 6px 10px; margin: 6px 0 0; }
+
+/* ---- 캐릭터 그림(SVG)과 고르기 ---- */
+.character-face { display: block; width: 1em; height: 1em; object-fit: contain; user-select: none; }
+.char-picker { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.char-option { position: relative; width: 100%; padding: 8px 2px 6px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 3px solid var(--line); border-radius: 18px; background: #fffdf8; color: var(--ink); font: inherit; font-weight: 800; cursor: pointer; }
+.char-option img { width: 100%; max-width: 64px; aspect-ratio: 1; }
+.char-option .char-fallback { font-size: 48px; line-height: 1.1; }
+.char-option .char-name { font-size: 14px; }
+.char-option.on { border-color: var(--primary); background: #fff3e6; }
+.char-option:focus-visible { outline: 4px solid #4f8df5; outline-offset: 2px; }
+.char-check { position: absolute; top: 2px; right: 4px; font-size: 13px; }
+.welcome-pick { text-align: center; }
+.welcome-pick h2 { font-size: 20px; margin: 0 0 2px; }
+.char-desc { font-size: 15px; margin: 8px 0 0; text-align: center; }
+
+/* 캐릭터 그림(SVG)에 맞춘 장식/친구 위치: 얼굴을 가리지 않도록 머리 위·눈 높이·턱 아래·몸 옆으로 배치 */
+.character-badge { right: -0.22em; top: 0; bottom: auto; font-size: 0.32em; }
+.character .companion { left: auto; right: -0.44em; bottom: -0.14em; }
+.cosmetic.slot-head { top: -0.27em; font-size: 0.55em; }
+.cosmetic.slot-face { top: 0.4em; font-size: 0.36em; }
+.cosmetic.slot-neck { bottom: -0.2em; font-size: 0.38em; }
+.cosmetic.slot-back { top: 0.48em; left: -0.4em; font-size: 0.42em; }
+.cosmetic.slot-head { left: 44%; }
+.cosmetic.slot-neck { bottom: -0.26em; font-size: 0.36em; }

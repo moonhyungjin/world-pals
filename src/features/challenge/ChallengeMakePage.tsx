@@ -23,7 +23,8 @@ type Props = {
   content: Content;
   today: string;
   onBack: () => void;
-  onCreated: (code: string) => void; // 링크를 만들었을 때 (내가 만든 도전장으로 기록하기 위해)
+  /** 링크를 만들었을 때: 내가 만든 도전장으로 기록하고, 오늘 처음이면 받은 보너스 별 수를 돌려준다. */
+  onCreated: (code: string) => number;
 };
 
 /** 도전장 만들기: 내가 도장을 받은 나라 중에서 고르고, 링크를 만들어 친구에게 보낸다. */
@@ -32,6 +33,7 @@ export function ChallengeMakePage({ progress, content, today, onBack, onCreated 
   const [message, setMessage] = useState<number>(0);
   const [created, setCreated] = useState<string | null>(null);
   const [status, setStatus] = useState('');
+  const [createBonus, setCreateBonus] = useState(0); // 이 화면에서 받은 만들기 보너스 별
 
   // 도장을 받은 나라 중, 문제로 낼 수 있는 나라만
   const candidates = useMemo(
@@ -174,7 +176,9 @@ export function ChallengeMakePage({ progress, content, today, onBack, onCreated 
         onClick={() => {
           const code = encodeChallenge(picks, message);
           setCreated(code);
-          onCreated(code);
+          const stars = onCreated(code);
+          // 다시 만들어도(고쳐서 새로 만들기) 처음 받은 안내를 유지한다
+          setCreateBonus((prev) => (stars > 0 ? stars : prev));
         }}
       >
         {ready ? '💌 도전장 만들기' : `나라를 ${limits.min}개 이상 골라요`}
@@ -183,6 +187,11 @@ export function ChallengeMakePage({ progress, content, today, onBack, onCreated 
       {created && (
         <section className="card link-card" aria-live="polite">
           <p className="reward-line">🎉 도전장이 완성됐어요!</p>
+          <p className={createBonus > 0 ? 'bonus-line' : 'hint'} role="status">
+            {createBonus > 0
+              ? `⭐ 오늘의 도전장 보너스 별 ${createBonus}개를 받았어요!`
+              : '오늘의 도전장 보너스 별은 이미 받았어요. (하루에 한 번)'}
+          </p>
           <input className="link-input" readOnly value={url} aria-label="도전장 링크" onFocus={(e) => e.currentTarget.select()} />
           <div className="link-actions">
             <button type="button" className="btn primary" onClick={share}>📤 보내기</button>

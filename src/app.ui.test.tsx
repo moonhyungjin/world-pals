@@ -246,7 +246,7 @@ describe('Lab (실제 클릭)', () => {
     fireEvent.click(tab(/검증/));
     expect(screen.getByText(/수도명을 입력해 주세요/)).toBeTruthy();
     fireEvent.click(tab(/가져오기\/내보내기/));
-    expect((buttonByText('게임 데이터 파일 5개 내려받기') as HTMLButtonElement).disabled).toBe(true);
+    expect((buttonByText('게임 데이터 파일 6개 내려받기') as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByText(/검증 오류가 있어서 게임 데이터 파일은 내보낼 수 없어요/)).toBeTruthy();
   });
 
@@ -575,7 +575,7 @@ describe('탐험 친구 (나라별 동물)', () => {
   it('못 만난 친구를 가리키는 저장 값이 있어도 앱이 멈추지 않고 혼자 다닌다', () => {
     seed({ companionId: 'companion.jp' }); // 일본은 아직 못 만남
     render(<App />);
-    expect(screen.getByRole('img', { name: '탐험 친구 폭시' })).toBeTruthy();
+    expect(screen.getByRole('img', { name: '캐릭터 폭시' })).toBeTruthy();
   });
 
   it('오늘의 탐험에서 새 나라 도장을 받으면 결과 화면에서 새 친구를 만난다', () => {
@@ -660,6 +660,14 @@ describe('도전장 보너스 별 (실제 클릭)', () => {
     const link = (screen.getByLabelText('도전장 링크') as HTMLInputElement).value;
     const hash = link.slice(link.indexOf('#'));
     expect(saved().rewardEventIds.some((e: string) => e.startsWith('challenge-made:'))).toBe(true);
+    // 오늘 처음 만들었으니 만들기 보너스 별 2개 (하루 한 번)
+    expect(screen.getByText(/오늘의 도전장 보너스 별 2개를 받았어요/)).toBeTruthy();
+    expect(saved().totalStars).toBe(2);
+    // 고쳐서 다시 만들어도 같은 날에는 더 받지 않는다
+    fireEvent.click(Array.from(document.querySelectorAll<HTMLButtonElement>('.pick-cell'))[2]);
+    fireEvent.click(Array.from(document.querySelectorAll<HTMLButtonElement>('.pick-cell'))[2]);
+    fireEvent.click(screen.getByRole('button', { name: /^💌 도전장 만들기$/ }));
+    expect(saved().totalStars).toBe(2);
     view.unmount();
 
     await openWithHash(hash);
@@ -670,7 +678,7 @@ describe('도전장 보너스 별 (실제 클릭)', () => {
       answerCurrentQuestion(true);
       clickText(i === 2 ? '결과 보기' : '다음 문제');
     }
-    expect(saved().totalStars).toBe(0);
+    expect(saved().totalStars).toBe(2); // 내 도전장을 풀어도 늘지 않음 (만들기 보너스 2개 그대로)
   });
 
   it('오늘 보너스를 다 받았으면 안내만 나오고, 푼 것으로 기록되지 않는다', async () => {

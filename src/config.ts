@@ -11,5 +11,6 @@ export const CONFIG = {
   challengeMinQuestions: 3,
   challengeMaxQuestions: 5,
   challengeStarsPerCorrect: 1, // 친구의 도전장을 처음 풀 때 맞힌 문제 하나당 보너스 별
-  challengeBonusDailyMax: 6, // 하루에 도전장으로 받을 수 있는 보너스 별 상한
+  challengeBonusDailyMax: 6, // 하루에 도전장으로 받을 수 있는 보너스 별 상한 (푸는 사람)
+  challengeCreateBonusStars: 2, // 도전장을 만든 사람이 하루에 한 번 받는 보너스 별
 } as const;

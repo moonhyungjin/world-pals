@@ -1,4 +1,5 @@
 import type { Content } from '../../data/content';
+import type { PlayCharacter } from '../../types/character';
 import type { Companion } from '../../types/companion';
 import type { Country } from '../../types/country';
 import type { Question } from '../../types/question';
@@ -91,6 +92,16 @@ function normalizeCompanion(o: Obj): Companion {
   return c;
 }
 
+function normalizeCharacter(o: Obj): PlayCharacter {
+  return {
+    id: str(o.id),
+    nameKo: str(o.nameKo),
+    descriptionKo: str(o.descriptionKo),
+    assetKey: str(o.assetKey),
+    status: str(o.status, 'draft') as PlayCharacter['status'],
+  };
+}
+
 /** 가져온 텍스트를 해석한다. 형식이 잘못돼도 예외 없이 사람이 읽을 수 있는 오류 목록을 돌려준다. */
 export function parseImport(text: string): ImportResult {
   let raw: unknown;
@@ -131,12 +142,15 @@ export function parseImport(text: string): ImportResult {
     cosmetics: collect('cosmetics', '장식', normalizeCosmetic),
     // 탐험 친구가 생기기 전에 만든 백업 파일에는 없을 수 있다.
     companions: raw.companions === undefined ? [] : collect('companions', '탐험 친구', normalizeCompanion),
+    // 캐릭터 선택이 생기기 전에 만든 백업 파일에도 없을 수 있다.
+    characters: raw.characters === undefined ? [] : collect('characters', '캐릭터', normalizeCharacter),
   };
   if (errors.length > 0) return { ok: false, errors };
   notes.push(
-    `국가 ${content.countries.length}개, 문제 ${content.questions.length}개, 배지 ${content.badges.length}개, 장식 ${content.cosmetics.length}개, 탐험 친구 ${content.companions.length}개를 읽었어요.`,
+    `국가 ${content.countries.length}개, 문제 ${content.questions.length}개, 배지 ${content.badges.length}개, 장식 ${content.cosmetics.length}개, 탐험 친구 ${content.companions.length}개, 캐릭터 ${content.characters.length}개를 읽었어요.`,
   );
   if (raw.companions === undefined) notes.push('이 파일에는 탐험 친구 목록이 없어서 빈 목록으로 가져와요.');
+  if (raw.characters === undefined) notes.push('이 파일에는 캐릭터 목록이 없어서 빈 목록으로 가져와요. (게임은 기본 캐릭터를 써요)');
   return { ok: true, content, notes };
 }
 
@@ -154,6 +168,7 @@ export function gameDataFiles(content: Content): { name: string; text: string }[
     { name: 'badges.json', text: json(content.badges) },
     { name: 'rewards.json', text: json(content.cosmetics) },
     { name: 'companions.json', text: json(content.companions) },
+    { name: 'characters.json', text: json(content.characters) },
   ];
 }
 

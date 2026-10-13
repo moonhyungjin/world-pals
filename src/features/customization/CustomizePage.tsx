@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Character } from '../../components/Character';
+import { CharacterPicker } from '../../components/CharacterPicker';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
 import type { Cosmetic } from '../../types/reward';
+import { activeCharacter, selectableCharacters, setCharacter } from '../characters/characterEngine';
 import { activeCompanion, setActiveCompanion, unlockedCompanions } from '../companions/companionEngine';
 import { equipCosmetic, unequipCosmetic, unlockCosmetic } from '../rewards/rewardEngine';
 
@@ -20,6 +22,8 @@ export function CustomizePage({ progress, content, onChange }: Props) {
   const allFriends = content.companions.filter((c) => c.status === 'verified' && verifiedCountries.has(c.countryId));
   const metIds = new Set(unlockedCompanions(content, progress).map((c) => c.id));
   const active = activeCompanion(content, progress);
+  const characters = selectableCharacters(content);
+  const hero = activeCharacter(content, progress);
 
   const unlock = (item: Cosmetic) => {
     const r = unlockCosmetic(progress, item);
@@ -39,6 +43,27 @@ export function CustomizePage({ progress, content, onChange }: Props) {
         <p className="stars-have">보유 별 ⭐ <strong>{progress.totalStars}</strong></p>
       </div>
       <p className="hint" role="status" aria-live="polite">{message}</p>
+
+      {characters.length > 1 && (
+        <section className="card" aria-labelledby="characters-title">
+          <h2 id="characters-title" className="section-title">🧸 내 캐릭터</h2>
+          <p className="hint">언제든 바꿀 수 있어요. 장식과 친구는 그대로예요.</p>
+          <CharacterPicker
+            characters={characters}
+            activeId={hero?.id ?? null}
+            onPick={(id) => {
+              onChange(setCharacter(progress, content, id));
+              const picked = characters.find((c) => c.id === id);
+              if (picked && picked.id !== hero?.id) setMessage(`🎉 ${picked.nameKo}와 함께 떠나요!`);
+            }}
+          />
+          {hero && (
+            <p className="char-desc">
+              <strong>{hero.nameKo}</strong> · {hero.descriptionKo}
+            </p>
+          )}
+        </section>
+      )}
 
       {allFriends.length > 0 && (
         <section className="card" aria-labelledby="friends-title">

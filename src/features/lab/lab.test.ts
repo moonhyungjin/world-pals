@@ -122,12 +122,13 @@ describe('parseImport / export', () => {
     const r = parseImport(JSON.stringify({ version: 99, countries: [], questions: [], badges: [], cosmetics: [] }));
     expect(r.ok).toBe(false);
   });
-  it('게임 데이터 파일 5개는 src/data 형식과 같다', () => {
+  it('게임 데이터 파일 6개는 src/data 형식과 같다', () => {
     const files = gameDataFiles(fresh());
-    expect(files.map((f) => f.name)).toEqual(['countries.json', 'questions.json', 'badges.json', 'rewards.json', 'companions.json']);
+    expect(files.map((f) => f.name)).toEqual(['countries.json', 'questions.json', 'badges.json', 'rewards.json', 'companions.json', 'characters.json']);
     expect(JSON.parse(files[0].text)).toEqual(builtIn.countries);
     expect(JSON.parse(files[3].text)).toEqual(builtIn.cosmetics);
     expect(JSON.parse(files[4].text)).toEqual(builtIn.companions);
+    expect(JSON.parse(files[5].text)).toEqual(builtIn.characters);
   });
   it('탐험 친구가 없던 예전 백업 파일도 읽는다 (친구 목록은 빈 목록)', () => {
     const old = { format: 'world-pals-content', version: 1, countries: [], questions: [], badges: [], cosmetics: [] };
