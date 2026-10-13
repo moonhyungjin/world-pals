@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from './App';
 import { content } from './data/content';
@@ -18,6 +18,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** jsdom은 hash를 바꾸면 hashchange를 비동기로 보낸다. 실제 브라우저는 페이지를 처음 열 때 보내지 않으므로, 그 이벤트가 지나간 뒤 렌더링한다. */
+const openWithHash = async (hash: string) => {
+  window.location.hash = hash;
+  await new Promise((r) => setTimeout(r, 20));
+};
 const clickText = (text: string | RegExp) => fireEvent.click(screen.getByText(text));
 const buttonByText = (text: string | RegExp) => screen.getByRole('button', { name: text });
 const tab = (text: string | RegExp) => screen.getByRole('tab', { name: text });
@@ -351,5 +356,166 @@ describe('여권: 못 찾은 나라 가리기', () => {
     expect(screen.getByText('???', { selector: 'h2' })).toBeTruthy();
     expect(screen.getByText(/에 있어요/)).toBeTruthy();
     expect(document.querySelector('.detail .fi-cn, .detail .fi-jp')).toBeNull();
+  });
+});
+
+describe('도전장 (친구에게 문제 내기)', () => {
+  const clipboard = () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+    return writeText;
+  };
+  const playDaily = (correctCount: number) => {
+    clickText('오늘의 탐험 시작!');
+    for (let i = 0; i < 5; i++) {
+      answerCurrentQuestion(i < correctCount);
+      clickText(i === 4 ? '결과 보기' : '다음 문제');
+    }
+  };
+
+  it('처음에는 잠겨 있고, 안내 문구만 보인다', () => {
+    render(<App />);
+    expect(screen.queryByText('💌 친구에게 도전장 보내기')).toBeNull();
+    expect(screen.getByRole('note').textContent).toContain('4문제 이상 맞히면 열려요');
+  });
+
+  it('오늘의 탐험에서 3문제만 맞히면 열리지 않는다', () => {
+    render(<App />);
+    playDaily(3);
+    expect(screen.queryByText(/도전장 보내기가 열렸어요/)).toBeNull();
+    clickText('홈으로');
+    expect(screen.getByRole('note').textContent).toContain('내일 다시 도전');
+  });
+
+  it('4문제 이상 맞히면 열리고, 나라를 골라 링크를 만들고 복사할 수 있다', async () => {
+    const writeText = clipboard();
+    render(<App />);
+    playDaily(5);
+    expect(screen.getByText(/도전장 보내기가 열렸어요/)).toBeTruthy();
+    clickText('친구에게 도전장 보내기');
+
+    // 3개 미만이면 만들 수 없다
+    const make = () => screen.getByRole('button', { name: /도전장 만들기|나라를 3개 이상 골라요/ }) as HTMLButtonElement;
+    expect(make().disabled).toBe(true);
+    const cells = () => Array.from(document.querySelectorAll<HTMLButtonElement>('.pick-cell'));
+    expect(cells().length).toBeGreaterThanOrEqual(4); // 오늘 도장을 받은 나라들만
+    fireEvent.click(cells()[0]);
+    fireEvent.click(cells()[1]);
+    expect(make().disabled).toBe(true);
+    fireEvent.click(cells()[2]);
+    expect(make().disabled).toBe(false);
+
+    // 하나는 국기 문제로, 인사말은 3번째로
+    fireEvent.click(screen.getAllByRole('button', { name: /국기/ })[0]);
+    fireEvent.click(screen.getByLabelText('이 문제 어려울걸?'));
+    fireEvent.click(make());
+
+    const link = (screen.getByLabelText('도전장 링크') as HTMLInputElement).value;
+    expect(link).toMatch(/#\/c\/[A-Z]{2}[cf]\.[A-Z]{2}[cf]\.[A-Z]{2}[cf]~2$/);
+    expect(link).toContain('f'); // 국기 유형이 반영됨
+
+    fireEvent.click(screen.getByRole('button', { name: /링크 복사/ }));
+    expect(await screen.findByText(/복사했어요/)).toBeTruthy();
+    expect(writeText).toHaveBeenCalledWith(link);
+
+    // 고치면 링크가 사라지고 다시 만들어야 한다
+    fireEvent.click(cells()[3]);
+    expect(screen.queryByLabelText('도전장 링크')).toBeNull();
+  });
+
+  it('최대 5개까지만 고를 수 있다', () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({
+        discoveredCountryIds: ['KR', 'JP', 'FR', 'DE', 'IT', 'ES', 'US'],
+        challengeUnlockedDates: [todayString()],
+      }),
+    );
+    render(<App />);
+    clickText('💌 친구에게 도전장 보내기');
+    const cells = Array.from(document.querySelectorAll<HTMLButtonElement>('.pick-cell'));
+    cells.slice(0, 5).forEach((c) => fireEvent.click(c));
+    expect(document.querySelectorAll('.pick-cell.on')).toHaveLength(5);
+    expect(cells[5].disabled).toBe(true);
+    expect(screen.getByText(/5\/5/)).toBeTruthy();
+  });
+
+  it('나라를 아주 빠르게 연달아 눌러도 선택이 사라지지 않는다', () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ discoveredCountryIds: ['KR', 'JP', 'FR', 'DE'], challengeUnlockedDates: [todayString()] }),
+    );
+    render(<App />);
+    clickText('💌 친구에게 도전장 보내기');
+    // 한 번의 갱신 묶음 안에서 연속 클릭 (렌더링 사이에 끼어들 틈이 없는 상황)
+    act(() => {
+      document.querySelectorAll<HTMLButtonElement>('.pick-cell').forEach((c) => c.click());
+    });
+    expect(document.querySelectorAll('.pick-cell.on')).toHaveLength(4);
+    act(() => {
+      document.querySelectorAll<HTMLButtonElement>('.type-toggle .chip').forEach((c) => c.click());
+    });
+    expect(document.querySelectorAll('.type-list li')).toHaveLength(4);
+  });
+
+  it('어제 열린 도전장 만들기는 오늘은 다시 잠겨 있다', () => {
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ discoveredCountryIds: ['KR', 'JP', 'FR'], challengeUnlockedDates: ['2000-01-01'] }));
+    render(<App />);
+    expect(screen.queryByText('💌 친구에게 도전장 보내기')).toBeNull();
+  });
+
+  it('친구의 링크를 열면 소개 → 풀기 → 결과(별 없음, 도장은 받음)로 이어진다', async () => {
+    const writeText = clipboard();
+    await openWithHash('#/c/KRc.JPf.FRc~1');
+    render(<App />);
+    expect(screen.getByText('💌 도전장이 왔어요!')).toBeTruthy();
+    expect(screen.getByText(/같이 세계 여행을 떠나자/)).toBeTruthy();
+    expect(screen.getByText('3문제')).toBeTruthy();
+    expect(screen.getByText(/수도 2개 · 🚩 국기 1개/)).toBeTruthy();
+
+    clickText('도전 시작!');
+    const kinds: string[] = [];
+    for (let i = 0; i < 3; i++) {
+      kinds.push(answerCurrentQuestion(i !== 1)); // 두 번째만 오답
+      clickText(i === 2 ? '결과 보기' : '다음 문제');
+    }
+    expect(kinds.sort()).toEqual(['capital', 'capital', 'flag']);
+    expect(screen.getByText('도전 끝!')).toBeTruthy();
+    expect(document.querySelector('.marks')?.textContent).toMatch(/^[⭕❌]{3}$/);
+    expect(document.querySelectorAll('.marks')[0].textContent).toContain('❌');
+    expect(screen.getByText(/별 없이 도장만 받아요/)).toBeTruthy();
+
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!);
+    expect(saved.totalStars).toBe(0); // 별 없음
+    expect(saved.completedDates).toEqual([]); // 오늘의 탐험으로 치지 않음
+    expect(saved.challengeUnlockedDates).toEqual([]); // 도전장을 풀어도 만들기가 열리지는 않음
+    expect(Object.values(saved.stampTiers)).toEqual(['basic', 'basic']); // 맞힌 2개만 기본 도장
+    expect(screen.getByText(/오늘의 탐험에서 4문제 이상 맞히면 나도 도전장을 만들 수 있어요/)).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: /결과 친구에게 보내기/ }));
+    expect(await screen.findByText(/복사했어요/)).toBeTruthy();
+    expect(writeText.mock.calls[0][0]).toMatch(/World Pals 도전장 결과 [⭕❌]{3} \(2\/3\)[\s\S]*#\/c\/KRc\.JPf\.FRc~1$/);
+
+    clickText('홈으로');
+    expect(window.location.hash).toBe(''); // 새로고침해도 도전장이 다시 열리지 않음
+    expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
+  });
+
+  it('잘못된 링크는 앱이 멈추지 않고 안내한다', () => {
+    for (const bad of ['#/c/garbage', '#/c/', '#/c/NLc.KRc', '#/c/ZZc.KRc.JPc', '#/c/KRc.KRf', '#/c/%E0%A4%A', '#/c/<script>']) {
+      window.location.hash = bad;
+      const { unmount } = render(<App />);
+      expect(screen.getByText('도전장을 열 수 없어요'), bad).toBeTruthy();
+      expect(screen.queryByText('도전 시작!')).toBeNull();
+      clickText('홈으로');
+      expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
+      unmount();
+    }
+  });
+
+  it('게임을 켜 둔 채 도전장 링크로 이동해도 소개 화면이 열린다', async () => {
+    render(<App />);
+    window.location.hash = '#/c/KRc.JPc.FRc';
+    expect(await screen.findByText('💌 도전장이 왔어요!')).toBeTruthy();
   });
 });

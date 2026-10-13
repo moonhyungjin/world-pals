@@ -1,3 +1,4 @@
+import { CONFIG } from '../../config';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
 import type { QuizAnswer } from '../../types/question';
@@ -38,7 +39,12 @@ export function awardBadges(
   };
 }
 
-export type CompletedSession = { progress: PlayerProgress; summary: SessionSummary; newBadges: Badge[] };
+export type CompletedSession = {
+  progress: PlayerProgress;
+  summary: SessionSummary;
+  newBadges: Badge[];
+  challengeUnlocked: boolean; // 이번 세션으로 오늘 도전장 만들기가 새로 열렸는지
+};
 
 /** 세션 결과 반영 + 배지 지급을 한 번에 처리한다. */
 export function completeSession(
@@ -50,7 +56,15 @@ export function completeSession(
 ): CompletedSession {
   const applied = applySession(progress, answers, today, options);
   const awarded = awardBadges(applied.progress, content);
-  return { progress: awarded.progress, summary: applied.summary, newBadges: awarded.newBadges };
+  // 보상이 있는 오늘의 탐험에서 충분히 잘 풀었을 때만 그날 도전장 만들기가 열린다. (연습/복습/도전장 풀이로는 열리지 않음)
+  const earned =
+    applied.summary.rewarded &&
+    applied.summary.correctCount >= CONFIG.challengeMinCorrect &&
+    !awarded.progress.challengeUnlockedDates.includes(today);
+  const next = earned
+    ? { ...awarded.progress, challengeUnlockedDates: [...awarded.progress.challengeUnlockedDates, today] }
+    : awarded.progress;
+  return { progress: next, summary: applied.summary, newBadges: awarded.newBadges, challengeUnlocked: earned };
 }
 
 export type UnlockResult =

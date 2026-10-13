@@ -1,5 +1,7 @@
+import { CONFIG } from '../config';
 import { Character } from '../components/Character';
 import type { Content } from '../data/content';
+import { canCreateChallenge } from '../features/challenge/challenge';
 import { countReviewable, hasCompletedToday } from '../features/quiz/quizEngine';
 import { todayString } from '../lib/random';
 import type { PlayerProgress } from '../types/progress';
@@ -9,11 +11,14 @@ type Props = {
   content: Content;
   onStart: () => void;
   onReview: () => void;
+  onMakeChallenge: () => void;
   onOpenLab?: () => void;
 };
 
-export function HomePage({ progress, content, onStart, onReview, onOpenLab }: Props) {
-  const doneToday = hasCompletedToday(progress, todayString());
+export function HomePage({ progress, content, onStart, onReview, onMakeChallenge, onOpenLab }: Props) {
+  const today = todayString();
+  const doneToday = hasCompletedToday(progress, today);
+  const canChallenge = canCreateChallenge(progress, today);
   const reviewCount = countReviewable(content, progress);
   const equipped = content.cosmetics.filter((c) => progress.equippedCosmeticIds.includes(c.id));
   return (
@@ -31,6 +36,16 @@ export function HomePage({ progress, content, onStart, onReview, onOpenLab }: Pr
         <button type="button" className="btn" onClick={onReview}>
           💪 헷갈린 문제 다시 풀기 ({reviewCount})
         </button>
+      )}
+      {canChallenge ? (
+        <button type="button" className="btn challenge-btn" onClick={onMakeChallenge}>
+          💌 친구에게 도전장 보내기
+        </button>
+      ) : (
+        <p className="challenge-lock" role="note">
+          💌 도전장은 오늘의 탐험에서 {CONFIG.challengeMinCorrect}문제 이상 맞히면 열려요
+          {doneToday ? ' (내일 다시 도전!)' : '!'}
+        </p>
       )}
       <ul className="stats card">
         <li><span>⭐</span><strong>{progress.totalStars}</strong><small>별</small></li>

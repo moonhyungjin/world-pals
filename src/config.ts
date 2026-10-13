@@ -6,4 +6,8 @@ export const CONFIG = {
   starsPerCorrect: 1,
   starsDailyCompletion: 3,
   progressVersion: 1,
+  // 도전장(친구에게 문제 내기)
+  challengeMinCorrect: 4, // 오늘의 탐험에서 이만큼 맞히면 그날 도전장을 만들 수 있다
+  challengeMinQuestions: 3,
+  challengeMaxQuestions: 5,
 } as const;

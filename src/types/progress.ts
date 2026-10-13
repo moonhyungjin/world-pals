@@ -15,5 +15,6 @@ export type PlayerProgress = {
   currentStreak: number;
   totalAnswered: number;
   reviewCorrectCount: number; // 복습 대상 문제를 다시 맞힌 횟수
-  rewardEventIds: string[]; // 지급 완료된 보상 이벤트 (중복 지급 방지)
+  rewardEventIds: string[];
+  challengeUnlockedDates: string[]; // 도전장 만들기가 열린 날짜 (오늘의 탐험을 잘 푼 날) // 지급 완료된 보상 이벤트 (중복 지급 방지)
 };

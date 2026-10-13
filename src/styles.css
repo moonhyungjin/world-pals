@@ -222,3 +222,33 @@ h1 { margin: 0; text-align: center; }
 /* 아직 못 찾은 나라: 국기 대신 물음표 칸 (이미지를 받지 않아 모양이 힌트가 되지 않음) */
 .fi.flag-locked { background: #d9d2c4; border-radius: 6px; overflow: hidden; }
 .fi.flag-locked::after { content: '?'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.6em; font-weight: 800; color: #8a8174; }
+
+/* ---- 도전장 ---- */
+.challenge-btn { border-color: #f4a9c0; background: #fff0f5; color: #9d174d; }
+.challenge-lock { text-align: center; font-size: 14px; color: #8a6d4b; background: #fff; border: 2px dashed var(--line); border-radius: 16px; padding: 8px 12px; margin: 4px 0 10px; }
+.challenge { display: flex; flex-direction: column; align-items: stretch; }
+.challenge .character { align-self: center; }
+.challenge h1 { font-size: 26px; }
+.section-title { font-size: 18px; margin: 0 0 4px; text-align: left; }
+.bubble { align-self: center; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 10px 16px; font-weight: 800; text-align: center; margin: 4px 0 8px; }
+.pick-grid { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pick-cell { position: relative; width: 100%; min-height: 88px; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; border: 3px solid var(--line); border-radius: 16px; background: #fffdf8; color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pick-cell .fi { font-size: 30px; }
+.pick-cell.on { border-color: var(--primary); background: #fff3e6; }
+.pick-cell:disabled { opacity: 0.45; cursor: not-allowed; }
+.pick-cell:focus-visible, .msg-option:focus-within { outline: 4px solid #4f8df5; outline-offset: 2px; }
+.pick-check { position: absolute; top: 2px; right: 4px; font-size: 14px; }
+.type-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+.type-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.type-name { font-weight: 800; }
+.type-toggle { display: flex; gap: 6px; }
+.msg-list { display: grid; gap: 8px; margin-top: 8px; }
+.msg-option { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border: 3px solid var(--line); border-radius: 16px; background: #fffdf8; font-weight: 700; cursor: pointer; }
+.msg-option.on { border-color: var(--primary); background: #fff3e6; }
+.msg-option input { width: 22px; height: 22px; }
+.link-card { text-align: center; }
+.link-input { width: 100%; min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 14px; background: #fffdf8; color: var(--ink); }
+.link-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.share-result { text-align: center; }
+.marks { font-size: 30px; letter-spacing: 2px; margin: 4px 0; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
