@@ -3,7 +3,7 @@ import { content } from '../../data/content';
 import { defaultProgress, sanitizeProgress } from '../../lib/saveData';
 import { seededRng } from '../../lib/random';
 import type { QuizAnswer } from '../../types/question';
-import { applySession, buildSession, eligibleQuestions } from './quizEngine';
+import { applySession, buildQuizItem, buildSession, eligibleQuestions } from './quizEngine';
 
 const countryById = new Map(content.countries.map((c) => [c.id, c]));
 
@@ -47,6 +47,45 @@ describe('buildSession', () => {
 
 const allCorrect = (ids: string[]): QuizAnswer[] =>
   ids.map((id) => ({ questionId: `q.capital.${id}`, countryId: id, correct: true }));
+
+describe('국기 고르기 문제', () => {
+  const flagQs = content.questions.filter((q) => q.type === 'flag');
+  const groups = [['AU', 'NZ'], ['IT', 'MX'], ['FR', 'RU'], ['US', 'GB'], ['ID', 'TH']];
+  it('모든 나라에 국기 문제가 있고 보기가 정확히 4개 국가다', () => {
+    expect(flagQs).toHaveLength(content.countries.length);
+    for (const q of flagQs) {
+      expect(new Set([q.countryId, ...q.distractorCountryIds]).size).toBe(4);
+    }
+  });
+  it('헷갈리기 쉬운 국기는 같은 문제에 함께 나오지 않는다', () => {
+    for (const q of flagQs) {
+      const ids = [q.countryId, ...q.distractorCountryIds];
+      for (const g of groups) expect(ids.filter((id) => g.includes(id)).length).toBeLessThan(2);
+    }
+  });
+  it('국기 문제도 4지선다로 만들어지고 정답이 한 번 있다', () => {
+    const q = flagQs.find((x) => x.countryId === 'KR')!;
+    const item = buildQuizItem(q, content, seededRng(1));
+    expect(item.type).toBe('flag');
+    expect(item.choices).toHaveLength(4);
+    expect(item.choices.filter((c) => c.countryId === 'KR')).toHaveLength(1);
+    expect(item.choices.find((c) => c.countryId === 'KR')!.label).toBe('대한민국');
+  });
+  it('세션에 두 유형이 모두 나올 수 있고, 같은 나라는 한 세션에 한 번만 나온다', () => {
+    const types = new Set<string>();
+    for (let seed = 1; seed <= 60; seed++) {
+      const s = buildSession(content, defaultProgress(), seededRng(seed));
+      expect(new Set(s.map((i) => i.countryId)).size).toBe(s.length);
+      s.forEach((i) => types.add(i.type));
+    }
+    expect(types).toEqual(new Set(['capital', 'flag']));
+  });
+  it('verified가 아닌 나라의 국기 문제는 출제되지 않는다', () => {
+    const ids = eligibleQuestions(content).filter((q) => q.type === 'flag').map((q) => q.countryId);
+    expect(ids).not.toContain('NL');
+    expect(ids).toContain('KR');
+  });
+});
 
 describe('applySession 보상', () => {
   const D1 = '2026-10-13';

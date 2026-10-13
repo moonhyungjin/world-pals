@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { content } from '../data/content';
 import { CustomizePage } from '../features/customization/CustomizePage';
 import { PassportPage } from '../features/passport/PassportPage';
-import { buildSession } from '../features/quiz/quizEngine';
+import { buildQuizItem, buildSession } from '../features/quiz/quizEngine';
 import { QuizPage } from '../features/quiz/QuizPage';
 import { seededRng } from '../lib/random';
 import { defaultProgress } from '../lib/saveData';
@@ -57,6 +57,17 @@ describe('화면 스모크 렌더링', () => {
     expect(html).toContain('수도는 어디일까요?');
     expect(html.match(/class="choice /g)).toHaveLength(4);
     expect(html).toContain('flag-img');
+  });
+  it('퀴즈: 국기 고르기 문제는 국기 4개를 보여주고 이름은 숨긴다', () => {
+    const q = content.questions.find((x) => x.id === 'q.flag.KR')!;
+    const item = buildQuizItem(q, content, seededRng(2));
+    const html = renderToString(<QuizPage items={[item]} content={content} onFinish={noop} onExit={noop} />);
+    expect(html).toContain('대한민국</span>의 국기는 어느 것일까요?');
+    expect(html.match(/flag-choice /g)).toHaveLength(4);
+    expect(html.match(/class="fi fi-/g)).toHaveLength(4);
+    for (const label of item.choices.map((c) => c.label).filter((l) => l !== '대한민국')) {
+      expect(html).not.toContain(label);
+    }
   });
   it('결과: 도장 등급과 새 배지', () => {
     const html = renderToString(

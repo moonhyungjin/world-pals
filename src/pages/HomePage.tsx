@@ -4,9 +4,15 @@ import { countReviewable, hasCompletedToday } from '../features/quiz/quizEngine'
 import { todayString } from '../lib/random';
 import type { PlayerProgress } from '../types/progress';
 
-type Props = { progress: PlayerProgress; content: Content; onStart: () => void; onReview: () => void };
+type Props = {
+  progress: PlayerProgress;
+  content: Content;
+  onStart: () => void;
+  onReview: () => void;
+  onOpenLab?: () => void;
+};
 
-export function HomePage({ progress, content, onStart, onReview }: Props) {
+export function HomePage({ progress, content, onStart, onReview, onOpenLab }: Props) {
   const doneToday = hasCompletedToday(progress, todayString());
   const reviewCount = countReviewable(content, progress);
   const equipped = content.cosmetics.filter((c) => progress.equippedCosmeticIds.includes(c.id));
@@ -43,6 +49,9 @@ export function HomePage({ progress, content, onStart, onReview }: Props) {
               </li>
             ))}
         </ul>
+      )}
+      {onOpenLab && (
+        <button type="button" className="link lab-entry" onClick={onOpenLab}>🧪 제작자 도구 (Lab)</button>
       )}
     </div>
   );

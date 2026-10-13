@@ -1,7 +1,7 @@
 # World Pals — 꼬마 세계 탐험대
 
 7~9세 어린이용 세계 수도 탐험 웹게임. 기획서: `WORLD_PALS_PLAN.md`.
-현재 구현 단계: **Phase 1~2** (5문제 수도 퀴즈, 도장·배지·꾸미기·여권·오답 복습).
+현재 구현 단계: **Phase 1~3** (수도/국기 퀴즈, 도장·배지·꾸미기·여권·오답 복습, World Pals Lab).
 
 ## 실행
 
@@ -23,6 +23,7 @@ src/config.ts    세션 크기, 복습 개수, 보상 수치
 src/features/quiz/  quizEngine.ts(출제·보상 로직, 순수 함수), QuizPage.tsx
 src/features/rewards/  rewardEngine.ts(배지 조건, 장식 해금/장착)
 src/features/passport/, customization/  여권, 꾸미기 화면
+src/features/lab/  World Pals Lab (validators, importExport, labOps, labStorage + 편집기 화면)
 src/lib/         saveData.ts(localStorage 저장/복구), storageKeys.ts, random.ts
 src/types/       Country, Question, PlayerProgress
 src/pages/       HomePage, ResultPage
@@ -40,6 +41,25 @@ src/pages/       HomePage, ResultPage
 - 진행은 브라우저 localStorage(`worldpals.progress`)에 저장됩니다. 클라우드 백업이 아니며, 사이트 데이터를 지우면 사라집니다. 저장 실패나 깨진 데이터는 기본값으로 복구됩니다.
 - Lab 플레이 테스트용 저장 키(`worldpals.lab.test.progress`)는 미리 분리해 두었습니다.
 
+## 문제 유형
+
+- `capital`: 나라 → 수도 4지선다 / `flag`: 나라 이름 → 국기 그림 4지선다 (답을 고르기 전에는 보기에 나라 이름이 보이지 않음)
+- 한 세션에는 같은 나라가 한 번만 나오고, 비슷한 국기(호주·뉴질랜드 등)는 같은 문제의 보기로 묶지 않습니다.
+
+## World Pals Lab (콘텐츠 편집기)
+
+게임 화면 아래의 "🧪 제작자 도구 (Lab)" 링크 또는 주소 뒤에 `#/lab`을 붙여 엽니다. 로컬(브라우저) 전용 도구입니다.
+
+1. 국가/문제/보상(장식·배지)을 편집합니다. 편집 내용은 브라우저에 자동 임시 저장됩니다 (`worldpals.lab.draft`).
+2. '검증' 탭에서 오류를 확인합니다 (중복 ID, 없는 국가 참조, 보기 중복, 정답 중복, 음수 비용 등).
+3. '가져오기/내보내기'에서 `게임 데이터 파일 4개`를 내려받아 `src/data/`의 같은 이름 파일을 교체합니다 (검증 오류가 없을 때만 가능).
+4. 교체 전 '버전 사본'(브라우저 내 최대 10개)이나 백업 JSON을 만들어 두세요.
+5. '플레이 테스트'는 테스트 전용 저장 키(`worldpals.lab.test.progress`)만 사용하며 실제 플레이 기록을 바꾸지 않습니다.
+
+- 저장된 항목의 ID는 바꿀 수 없습니다 (진행 기록·문제가 ID로 연결되기 때문). 새로 만든 항목만 ID를 정할 수 있습니다.
+- 초안/검수 중 항목은 게임에서 출제·지급되지 않습니다.
+- 편집 내용은 브라우저 저장소에만 있으므로 지우면 사라집니다. 백업 JSON을 내려받아 보관하세요.
+
 ## 다음 단계
 
-Phase 3 (World Pals Lab) → Phase 4 (지도·배포).
+Phase 4 (2D 세계지도, 반응형 점검, 배포).

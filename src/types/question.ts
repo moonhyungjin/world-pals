@@ -1,6 +1,7 @@
 import type { ContentStatus } from './country';
 
-export type QuestionType = 'capital'; // 이후 'flag' | 'map' 등으로 확장
+/** capital: 나라 → 수도 고르기 / flag: 나라 이름 → 국기 고르기. 이후 'map' 등으로 확장 */
+export type QuestionType = 'capital' | 'flag';
 
 export type Question = {
   id: string;
@@ -16,6 +17,7 @@ export type Question = {
 /** 화면에 보여줄 한 문제. 보기는 이미 섞인 상태. */
 export type QuizItem = {
   questionId: string;
+  type: QuestionType;
   countryId: string;
   choices: { countryId: string; label: string }[];
 };

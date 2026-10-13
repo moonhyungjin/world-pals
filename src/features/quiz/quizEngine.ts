@@ -16,11 +16,13 @@ export function eligibleQuestions(content: Content): Question[] {
     if (!answer || answer.status !== 'verified') return false;
     const ids = q.distractorCountryIds;
     if (ids.length !== 3 || ids.includes(q.countryId)) return false;
-    const caps = new Set([answer.capitalKo]);
+    const seen = new Set([q.type === 'capital' ? answer.capitalKo : answer.id]);
     for (const id of ids) {
       const c = byId.get(id);
-      if (!c || c.status !== 'verified' || caps.has(c.capitalKo)) return false;
-      caps.add(c.capitalKo);
+      if (!c || c.status !== 'verified') return false;
+      const key = q.type === 'capital' ? c.capitalKo : c.id; // 수도 문제는 수도 이름, 국기 문제는 국가 ID 중복 금지
+      if (seen.has(key)) return false;
+      seen.add(key);
     }
     return true;
   });
@@ -39,7 +41,7 @@ export function selectQuestions(
   const take = (list: Question[], limit: number) => {
     for (const q of shuffle(list, rng)) {
       if (chosen.length >= limit) return;
-      if (!chosen.includes(q)) chosen.push(q);
+      if (!chosen.includes(q) && !chosen.some((c) => c.countryId === q.countryId)) chosen.push(q);
     }
   };
 
@@ -66,12 +68,15 @@ export function buildQuizItem(question: Question, content: Content, rng: Rng): Q
   const seen = new Set<string>();
   const choices = ids.flatMap((id) => {
     const c = byId.get(id);
-    if (!c || seen.has(c.capitalKo)) return [];
-    seen.add(c.capitalKo);
-    return [{ countryId: id, label: c.capitalKo }];
+    // 보기 글자: 수도 문제는 수도 이름, 국기 문제는 국가 이름(화면에는 정답 확인 후에만 표시)
+    const label = question.type === 'capital' ? c?.capitalKo : c?.nameKo;
+    if (!c || !label || seen.has(label)) return [];
+    seen.add(label);
+    return [{ countryId: id, label }];
   });
   return {
     questionId: question.id,
+    type: question.type,
     countryId: question.countryId,
     choices: shuffle(choices, rng),
   };

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BottomNavigation, type NavTab } from './components/BottomNavigation';
 import { content } from './data/content';
+import { LabLayout } from './features/lab/LabLayout';
 import { CustomizePage } from './features/customization/CustomizePage';
 import { PassportPage } from './features/passport/PassportPage';
 import { buildReviewSession, buildSession, type SessionSummary } from './features/quiz/quizEngine';
@@ -19,7 +20,29 @@ type Screen =
   | { name: 'quiz'; items: QuizItem[]; practice: boolean }
   | { name: 'result'; summary: SessionSummary; wrongCount: number; newBadges: Badge[]; practice: boolean };
 
+/** 제작자용 Lab은 별도 주소(#/lab)로 분리한다. 플레이어 화면에서는 작은 링크로만 연결한다. */
+function useIsLab(): [boolean, (on: boolean) => void] {
+  const read = () => window.location.hash === '#/lab';
+  const [isLab, setIsLab] = useState(read);
+  useEffect(() => {
+    const onHash = () => setIsLab(read());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+  return [
+    isLab,
+    (on) => {
+      window.location.hash = on ? '#/lab' : '';
+    },
+  ];
+}
+
 export function App() {
+  const [isLab, setLab] = useIsLab();
+  return isLab ? <LabLayout onExit={() => setLab(false)} /> : <Game onOpenLab={() => setLab(true)} />;
+}
+
+function Game({ onOpenLab }: { onOpenLab: () => void }) {
   const [progress, setProgress] = useState<PlayerProgress>(() => loadProgress());
   const [screen, setScreen] = useState<Screen>({ name: 'home' });
   const [saveFailed, setSaveFailed] = useState(false);
@@ -57,7 +80,7 @@ export function App() {
         </p>
       )}
       {screen.name === 'home' && (
-        <HomePage progress={progress} content={content} onStart={start} onReview={startReview} />
+        <HomePage progress={progress} content={content} onStart={start} onReview={startReview} onOpenLab={onOpenLab} />
       )}
       {screen.name === 'passport' && <PassportPage progress={progress} content={content} />}
       {screen.name === 'customize' && <CustomizePage progress={progress} content={content} onChange={update} />}

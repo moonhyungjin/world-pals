@@ -58,16 +58,21 @@ export function QuizPage({ items, content, onFinish, onExit }: Props) {
         <div style={{ width: `${((index + (selectedId ? 1 : 0)) / items.length) * 100}%` }} />
       </div>
 
-      <QuestionCard item={item} country={country} selectedId={selectedId} onSelect={select} />
+      <QuestionCard item={item} country={country} content={content} selectedId={selectedId} onSelect={select} />
 
       {selectedId !== null && (
         <section className={`card feedback ${correct ? 'good' : 'oops'}`} role="status">
           <Character mood={correct ? 'cheer' : 'think'} size={56} />
           <div>
             <strong>
-              {correct ? '⭕ 정답이에요! 잘했어요!' : `💡 아쉬워요! 정답은 ${country.capitalKo}예요.`}
+              {correct
+                ? '⭕ 정답이에요! 잘했어요!'
+                : item.type === 'flag'
+                  ? `💡 아쉬워요! 정답은 ${country.nameKo} 국기예요.`
+                  : `💡 아쉬워요! 정답은 ${country.capitalKo}예요.`}
             </strong>
             <p>
+              {item.type === 'flag' ? `이 국기는 ${country.nameKo}의 국기예요. ` : ''}
               {country.capitalKo}은(는) {country.nameKo}의 수도예요. {country.factKo}
             </p>
           </div>
