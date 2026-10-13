@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../../data/content';
-import { WORLD_VIEW, project, regionView, toPercent } from './mapView';
+import { EAST_OVERHANG, WORLD_VIEW, project, regionView, toPercent } from './mapView';
 
 const verified = content.countries.filter((c) => c.status === 'verified');
 
@@ -21,7 +21,7 @@ describe('mapView', () => {
       expect(v.w / v.h).toBeCloseTo(2);
       expect(v.x).toBeGreaterThanOrEqual(0);
       expect(v.y).toBeGreaterThanOrEqual(0);
-      expect(v.x + v.w).toBeLessThanOrEqual(360 + 1e-9);
+      expect(v.x + v.w).toBeLessThanOrEqual(360 + EAST_OVERHANG + 1e-9);
       expect(v.y + v.h).toBeLessThanOrEqual(180 + 1e-9);
       for (const c of verified.filter((x) => x.continent === continent)) {
         expect(toPercent(c, v), `${continent} ${c.nameKo}`).not.toBeNull();

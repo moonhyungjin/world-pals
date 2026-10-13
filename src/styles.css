@@ -307,3 +307,12 @@ h1 { margin: 0; text-align: center; }
 .map-chip.selected { outline: 4px solid #4f8df5; outline-offset: 1px; }
 .map-chip:focus-visible { outline: 4px solid #4f8df5; outline-offset: 2px; }
 .chip-q { width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 50%; background: #8a8174; color: #fff; font-size: 12px; }
+
+/* ---- 나라 영역 색칠 ---- */
+.country-area { vector-effect: non-scaling-stroke; stroke-width: 1.2px; cursor: pointer; transition: fill-opacity 0.2s; }
+.country-area.gold { fill: #ffd23f; fill-opacity: 0.88; stroke: #c98a00; }
+.country-area.basic { fill: #bfcbdb; fill-opacity: 0.9; stroke: #6f7d90; }
+.country-area:hover { fill-opacity: 1; }
+.country-area.selected { fill-opacity: 1; stroke: #2563eb; stroke-width: 3px; }
+.map-box.focused { box-shadow: 0 0 0 3px #bcd3ff; }
+@media (prefers-reduced-motion: reduce) { .country-area { transition: none; } }

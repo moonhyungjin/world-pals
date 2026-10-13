@@ -38,7 +38,7 @@
 
 ## 메모
 - 국기 이미지: `flag-icons` 7.5.0 (MIT 라이선스, https://github.com/lipis/flag-icons). `countries.json`의 `flag` 이모지 필드는 보조 정보이며 화면에는 국가 ID로 SVG를 표시합니다.
-- 세계지도 배경: Natural Earth 1:50m land (퍼블릭 도메인), npm `world-atlas` 2.0.2(ISC)에서 변환해 단순화한 SVG 경로(`src/features/map/worldLand.ts`, 생성 파일). 남극은 제외. 국경선은 그리지 않고 육지만 표시하며, 마커 위치는 `countries.json`의 위도/경도입니다.
+- 세계지도 배경과 나라 영역: Natural Earth 1:50m (퍼블릭 도메인)을 npm `world-atlas` 2.0.2(ISC)와 `topojson-client`(ISC)로 풀어 단순화한 SVG 경로(`worldLand.ts`, `countryShapes.ts`, 둘 다 `npm run gen:map`으로 만드는 생성 파일). 남극은 제외. 나라 영역은 Natural Earth의 "사실상(de facto)" 경계를 따르며, 분쟁 지역의 표시는 어떤 정치적 입장도 나타내지 않습니다. 코드가 없는 지역(코소보 등)은 쓰지 않고, 호주처럼 같은 코드를 쓰는 부속 영토는 한 나라로 합쳤습니다. 마커 위치는 `countries.json`의 위도/경도입니다.
 - 국기와 영토 표기는 정치적으로 민감할 수 있어 확장 시 별도 검토가 필요합니다.
 - 비슷하게 생긴 국기(호주·뉴질랜드·피지, 이탈리아·멕시코·마다가스카르, 노르웨이·아이슬란드·핀란드 등)는 한 문제의 보기로 같이 나오지 않게 문제를 만들었습니다 (`src/data/content.test.ts`가 이를 검사).
 - 가장 큰 도시와 수도가 다른 나라(튀르키예·미국·호주·브라질 등)는 설명에 그 점을 적었습니다. 새로 넣을 때도 확인해 주세요.
