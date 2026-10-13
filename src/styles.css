@@ -135,7 +135,6 @@ h1 { margin: 0; text-align: center; }
 }
 .passport-cell .fi { font-size: 34px; }
 .passport-cell.locked { background: #f1ede6; color: #8a8174; }
-.passport-cell.locked .fi { filter: grayscale(1) opacity(0.45); }
 .passport-cell.has-basic { border: 3px dashed #7b8794; background: #eef2f5; }
 .passport-cell.has-gold { border-color: #c98a00; background: linear-gradient(135deg, #fff3b0, #ffd23f 55%, #fff3b0); color: #5c3b00; }
 .passport-cell[aria-pressed='true'] { outline: 4px solid #4f8df5; outline-offset: 2px; }
@@ -202,8 +201,6 @@ h1 { margin: 0; text-align: center; }
 .legend-dot.basic { background: #eef2f5; border: 2px dashed #7b8794; }
 .legend-dot.locked { background: #8a8174; }
 
-/* 아직 못 찾은 나라는 국기 모양이 힌트가 되지 않도록 흐리게 가린다 */
-.passport-cell.locked .fi { filter: grayscale(1) blur(5px) opacity(0.55); }
 
 /* 지도는 넓은 화면에서 더 크게 */
 .app:has(.map-page) { max-width: 880px; }
@@ -221,3 +218,7 @@ h1 { margin: 0; text-align: center; }
 .fi::before { content: '\00a0'; }
 .fi.flag-missing { background: #f1ede6; }
 .fi.flag-missing::after { content: '🏳️'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.6em; }
+
+/* 아직 못 찾은 나라: 국기 대신 물음표 칸 (이미지를 받지 않아 모양이 힌트가 되지 않음) */
+.fi.flag-locked { background: #d9d2c4; border-radius: 6px; overflow: hidden; }
+.fi.flag-locked::after { content: '?'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.6em; font-weight: 800; color: #8a8174; }

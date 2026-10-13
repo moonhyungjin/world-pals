@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CountryDetail } from '../../components/CountryDetail';
-import { Flag } from '../../components/Flag';
+import { Flag, LockedFlag } from '../../components/Flag';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
 
@@ -41,11 +41,11 @@ export function PassportPage({ progress, content }: { progress: PlayerProgress; 
                       aria-pressed={selectedId === c.id}
                       onClick={() => setSelectedId(c.id)}
                     >
-                      <Flag country={c} />
+                      {tier ? <Flag country={c} lazy /> : <LockedFlag />}
                       <span className="cell-name">{tier ? c.nameKo : '???'}</span>
                       <span className="cell-tier" aria-hidden="true">{tier === 'gold' ? '✨' : tier ? '●' : '🔒'}</span>
                       <span className="sr-only">
-                        {c.nameKo}, {tier === 'gold' ? '황금 도장' : tier ? '기본 도장' : '아직 발견 못함'}
+                        {tier ? `${c.nameKo}, ${tier === 'gold' ? '황금 도장' : '기본 도장'}` : '아직 발견 못한 나라'}
                       </span>
                     </button>
                   </li>

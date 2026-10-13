@@ -7,7 +7,8 @@ import { buildReviewSession, buildSession, type SessionSummary } from './feature
 import { QuizPage } from './features/quiz/QuizPage';
 import { completeSession } from './features/rewards/rewardEngine';
 import { todayString } from './lib/random';
-import { loadProgress, saveProgress } from './lib/saveData';
+import { loadProgress, readStoredProgress, saveProgress } from './lib/saveData';
+import { STORAGE_KEYS } from './lib/storageKeys';
 import { HomePage } from './pages/HomePage';
 import { ResultPage } from './pages/ResultPage';
 import type { PlayerProgress } from './types/progress';
@@ -74,8 +75,20 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
     if (items.length > 0) setScreen({ name: 'quiz', items, practice: true });
   };
 
+  // 다른 탭/창에서 기록이 바뀌면 이 화면도 최신 기록으로 맞춘다. (같은 탭에서 쓴 변경에는 발생하지 않는다)
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEYS.progress || e.key === null) setProgress(loadProgress());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const finish = (answers: QuizAnswer[], practice: boolean) => {
-    const result = completeSession(progress, answers, todayString(), content, { practice });
+    // 퀴즈를 푸는 동안 다른 탭에서 기록이 바뀌었을 수 있으므로, 저장소의 최신 기록 위에 결과를 더한다.
+    // (저장소를 읽을 수 없을 때만 화면에 들고 있던 기록을 쓴다.)
+    const base = readStoredProgress() ?? progress;
+    const result = completeSession(base, answers, todayString(), content, { practice });
     update(result.progress);
     setScreen({
       name: 'result',

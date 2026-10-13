@@ -71,6 +71,19 @@ export function loadProgress(key: string = STORAGE_KEYS.progress): PlayerProgres
   }
 }
 
+/**
+ * 저장소에 실제로 들어 있는 최신 기록을 읽는다. 기록이 없거나 읽을 수 없으면 null.
+ * (loadProgress는 실패 시 기본값을 돌려주므로, "저장된 게 있는지"를 구분해야 할 때 이 함수를 쓴다.)
+ */
+export function readStoredProgress(key: string = STORAGE_KEYS.progress): PlayerProgress | null {
+  try {
+    const text = localStorage.getItem(key);
+    return text ? sanitizeProgress(JSON.parse(text)) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function saveProgress(progress: PlayerProgress, key: string = STORAGE_KEYS.progress): boolean {
   try {
     localStorage.setItem(key, JSON.stringify(progress));

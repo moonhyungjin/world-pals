@@ -5,6 +5,7 @@ import { App } from './App';
 import { content } from './data/content';
 import { LabLayout } from './features/lab/LabLayout';
 import { PlaytestPanel } from './features/lab/PlaytestPanel';
+import { todayString } from './lib/random';
 import { STORAGE_KEYS } from './lib/storageKeys';
 
 beforeEach(() => {
@@ -108,6 +109,36 @@ describe('플레이어 흐름 (실제 클릭)', () => {
     localStorage.setItem(STORAGE_KEYS.progress, '{깨진 json');
     render(<App />);
     expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
+  });
+
+  it('다른 탭이 먼저 오늘 보상을 받았다면, 이 탭에서 끝내도 별이 중복 지급되지 않는다', () => {
+    render(<App />); // 이 탭은 빈 기록으로 시작
+    clickText('오늘의 탐험 시작!');
+    // 퀴즈를 푸는 동안 "다른 탭"이 오늘 보상을 받고 저장했다고 가정
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ totalStars: 10, completedDates: [todayString()], rewardEventIds: [`daily:${todayString()}`], collectedBadgeIds: ['badge.first-session'] }),
+    );
+    for (let i = 0; i < 5; i++) {
+      answerCurrentQuestion(true);
+      clickText(i === 4 ? '결과 보기' : '다음 문제');
+    }
+    expect(screen.getByText(/오늘의 별은 이미 받았어요/)).toBeTruthy();
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!);
+    expect(saved.totalStars).toBe(10); // 5가 아니라 다른 탭의 10이 그대로
+    expect(saved.collectedBadgeIds).toContain('badge.first-session'); // 다른 탭의 기록이 사라지지 않음
+  });
+
+  it('다른 탭에서 기록이 바뀌면(storage 이벤트) 홈 화면이 최신 기록으로 갱신된다', () => {
+    render(<App />);
+    expect(screen.getByText('별').previousSibling?.textContent).toBe('0');
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ totalStars: 9 }));
+    fireEvent(window, new StorageEvent('storage', { key: STORAGE_KEYS.progress }));
+    expect(screen.getByText('별').previousSibling?.textContent).toBe('9');
+    // 관련 없는 키의 변경은 무시한다
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ totalStars: 1 }));
+    fireEvent(window, new StorageEvent('storage', { key: 'other.key' }));
+    expect(screen.getByText('별').previousSibling?.textContent).toBe('9');
   });
 
   it('저장소 쓰기가 막혀도(용량 초과/시크릿 모드) 끝까지 플레이되고 안내가 나온다', () => {
@@ -302,5 +333,23 @@ describe('Lab (실제 클릭)', () => {
     expect(screen.getByText('해금 조건')).toBeTruthy();
     const panel = document.querySelector('.lab-form') as HTMLElement;
     expect(within(panel).getByText('미리보기')).toBeTruthy();
+  });
+});
+
+describe('여권: 못 찾은 나라 가리기', () => {
+  it('국기 이미지를 받지 않고, 접근성 이름/상세에도 나라 이름이 없다', () => {
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ discoveredCountryIds: ['KR'], stampTiers: { KR: 'gold' } }));
+    render(<App />);
+    fireEvent.click(buttonByText(/여권/));
+    // 발견한 1개만 실제 국기, 나머지 24개는 잠긴 칸
+    expect(document.querySelectorAll('.passport-cell .fi-kr')).toHaveLength(1);
+    expect(document.querySelectorAll('.passport-cell .flag-locked')).toHaveLength(24);
+    expect(document.querySelectorAll('.passport-cell .fi:not(.flag-locked)')).toHaveLength(1);
+    expect(screen.queryByText(/중국/)).toBeNull();
+    // 잠긴 나라를 눌러도 이름과 국기가 나오지 않고, 대륙만 알려준다
+    fireEvent.click(screen.getAllByRole('button', { name: /아직 발견 못한 나라/ })[0]);
+    expect(screen.getByText('???', { selector: 'h2' })).toBeTruthy();
+    expect(screen.getByText(/에 있어요/)).toBeTruthy();
+    expect(document.querySelector('.detail .fi-cn, .detail .fi-jp')).toBeNull();
   });
 });
