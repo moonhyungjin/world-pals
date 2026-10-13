@@ -15,6 +15,7 @@ import { ResultPage } from './ResultPage';
 // React SSR이 텍스트 사이에 넣는 주석 구분자를 제거해 비교한다.
 const renderToString = (el: ReactElement) => ssr(el).replace(/<!-- -->/g, '');
 const noop = () => {};
+const playable = content.countries.filter((c) => c.status === 'verified').length; // 게임에 나오는 나라 수
 const progress: PlayerProgress = {
   ...defaultProgress(),
   totalStars: 12,
@@ -41,7 +42,7 @@ describe('화면 스모크 렌더링', () => {
   });
   it('여권: 발견/미발견 구분, 국기 이미지, 출제 제외 국가는 숨김', () => {
     const html = renderToString(<PassportPage progress={progress} content={content} />);
-    expect(html).toContain('2</strong> / 25개 나라 발견');
+    expect(html).toContain(`2</strong> / ${playable}개 나라 발견`);
     expect(html).toContain('fi-kr');
     expect(html).toContain('???');
     expect(html).not.toContain('네덜란드');

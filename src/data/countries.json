@@ -10,7 +10,7 @@
     "factKo": "한반도의 남쪽에 있고, 한강이 서울 한가운데를 흘러요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "JP",
@@ -23,7 +23,7 @@
     "factKo": "4개의 큰 섬과 수많은 작은 섬으로 이루어진 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "CN",
@@ -36,7 +36,7 @@
     "factKo": "만리장성이 있고, 판다가 사는 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "IN",
@@ -49,7 +49,7 @@
     "factKo": "하얀 대리석으로 지은 타지마할이 유명해요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "TH",
@@ -62,7 +62,7 @@
     "factKo": "코끼리가 나라를 대표하는 동물이에요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "VN",
@@ -75,7 +75,7 @@
     "factKo": "길쭉한 S자 모양의 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "TR",
@@ -88,7 +88,7 @@
     "factKo": "아시아와 유럽 두 대륙에 걸쳐 있는 나라예요. 가장 큰 도시는 이스탄불이지만 수도는 앙카라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "RU",
@@ -101,7 +101,7 @@
     "factKo": "세상에서 가장 넓은 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "FR",
@@ -114,7 +114,7 @@
     "factKo": "에펠탑이 있는 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "GB",
@@ -127,7 +127,7 @@
     "factKo": "빅벤이라는 큰 시계탑이 런던에 있어요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "DE",
@@ -140,7 +140,7 @@
     "factKo": "소시지와 빵이 유명하고, 자동차를 잘 만드는 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "IT",
@@ -153,7 +153,7 @@
     "factKo": "장화 모양의 나라이고, 피자와 파스타가 태어난 곳이에요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "ES",
@@ -166,7 +166,7 @@
     "factKo": "플라멩코 춤과 축구로 유명한 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "GR",
@@ -179,7 +179,7 @@
     "factKo": "올림픽이 처음 시작된 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "EG",
@@ -192,7 +192,7 @@
     "factKo": "거대한 피라미드와 스핑크스가 있어요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "KE",
@@ -205,7 +205,7 @@
     "factKo": "사자와 코끼리를 볼 수 있는 사파리로 유명해요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "MA",
@@ -218,7 +218,7 @@
     "factKo": "사하라 사막과 알록달록한 시장이 있는 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "US",
@@ -231,7 +231,7 @@
     "factKo": "자유의 여신상이 있는 나라예요. 가장 큰 도시는 뉴욕이지만 수도는 워싱턴 D.C.예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "CA",
@@ -244,7 +244,7 @@
     "factKo": "국기에 단풍잎이 그려져 있어요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "MX",
@@ -257,7 +257,7 @@
     "factKo": "옥수수 빵 또띠야와 마야 피라미드로 유명해요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "BR",
@@ -270,7 +270,7 @@
     "factKo": "아마존 열대우림이 있고, 삼바 축제로 유명해요. 가장 큰 도시는 상파울루예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "AR",
@@ -283,7 +283,7 @@
     "factKo": "탱고라는 춤이 태어난 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "PE",
@@ -296,7 +296,7 @@
     "factKo": "높은 산 위에 잉카의 도시 마추픽추가 있어요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "AU",
@@ -309,7 +309,7 @@
     "factKo": "캥거루와 코알라가 사는 나라예요. 가장 큰 도시는 시드니지만 수도는 캔버라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "NZ",
@@ -322,7 +322,7 @@
     "factKo": "키위새가 살고, 양이 사람보다 많은 나라예요.",
     "aliases": [],
     "status": "verified",
-    "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   },
   {
     "id": "NL",
@@ -362,5 +362,239 @@
     "aliases": [],
     "status": "review",
     "sourceNote": "개발자 일반 지식 기준 초안. 출처 확인 전(src/data/SOURCES.md 참고)."
+  },
+  {
+    "id": "PH",
+    "nameKo": "필리핀",
+    "capitalKo": "마닐라",
+    "continent": "아시아",
+    "flag": "🇵🇭",
+    "latitude": 14.6,
+    "longitude": 120.98,
+    "factKo": "7천 개가 넘는 섬으로 이루어진 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "MN",
+    "nameKo": "몽골",
+    "capitalKo": "울란바토르",
+    "continent": "아시아",
+    "flag": "🇲🇳",
+    "latitude": 47.92,
+    "longitude": 106.92,
+    "factKo": "넓은 초원에서 말을 키우고, 게르라는 둥근 천막집에서 사는 사람들이 많아요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "NP",
+    "nameKo": "네팔",
+    "capitalKo": "카트만두",
+    "continent": "아시아",
+    "flag": "🇳🇵",
+    "latitude": 27.72,
+    "longitude": 85.32,
+    "factKo": "세계에서 가장 높은 산 에베레스트가 있는 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "BT",
+    "nameKo": "부탄",
+    "capitalKo": "팀푸",
+    "continent": "아시아",
+    "flag": "🇧🇹",
+    "latitude": 27.47,
+    "longitude": 89.64,
+    "factKo": "높은 산속에 있고, 행복을 아주 중요하게 생각하는 나라로 알려져 있어요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "PK",
+    "nameKo": "파키스탄",
+    "capitalKo": "이슬라마바드",
+    "continent": "아시아",
+    "flag": "🇵🇰",
+    "latitude": 33.69,
+    "longitude": 73.05,
+    "factKo": "세계에서 두 번째로 높은 산 K2가 있는 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "NO",
+    "nameKo": "노르웨이",
+    "capitalKo": "오슬로",
+    "continent": "유럽",
+    "flag": "🇳🇴",
+    "latitude": 59.91,
+    "longitude": 10.75,
+    "factKo": "깊은 바다가 땅 안으로 들어온 피오르가 유명해요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "FI",
+    "nameKo": "핀란드",
+    "capitalKo": "헬싱키",
+    "continent": "유럽",
+    "flag": "🇫🇮",
+    "latitude": 60.17,
+    "longitude": 24.94,
+    "factKo": "호수가 아주 많고, 산타클로스 마을이 있다고 알려져 있어요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "IS",
+    "nameKo": "아이슬란드",
+    "capitalKo": "레이캬비크",
+    "continent": "유럽",
+    "flag": "🇮🇸",
+    "latitude": 64.15,
+    "longitude": -21.94,
+    "factKo": "화산과 온천이 많아서 \"불과 얼음의 나라\"라고 불려요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "ET",
+    "nameKo": "에티오피아",
+    "capitalKo": "아디스아바바",
+    "continent": "아프리카",
+    "flag": "🇪🇹",
+    "latitude": 9.03,
+    "longitude": 38.74,
+    "factKo": "커피가 처음 자란 곳으로 알려진 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "MG",
+    "nameKo": "마다가스카르",
+    "capitalKo": "안타나나리보",
+    "continent": "아프리카",
+    "flag": "🇲🇬",
+    "latitude": -18.88,
+    "longitude": 47.51,
+    "factKo": "아프리카 옆의 커다란 섬나라이고, 이곳에서만 사는 동물이 많아요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "UG",
+    "nameKo": "우간다",
+    "capitalKo": "캄팔라",
+    "continent": "아프리카",
+    "flag": "🇺🇬",
+    "latitude": 0.35,
+    "longitude": 32.58,
+    "factKo": "나일강이 시작되는 곳이 있고, 산악고릴라가 사는 숲이 있어요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "NA",
+    "nameKo": "나미비아",
+    "capitalKo": "빈트후크",
+    "continent": "아프리카",
+    "flag": "🇳🇦",
+    "latitude": -22.56,
+    "longitude": 17.08,
+    "factKo": "붉은 모래 언덕이 있는 나미브 사막이 있는 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "CR",
+    "nameKo": "코스타리카",
+    "capitalKo": "산호세",
+    "continent": "북아메리카",
+    "flag": "🇨🇷",
+    "latitude": 9.93,
+    "longitude": -84.08,
+    "factKo": "나라의 많은 부분이 열대우림이고, 화산도 있어요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "CU",
+    "nameKo": "쿠바",
+    "capitalKo": "아바나",
+    "continent": "북아메리카",
+    "flag": "🇨🇺",
+    "latitude": 23.11,
+    "longitude": -82.37,
+    "factKo": "카리브해에 있는 섬나라이고, 알록달록한 옛날 자동차가 거리를 달려요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "EC",
+    "nameKo": "에콰도르",
+    "capitalKo": "키토",
+    "continent": "남아메리카",
+    "flag": "🇪🇨",
+    "latitude": -0.18,
+    "longitude": -78.47,
+    "factKo": "적도가 지나가서 나라 이름이 \"적도\"라는 뜻이에요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "CL",
+    "nameKo": "칠레",
+    "capitalKo": "산티아고",
+    "continent": "남아메리카",
+    "flag": "🇨🇱",
+    "latitude": -33.45,
+    "longitude": -70.67,
+    "factKo": "남아메리카에서 아주 길쭉한 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "CO",
+    "nameKo": "콜롬비아",
+    "capitalKo": "보고타",
+    "continent": "남아메리카",
+    "flag": "🇨🇴",
+    "latitude": 4.71,
+    "longitude": -74.07,
+    "factKo": "향기로운 커피로 유명한 나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
+  },
+  {
+    "id": "FJ",
+    "nameKo": "피지",
+    "capitalKo": "수바",
+    "continent": "오세아니아",
+    "flag": "🇫🇯",
+    "latitude": -18.14,
+    "longitude": 178.44,
+    "factKo": "푸른 바다와 산호초가 아름다운 섬나라예요.",
+    "aliases": [],
+    "status": "verified",
+    "sourceNote": "영문 수도·UN 회원국 여부·한국어 국가명을 공개 데이터셋(mledoze/countries, ODbL)과 대조함 (2026-10-13). 한글 수도 표기와 어린이용 상식 문장은 개발자 초안이라 사람의 확인이 필요함."
   }
 ]

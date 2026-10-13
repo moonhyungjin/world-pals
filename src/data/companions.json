@@ -223,5 +223,167 @@
     "descriptionKo": "뉴질랜드에는 양이 사람보다 훨씬 많아요.",
     "status": "verified",
     "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ph",
+    "countryId": "PH",
+    "nameKo": "고래상어",
+    "emoji": "🦈",
+    "descriptionKo": "필리핀 바다에서는 아주 커다란 고래상어를 볼 수 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.mn",
+    "countryId": "MN",
+    "nameKo": "쌍봉낙타",
+    "emoji": "🐫",
+    "descriptionKo": "몽골 고비 사막에는 혹이 두 개인 낙타가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.np",
+    "countryId": "NP",
+    "nameKo": "소",
+    "emoji": "🐄",
+    "descriptionKo": "네팔에서는 소를 나라를 대표하는 동물로 소중하게 여겨요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.bt",
+    "countryId": "BT",
+    "nameKo": "용",
+    "emoji": "🐉",
+    "descriptionKo": "부탄은 \"천둥 용의 나라\"라고 불려요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.pk",
+    "countryId": "PK",
+    "nameKo": "마르코르",
+    "emoji": "🐐",
+    "descriptionKo": "파키스탄의 높은 산에는 뿔이 꼬불꼬불한 야생 염소, 마르코르가 살아요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.no",
+    "countryId": "NO",
+    "nameKo": "고래",
+    "emoji": "🐋",
+    "descriptionKo": "노르웨이 바다에서는 고래를 볼 수 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.fi",
+    "countryId": "FI",
+    "nameKo": "큰고니",
+    "emoji": "🦢",
+    "descriptionKo": "핀란드의 나라 새는 큰고니예요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.is",
+    "countryId": "IS",
+    "nameKo": "아이슬란드 말",
+    "emoji": "🐴",
+    "descriptionKo": "아이슬란드에는 키가 작고 튼튼한 아이슬란드 말이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.et",
+    "countryId": "ET",
+    "nameKo": "겔라다",
+    "emoji": "🐒",
+    "descriptionKo": "에티오피아의 높은 산에는 겔라다개코원숭이가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.mg",
+    "countryId": "MG",
+    "nameKo": "카멜레온",
+    "emoji": "🦎",
+    "descriptionKo": "마다가스카르에는 카멜레온이 아주 많이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ug",
+    "countryId": "UG",
+    "nameKo": "고릴라",
+    "emoji": "🦍",
+    "descriptionKo": "우간다의 숲에는 산악고릴라가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.na",
+    "countryId": "NA",
+    "nameKo": "얼룩말",
+    "emoji": "🦓",
+    "descriptionKo": "나미비아의 넓은 땅에는 얼룩말이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.cr",
+    "countryId": "CR",
+    "nameKo": "나무늘보",
+    "emoji": "🦥",
+    "descriptionKo": "코스타리카의 숲에서는 느릿느릿한 나무늘보를 만날 수 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.cu",
+    "countryId": "CU",
+    "nameKo": "벌새",
+    "emoji": "🐦",
+    "descriptionKo": "쿠바에는 세상에서 가장 작은 새, 벌새가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ec",
+    "countryId": "EC",
+    "nameKo": "갈라파고스 거북",
+    "emoji": "🐢",
+    "descriptionKo": "에콰도르의 갈라파고스 제도에는 아주 커다란 거북이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.cl",
+    "countryId": "CL",
+    "nameKo": "홍학",
+    "emoji": "🦩",
+    "descriptionKo": "칠레의 높은 소금 호수에는 분홍색 홍학이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.co",
+    "countryId": "CO",
+    "nameKo": "독화살개구리",
+    "emoji": "🐸",
+    "descriptionKo": "콜롬비아의 숲에는 알록달록한 독화살개구리가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.fj",
+    "countryId": "FJ",
+    "nameKo": "열대어",
+    "emoji": "🐠",
+    "descriptionKo": "피지의 산호초 바다에는 알록달록한 열대어가 많아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
   }
 ]

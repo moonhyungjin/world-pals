@@ -670,5 +670,437 @@
     ],
     "difficulty": 3,
     "status": "review"
+  },
+  {
+    "id": "q.capital.PH",
+    "type": "capital",
+    "countryId": "PH",
+    "distractorCountryIds": [
+      "EC",
+      "TH",
+      "CO"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.PH",
+    "type": "flag",
+    "countryId": "PH",
+    "distractorCountryIds": [
+      "KR",
+      "FJ",
+      "PE"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.MN",
+    "type": "capital",
+    "countryId": "MN",
+    "distractorCountryIds": [
+      "PE",
+      "FR",
+      "UG"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.MN",
+    "type": "flag",
+    "countryId": "MN",
+    "distractorCountryIds": [
+      "FJ",
+      "RU",
+      "PK"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.NP",
+    "type": "capital",
+    "countryId": "NP",
+    "distractorCountryIds": [
+      "IT",
+      "PK",
+      "TR"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.NP",
+    "type": "flag",
+    "countryId": "NP",
+    "distractorCountryIds": [
+      "NZ",
+      "CR",
+      "FI"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.BT",
+    "type": "capital",
+    "countryId": "BT",
+    "distractorCountryIds": [
+      "IN",
+      "US",
+      "FJ"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.BT",
+    "type": "flag",
+    "countryId": "BT",
+    "distractorCountryIds": [
+      "ES",
+      "VN",
+      "EG"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.PK",
+    "type": "capital",
+    "countryId": "PK",
+    "distractorCountryIds": [
+      "CN",
+      "VN",
+      "BR"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.PK",
+    "type": "flag",
+    "countryId": "PK",
+    "distractorCountryIds": [
+      "CR",
+      "MA",
+      "NO"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.NO",
+    "type": "capital",
+    "countryId": "NO",
+    "distractorCountryIds": [
+      "ES",
+      "IT",
+      "BR"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.NO",
+    "type": "flag",
+    "countryId": "NO",
+    "distractorCountryIds": [
+      "KR",
+      "NZ",
+      "US"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.FI",
+    "type": "capital",
+    "countryId": "FI",
+    "distractorCountryIds": [
+      "NA",
+      "AR",
+      "FJ"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.FI",
+    "type": "flag",
+    "countryId": "FI",
+    "distractorCountryIds": [
+      "NP",
+      "MX",
+      "CU"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.IS",
+    "type": "capital",
+    "countryId": "IS",
+    "distractorCountryIds": [
+      "AU",
+      "FI",
+      "UG"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.IS",
+    "type": "flag",
+    "countryId": "IS",
+    "distractorCountryIds": [
+      "CR",
+      "ES",
+      "CA"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.ET",
+    "type": "capital",
+    "countryId": "ET",
+    "distractorCountryIds": [
+      "GB",
+      "FI",
+      "ES"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.ET",
+    "type": "flag",
+    "countryId": "ET",
+    "distractorCountryIds": [
+      "GB",
+      "EC",
+      "IN"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.MG",
+    "type": "capital",
+    "countryId": "MG",
+    "distractorCountryIds": [
+      "JP",
+      "EG",
+      "IS"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.MG",
+    "type": "flag",
+    "countryId": "MG",
+    "distractorCountryIds": [
+      "NP",
+      "TR",
+      "VN"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.UG",
+    "type": "capital",
+    "countryId": "UG",
+    "distractorCountryIds": [
+      "AR",
+      "VN",
+      "TR"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.UG",
+    "type": "flag",
+    "countryId": "UG",
+    "distractorCountryIds": [
+      "KR",
+      "US",
+      "KE"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.NA",
+    "type": "capital",
+    "countryId": "NA",
+    "distractorCountryIds": [
+      "US",
+      "MA",
+      "CL"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.NA",
+    "type": "flag",
+    "countryId": "NA",
+    "distractorCountryIds": [
+      "FJ",
+      "NO",
+      "UG"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.CR",
+    "type": "capital",
+    "countryId": "CR",
+    "distractorCountryIds": [
+      "VN",
+      "GB",
+      "MN"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.CR",
+    "type": "flag",
+    "countryId": "CR",
+    "distractorCountryIds": [
+      "CA",
+      "IS",
+      "VN"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.CU",
+    "type": "capital",
+    "countryId": "CU",
+    "distractorCountryIds": [
+      "TH",
+      "ET",
+      "BR"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.CU",
+    "type": "flag",
+    "countryId": "CU",
+    "distractorCountryIds": [
+      "VN",
+      "BR",
+      "CO"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.EC",
+    "type": "capital",
+    "countryId": "EC",
+    "distractorCountryIds": [
+      "FR",
+      "TH",
+      "IN"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.EC",
+    "type": "flag",
+    "countryId": "EC",
+    "distractorCountryIds": [
+      "VN",
+      "CU",
+      "MA"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.CL",
+    "type": "capital",
+    "countryId": "CL",
+    "distractorCountryIds": [
+      "KE",
+      "CO",
+      "FR"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.CL",
+    "type": "flag",
+    "countryId": "CL",
+    "distractorCountryIds": [
+      "IT",
+      "CA",
+      "MA"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.CO",
+    "type": "capital",
+    "countryId": "CO",
+    "distractorCountryIds": [
+      "PH",
+      "PE",
+      "EG"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.CO",
+    "type": "flag",
+    "countryId": "CO",
+    "distractorCountryIds": [
+      "NP",
+      "KR",
+      "MN"
+    ],
+    "difficulty": 2,
+    "status": "verified"
+  },
+  {
+    "id": "q.capital.FJ",
+    "type": "capital",
+    "countryId": "FJ",
+    "distractorCountryIds": [
+      "FI",
+      "NZ",
+      "IT"
+    ],
+    "difficulty": 3,
+    "status": "verified"
+  },
+  {
+    "id": "q.flag.FJ",
+    "type": "flag",
+    "countryId": "FJ",
+    "distractorCountryIds": [
+      "CO",
+      "RU",
+      "CU"
+    ],
+    "difficulty": 3,
+    "status": "verified"
   }
 ]

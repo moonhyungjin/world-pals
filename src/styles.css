@@ -186,9 +186,9 @@ h1 { margin: 0; text-align: center; }
   width: 26px; height: 26px; padding: 0; border-radius: 50%; border: 2px solid #fff; background: #8a8174; color: #fff;
   font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
-.map-box.zoomed .map-marker { width: 40px; height: 40px; font-size: 18px; }
+.map-box.zoomed .map-marker { width: 34px; height: 34px; font-size: 16px; }
 .map-marker .fi { font-size: 18px; border-radius: 3px; }
-.map-box.zoomed .map-marker .fi { font-size: 26px; }
+.map-box.zoomed .map-marker .fi { font-size: 22px; }
 .map-marker.has-gold { background: #ffd23f; border-color: #c98a00; box-shadow: 0 0 0 2px #fff3b0, 0 2px 6px rgba(201, 138, 0, 0.6); }
 .map-marker.has-basic { background: #eef2f5; border: 2px dashed #7b8794; }
 .map-marker.selected { outline: 4px solid #4f8df5; outline-offset: 2px; z-index: 2; }
@@ -296,3 +296,14 @@ h1 { margin: 0; text-align: center; }
 .cosmetic.slot-back { top: 0.48em; left: -0.4em; font-size: 0.42em; }
 .cosmetic.slot-head { left: 44%; }
 .cosmetic.slot-neck { bottom: -0.26em; font-size: 0.36em; }
+
+/* 확대한 대륙의 나라 목록 (겹친 마커를 대신해 누를 수 있는 칩) */
+.map-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.map-chip { min-height: 40px; padding: 4px 10px; display: flex; align-items: center; gap: 6px; border: 2px solid var(--line); border-radius: 999px; background: var(--card); color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.map-chip .fi { font-size: 20px; }
+.map-chip.has-gold { border-color: #c98a00; background: #fff6d6; }
+.map-chip.has-basic { border: 2px dashed #7b8794; background: #eef2f5; }
+.map-chip.locked { background: #f1ede6; color: #8a8174; }
+.map-chip.selected { outline: 4px solid #4f8df5; outline-offset: 1px; }
+.map-chip:focus-visible { outline: 4px solid #4f8df5; outline-offset: 2px; }
+.chip-q { width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 50%; background: #8a8174; color: #fff; font-size: 12px; }

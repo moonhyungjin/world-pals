@@ -8,6 +8,9 @@ import { PlaytestPanel } from './features/lab/PlaytestPanel';
 import { todayString } from './lib/random';
 import { STORAGE_KEYS } from './lib/storageKeys';
 
+/** 게임에 나오는(검수 완료) 나라 수. 나라를 늘려도 테스트가 깨지지 않게 데이터에서 계산한다. */
+const PLAYABLE = content.countries.filter((c) => c.status === 'verified').length;
+
 beforeEach(() => {
   localStorage.clear();
   window.location.hash = '';
@@ -197,6 +200,40 @@ describe('플레이어 흐름 (실제 클릭)', () => {
 });
 
 describe('Lab (실제 클릭)', () => {
+  it('지도 확대: 그 대륙의 나라만 마커로 보이고, 목록 칩으로도 나라를 열 수 있다 (못 찾은 나라는 이름이 숨겨짐)', async () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ discoveredCountryIds: ['KR', 'NP'], stampTiers: { KR: 'gold', NP: 'basic' } }),
+    );
+    render(<App />);
+    fireEvent.click(buttonByText(/지도/));
+    await screen.findByText(/나라 발견/);
+    const asia = content.countries.filter((c) => c.status === 'verified' && c.continent === '아시아');
+    expect(asia.length).toBeGreaterThanOrEqual(10);
+
+    fireEvent.click(buttonByText('아시아'));
+    expect(document.querySelectorAll('.map-marker')).toHaveLength(asia.length); // 다른 대륙 마커는 없음
+    const chips = within(screen.getByRole('list', { name: '아시아 나라 목록' })).getAllByRole('button');
+    expect(chips).toHaveLength(asia.length);
+    expect(chips.filter((c) => c.classList.contains('locked'))).toHaveLength(asia.length - 2);
+    // 목록에는 못 찾은 나라 이름이 없다
+    const listText = screen.getByRole('list', { name: '아시아 나라 목록' }).textContent ?? '';
+    expect(listText).toContain('대한민국');
+    expect(listText).toContain('네팔');
+    for (const c of asia.filter((x) => !['KR', 'NP'].includes(x.id))) expect(listText, c.nameKo).not.toContain(c.nameKo);
+
+    // 칩으로 나라를 열면 상세가 나온다 (마커가 겹쳐 가려져도 열 수 있음)
+    fireEvent.click(within(screen.getByRole('list', { name: '아시아 나라 목록' })).getByRole('button', { name: /네팔/ }));
+    expect(screen.getByText('카트만두')).toBeTruthy();
+    // 다른 대륙으로 바꾸면 목록도 바뀐다
+    fireEvent.click(buttonByText('유럽'));
+    expect(screen.getByRole('list', { name: '유럽 나라 목록' })).toBeTruthy();
+    expect(screen.queryByRole('list', { name: '아시아 나라 목록' })).toBeNull();
+    // 전체로 돌아가면 목록이 사라진다
+    fireEvent.click(buttonByText('전체'));
+    expect(document.querySelector('.map-list')).toBeNull();
+  });
+
   it('#/lab 주소와 홈의 링크로 Lab에 들어가고 게임으로 돌아올 수 있다', async () => {
     render(<App />);
     clickText(/제작자 도구/);
@@ -220,14 +257,14 @@ describe('Lab (실제 클릭)', () => {
     render(<App />);
     fireEvent.click(buttonByText(/지도/));
     expect(await screen.findByText(/2/, { selector: '.map-page strong' })).toBeTruthy();
-    expect(document.querySelectorAll('.map-marker')).toHaveLength(25);
+    expect(document.querySelectorAll('.map-marker')).toHaveLength(PLAYABLE);
     expect(document.querySelectorAll('.map-marker.has-gold')).toHaveLength(1);
     expect(document.querySelectorAll('.map-marker.has-basic')).toHaveLength(1);
-    expect(document.querySelectorAll('.map-marker.locked')).toHaveLength(23);
+    expect(document.querySelectorAll('.map-marker.locked')).toHaveLength(PLAYABLE - 2);
     // 발견 전 마커의 접근성 이름에는 나라 이름이 없다
-    expect(screen.queryAllByRole('button', { name: '아직 발견 못한 나라' })).toHaveLength(23);
+    expect(screen.queryAllByRole('button', { name: '아직 발견 못한 나라' })).toHaveLength(PLAYABLE - 2);
     fireEvent.click(buttonByText('유럽'));
-    expect(document.querySelectorAll('.map-marker').length).toBeLessThan(25);
+    expect(document.querySelectorAll('.map-marker').length).toBeLessThan(PLAYABLE);
     fireEvent.click(buttonByText(/프랑스, 기본 도장/));
     expect(screen.getByText('파리')).toBeTruthy();
     fireEvent.click(buttonByText('닫기'));
@@ -348,7 +385,7 @@ describe('여권: 못 찾은 나라 가리기', () => {
     fireEvent.click(buttonByText(/여권/));
     // 발견한 1개만 실제 국기, 나머지 24개는 잠긴 칸
     expect(document.querySelectorAll('.passport-cell .fi-kr')).toHaveLength(1);
-    expect(document.querySelectorAll('.passport-cell .flag-locked')).toHaveLength(24);
+    expect(document.querySelectorAll('.passport-cell .flag-locked')).toHaveLength(PLAYABLE - 1);
     expect(document.querySelectorAll('.passport-cell .fi:not(.flag-locked)')).toHaveLength(1);
     expect(screen.queryByText(/중국/)).toBeNull();
     // 잠긴 나라를 눌러도 이름과 국기가 나오지 않고, 대륙만 알려준다
@@ -533,16 +570,16 @@ describe('탐험 친구 (나라별 동물)', () => {
     seed();
     render(<App />);
     goCustomize();
-    expect(document.querySelectorAll('.friend-grid li')).toHaveLength(25);
+    expect(document.querySelectorAll('.friend-grid li')).toHaveLength(PLAYABLE);
     expect(document.querySelectorAll('button.friend-cell')).toHaveLength(2); // 호랑이, 캥거루
     const locked = screen.getAllByRole('img', { name: /아직 못 만난 친구/ });
-    expect(locked).toHaveLength(23);
+    expect(locked).toHaveLength(PLAYABLE - 2);
     for (const el of locked) {
       expect(el.getAttribute('aria-label')).toMatch(/의 나라에서 만나요/);
       expect(el.textContent).toContain('???'); // 이름 대신 물음표
       expect(el.getAttribute('aria-label')).not.toMatch(/대한민국|호주|일본|프랑스/);
     }
-    expect(screen.getByText(/🐾 탐험 친구 \(2\/25\)/)).toBeTruthy();
+    expect(screen.getByText(new RegExp(`🐾 탐험 친구 [(]2/${PLAYABLE}[)]`))).toBeTruthy();
   });
 
   it('친구를 고르면 홈 캐릭터와 함께 다니고, 새로고침해도 유지되고, 다시 누르면 혼자가 된다', () => {
@@ -605,14 +642,14 @@ describe('탐험 친구 (나라별 동물)', () => {
   it('Lab: 탐험 친구 탭에서 목록과 편집, 검증 오류가 보인다', () => {
     render(<LabLayout onExit={() => {}} />);
     fireEvent.click(tab(/보상 \(/));
-    fireEvent.click(screen.getByRole('tab', { name: /^탐험 친구 \(25\)/ }));
+    fireEvent.click(screen.getByRole('tab', { name: new RegExp(`^탐험 친구 [(]${content.companions.length}[)]`) }));
     const name = screen.getByLabelText('이름') as HTMLInputElement;
     expect(name.value).toBe('호랑이');
     fireEvent.change(name, { target: { value: '' } });
     expect(screen.getByText(/표시 이름을 입력해 주세요/)).toBeTruthy();
     const draft = JSON.parse(localStorage.getItem(STORAGE_KEYS.labDraft)!);
     expect(draft.companions[0].nameKo).toBe('');
-    expect(draft.companions).toHaveLength(25);
+    expect(draft.companions).toHaveLength(content.companions.length);
   });
 });
 
