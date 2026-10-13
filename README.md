@@ -37,7 +37,7 @@ src/pages/       HomePage, ResultPage
 - 국가 도장은 연습에서도 받습니다. 연습 = 기본 도장, 오늘의 탐험 = 황금 도장이며 기본 도장은 오늘의 탐험에서 맞히면 황금으로 올라갑니다.
 - 배지 조건은 `badges.json`에 데이터로 정의합니다 (지원 조건: 탐험 횟수, 발견 국가 수, 대륙별 발견 수, 푼 문제 수, 복습 정답 수).
 - 별(`totalStars`)은 현재 보유량입니다. 장식 해금 시 차감되고, 이미 해금한 장식은 다시 차감되지 않습니다.
-- 국기는 `flag-icons`(MIT) SVG를 국가 ID(ISO 코드)로 연결합니다.
+- 국기는 `flag-icons`(MIT) SVG를 국가 ID(ISO 코드)로 연결합니다. 이미지는 CSS에 넣지 않고(`assetsInlineLimit: 0`) 화면에 나온 국기만 개별 파일로 내려받습니다. 첫 로드는 CSS 약 3KB + JS 약 83KB(gzip)입니다.
 - 진행은 브라우저 localStorage(`worldpals.progress`)에 저장됩니다. 클라우드 백업이 아니며, 사이트 데이터를 지우면 사라집니다. 저장 실패나 깨진 데이터는 기본값으로 복구됩니다.
 - Lab 플레이 테스트용 저장 키(`worldpals.lab.test.progress`)는 미리 분리해 두었습니다.
 
@@ -78,7 +78,6 @@ src/pages/       HomePage, ResultPage
 
 - 진행 기록은 브라우저 localStorage에만 있습니다. 같은 브라우저의 탭 두 개로 동시에 플레이하면 나중에 끝낸 탭의 기록이 덮어씁니다.
 - 퀴즈 도중 새로고침하면 그 세션은 처음부터 다시 시작합니다.
-- 첫 로드 CSS(약 88KB gzip)에 국기 이미지가 인라인되어 있습니다. 필요한 국기만 쓰도록 줄일 수 있습니다.
 - 국가/수도 데이터는 출처 검증 전 초안입니다 (`src/data/SOURCES.md`).
 
 ## 다음 단계

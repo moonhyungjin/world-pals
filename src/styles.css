@@ -207,3 +207,17 @@ h1 { margin: 0; text-align: center; }
 
 /* 지도는 넓은 화면에서 더 크게 */
 .app:has(.map-page) { max-width: 880px; }
+
+/* 국기 이미지 (flag-icons 스타일 중 필요한 부분만): 4:3 비율, 크기는 font-size를 따른다 */
+.fi {
+  display: inline-block;
+  position: relative;
+  width: 1.333333em;
+  line-height: 1em;
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+.fi::before { content: '\00a0'; }
+.fi.flag-missing { background: #f1ede6; }
+.fi.flag-missing::after { content: '🏳️'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.6em; }
