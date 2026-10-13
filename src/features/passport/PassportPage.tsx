@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CountryDetail } from '../../components/CountryDetail';
 import { Flag } from '../../components/Flag';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
@@ -22,22 +23,7 @@ export function PassportPage({ progress, content }: { progress: PlayerProgress; 
         <div style={{ width: `${countries.length ? (found / countries.length) * 100 : 0}%` }} />
       </div>
 
-      {selected && (
-        <section className="card detail" role="status">
-          <Flag country={selected} className="big-flag" />
-          <h2>{selected.nameKo}</h2>
-          {tierOf(selected.id) ? (
-            <>
-              <p>수도: <strong>{selected.capitalKo}</strong></p>
-              <p>{selected.factKo}</p>
-              <p className="hint">{tierOf(selected.id) === 'gold' ? '✨ 황금 도장' : '기본 도장 (오늘의 탐험에서 맞히면 황금!)'}</p>
-            </>
-          ) : (
-            <p className="hint">🔒 아직 발견하지 못했어요. 탐험에서 수도를 맞히면 도장을 받아요!</p>
-          )}
-          <button type="button" className="btn" onClick={() => setSelectedId(null)}>닫기</button>
-        </section>
-      )}
+      {selected && <CountryDetail country={selected} tier={tierOf(selected.id)} onClose={() => setSelectedId(null)} />}
 
       {continents.map((continent) => (
         <section key={continent}>

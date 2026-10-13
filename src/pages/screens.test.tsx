@@ -31,7 +31,7 @@ describe('화면 스모크 렌더링', () => {
     const html = renderToString(<HomePage progress={progress} content={content} onStart={noop} onReview={noop} />);
     expect(html).toContain('헷갈린 문제 다시 풀기 (1)');
     expect(html).toContain('첫 탐험 완료');
-    expect(html).toContain('🤠');
+    expect(html).toContain('🧢');
   });
   it('홈: 오답이 없으면 복습 버튼이 없다', () => {
     const html = renderToString(

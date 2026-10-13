@@ -16,6 +16,7 @@
 
 ## 메모
 - 국기 이미지: `flag-icons` 7.5.0 (MIT 라이선스, https://github.com/lipis/flag-icons). `countries.json`의 `flag` 이모지 필드는 보조 정보이며 화면에는 국가 ID로 SVG를 표시합니다.
+- 세계지도 배경: Natural Earth 1:50m land (퍼블릭 도메인), npm `world-atlas` 2.0.2(ISC)에서 변환해 단순화한 SVG 경로(`src/features/map/worldLand.ts`, 생성 파일). 남극은 제외. 국경선은 그리지 않고 육지만 표시하며, 마커 위치는 `countries.json`의 대략적인 위도/경도입니다.
 - 국기와 영토 표기는 정치적으로 민감할 수 있어 확장 시 별도 검토가 필요합니다.
 - 위도/경도는 대략적인 값으로, 지도 기능 도입 시 재검증이 필요합니다.
 - 튀르키예·미국·호주·브라질처럼 가장 큰 도시와 수도가 다른 국가는 설명에 그 점을 적었습니다.

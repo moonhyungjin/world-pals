@@ -89,3 +89,7 @@
   .lab-list > ul { max-height: 40vh; }
   .lab-row2 { grid-template-columns: 1fr; }
 }
+
+/* 목록 상단 검색/필터가 한 줄에서 찌그러지지 않게 */
+.lab-list-tools input { width: auto; flex: 1 1 120px; }
+.lab-list-tools select { width: auto; flex: 0 0 auto; max-width: 55%; }

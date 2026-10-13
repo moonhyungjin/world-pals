@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { BottomNavigation, type NavTab } from './components/BottomNavigation';
 import { content } from './data/content';
-import { LabLayout } from './features/lab/LabLayout';
 import { CustomizePage } from './features/customization/CustomizePage';
 import { PassportPage } from './features/passport/PassportPage';
 import { buildReviewSession, buildSession, type SessionSummary } from './features/quiz/quizEngine';
@@ -20,9 +19,20 @@ type Screen =
   | { name: 'quiz'; items: QuizItem[]; practice: boolean }
   | { name: 'result'; summary: SessionSummary; wrongCount: number; newBadges: Badge[]; practice: boolean };
 
+// 제작 도구와 세계지도(큰 지도 데이터)는 필요할 때만 내려받는다.
+const LabLayout = lazy(() => import('./features/lab/LabLayout').then((m) => ({ default: m.LabLayout })));
+const MapPage = lazy(() => import('./features/map/MapPage').then((m) => ({ default: m.MapPage })));
+const Loading = () => <p className="hint" role="status">불러오는 중이에요…</p>;
+
+/**
+ * Lab은 개발 중(npm run dev)에는 항상 열리고, 배포 빌드에서는 VITE_ENABLE_LAB=true일 때만 열린다.
+ * 기본값(꺼짐)이면 #/lab 주소와 홈의 링크가 모두 사라져 어린이용 배포본에 제작 도구가 노출되지 않는다.
+ */
+export const LAB_ENABLED = import.meta.env.DEV || import.meta.env.VITE_ENABLE_LAB === 'true';
+
 /** 제작자용 Lab은 별도 주소(#/lab)로 분리한다. 플레이어 화면에서는 작은 링크로만 연결한다. */
 function useIsLab(): [boolean, (on: boolean) => void] {
-  const read = () => window.location.hash === '#/lab';
+  const read = () => LAB_ENABLED && window.location.hash === '#/lab';
   const [isLab, setIsLab] = useState(read);
   useEffect(() => {
     const onHash = () => setIsLab(read());
@@ -39,7 +49,13 @@ function useIsLab(): [boolean, (on: boolean) => void] {
 
 export function App() {
   const [isLab, setLab] = useIsLab();
-  return isLab ? <LabLayout onExit={() => setLab(false)} /> : <Game onOpenLab={() => setLab(true)} />;
+  return isLab ? (
+    <Suspense fallback={<Loading />}>
+      <LabLayout onExit={() => setLab(false)} />
+    </Suspense>
+  ) : (
+    <Game onOpenLab={() => setLab(true)} />
+  );
 }
 
 function Game({ onOpenLab }: { onOpenLab: () => void }) {
@@ -80,9 +96,14 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
         </p>
       )}
       {screen.name === 'home' && (
-        <HomePage progress={progress} content={content} onStart={start} onReview={startReview} onOpenLab={onOpenLab} />
+        <HomePage progress={progress} content={content} onStart={start} onReview={startReview} onOpenLab={LAB_ENABLED ? onOpenLab : undefined} />
       )}
       {screen.name === 'passport' && <PassportPage progress={progress} content={content} />}
+      {screen.name === 'map' && (
+        <Suspense fallback={<Loading />}>
+          <MapPage progress={progress} content={content} />
+        </Suspense>
+      )}
       {screen.name === 'customize' && <CustomizePage progress={progress} content={content} onChange={update} />}
       {screen.name === 'quiz' && (
         <QuizPage

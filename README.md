@@ -1,7 +1,7 @@
 # World Pals — 꼬마 세계 탐험대
 
 7~9세 어린이용 세계 수도 탐험 웹게임. 기획서: `WORLD_PALS_PLAN.md`.
-현재 구현 단계: **Phase 1~3** (수도/국기 퀴즈, 도장·배지·꾸미기·여권·오답 복습, World Pals Lab).
+현재 구현 단계: **Phase 1~4** (수도/국기 퀴즈, 도장·배지·꾸미기·여권·오답 복습, 세계지도, World Pals Lab).
 
 ## 실행
 
@@ -22,7 +22,7 @@ src/data/        콘텐츠(countries, questions, badges, rewards[장식] .json) 
 src/config.ts    세션 크기, 복습 개수, 보상 수치
 src/features/quiz/  quizEngine.ts(출제·보상 로직, 순수 함수), QuizPage.tsx
 src/features/rewards/  rewardEngine.ts(배지 조건, 장식 해금/장착)
-src/features/passport/, customization/  여권, 꾸미기 화면
+src/features/passport/, customization/, map/  여권, 꾸미기, 세계지도 화면 (map/worldLand.ts는 생성된 지도 데이터)
 src/features/lab/  World Pals Lab (validators, importExport, labOps, labStorage + 편집기 화면)
 src/lib/         saveData.ts(localStorage 저장/복구), storageKeys.ts, random.ts
 src/types/       Country, Question, PlayerProgress
@@ -60,6 +60,29 @@ src/pages/       HomePage, ResultPage
 - 초안/검수 중 항목은 게임에서 출제·지급되지 않습니다.
 - 편집 내용은 브라우저 저장소에만 있으므로 지우면 사라집니다. 백업 JSON을 내려받아 보관하세요.
 
+## 세계지도
+
+- 등장방형 2D SVG(`src/features/map/worldLand.ts`) 위에 국가 위도/경도로 마커를 올립니다. 발견한 나라는 국기(황금/기본 도장 테두리), 아직은 물음표입니다.
+- 나라가 모여 있어 겹치므로 대륙 버튼으로 확대해서 봅니다. 마커는 실제 버튼이라 키보드/터치로 열 수 있습니다.
+- 지도 데이터 출처/라이선스는 `src/data/SOURCES.md` 참고.
+
+## 배포 (Vercel)
+
+정적 사이트라 서버가 필요 없습니다.
+
+1. GitHub 저장소를 Vercel에서 Import (Framework: Vite 자동 감지, Build `npm run build`, Output `dist`).
+2. **Lab은 배포본에서 기본으로 숨겨집니다.** `#/lab` 주소와 홈의 링크가 모두 없어집니다. 배포본에서도 Lab을 쓰려면 환경변수 `VITE_ENABLE_LAB=true`를 설정하고 다시 빌드하세요. (Lab은 편집 내용을 그 브라우저에만 저장하며, 게임 데이터에는 파일 교체로만 반영됩니다.)
+3. 로컬에서 배포본 확인: `npm run build && npm run preview`.
+
+## 알려진 한계
+
+- 진행 기록은 브라우저 localStorage에만 있습니다. 같은 브라우저의 탭 두 개로 동시에 플레이하면 나중에 끝낸 탭의 기록이 덮어씁니다.
+- 퀴즈 도중 새로고침하면 그 세션은 처음부터 다시 시작합니다.
+- 첫 로드 CSS(약 88KB gzip)에 국기 이미지가 인라인되어 있습니다. 필요한 국기만 쓰도록 줄일 수 있습니다.
+- 국가/수도 데이터는 출처 검증 전 초안입니다 (`src/data/SOURCES.md`).
+
 ## 다음 단계
 
-Phase 4 (2D 세계지도, 반응형 점검, 배포).
+- 국가 데이터 출처 검증, 국가 수 확대 (Lab 사용)
+- 실제 어린이/보호자 사용성 검토
+- 3D 지구본, 온라인 기능은 MVP 이후

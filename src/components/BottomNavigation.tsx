@@ -1,8 +1,9 @@
-export type NavTab = 'home' | 'passport' | 'customize';
+export type NavTab = 'home' | 'passport' | 'map' | 'customize';
 
 const TABS: { id: NavTab; icon: string; label: string }[] = [
   { id: 'home', icon: '🏠', label: '홈' },
   { id: 'passport', icon: '🛂', label: '여권' },
+  { id: 'map', icon: '🗺️', label: '지도' },
   { id: 'customize', icon: '🎒', label: '꾸미기' },
 ];
 

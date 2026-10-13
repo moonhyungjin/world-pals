@@ -110,6 +110,41 @@ describe('플레이어 흐름 (실제 클릭)', () => {
     expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
   });
 
+  it('저장소 쓰기가 막혀도(용량 초과/시크릿 모드) 끝까지 플레이되고 안내가 나온다', () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('quota', 'QuotaExceededError');
+    });
+    render(<App />);
+    clickText('오늘의 탐험 시작!');
+    for (let i = 0; i < 5; i++) {
+      answerCurrentQuestion(true);
+      clickText(i === 4 ? '결과 보기' : '다음 문제');
+    }
+    expect(screen.getByText('탐험 끝!')).toBeTruthy();
+    expect(screen.getByRole('alert').textContent).toContain('저장할 수 없어요');
+    clickText('홈으로');
+    // 화면의 별은 이번 세션 동안 유지된다
+    expect(screen.getByText('별').previousSibling?.textContent).toBe('8');
+  });
+
+  it('저장소 읽기까지 막혀도 앱이 시작된다', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    render(<App />);
+    expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
+  });
+
+  it('유효하지 않은 값이 섞인 저장 데이터는 필드별로 복구된다', () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ totalStars: 'many', discoveredCountryIds: 'KR', stampTiers: { KR: 'platinum' }, wrongQuestionIds: [1, 'q.capital.KR'] }),
+    );
+    render(<App />);
+    expect(screen.getByText('오늘의 탐험 시작!')).toBeTruthy();
+    expect(screen.getByText('헷갈린 문제 다시 풀기', { exact: false }).textContent).toContain('(1)');
+  });
+
   it('꾸미기: 별이 모자라면 해금되지 않고, 충분하면 해금 후 별이 차감된다', () => {
     localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ totalStars: 6 }));
     render(<App />);
@@ -135,10 +170,32 @@ describe('Lab (실제 클릭)', () => {
     expect(await screen.findByText('오늘의 탐험 시작!')).toBeTruthy();
   });
 
-  it('주소에 #/lab이 있으면 바로 Lab이 열린다', () => {
+  it('주소에 #/lab이 있으면 바로 Lab이 열린다', async () => {
     window.location.hash = '#/lab';
     render(<App />);
-    expect(screen.getByText(/World Pals Lab/)).toBeTruthy();
+    expect(await screen.findByText(/World Pals Lab/)).toBeTruthy();
+  });
+
+  it('지도 탭: 발견/미발견 마커와 대륙 확대, 마커를 누르면 상세가 열린다', async () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ discoveredCountryIds: ['KR', 'FR'], stampTiers: { KR: 'gold', FR: 'basic' } }),
+    );
+    render(<App />);
+    fireEvent.click(buttonByText(/지도/));
+    expect(await screen.findByText(/2/, { selector: '.map-page strong' })).toBeTruthy();
+    expect(document.querySelectorAll('.map-marker')).toHaveLength(25);
+    expect(document.querySelectorAll('.map-marker.has-gold')).toHaveLength(1);
+    expect(document.querySelectorAll('.map-marker.has-basic')).toHaveLength(1);
+    expect(document.querySelectorAll('.map-marker.locked')).toHaveLength(23);
+    // 발견 전 마커의 접근성 이름에는 나라 이름이 없다
+    expect(screen.queryAllByRole('button', { name: '아직 발견 못한 나라' })).toHaveLength(23);
+    fireEvent.click(buttonByText('유럽'));
+    expect(document.querySelectorAll('.map-marker').length).toBeLessThan(25);
+    fireEvent.click(buttonByText(/프랑스, 기본 도장/));
+    expect(screen.getByText('파리')).toBeTruthy();
+    fireEvent.click(buttonByText('닫기'));
+    expect(screen.queryByText('파리')).toBeNull();
   });
 
   it('새 국가를 만들고 편집하면 임시 저장되고, 필수값 오류가 검증 탭에 나온다', () => {
