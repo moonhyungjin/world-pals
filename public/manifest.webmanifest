@@ -1,0 +1,15 @@
+{
+  "name": "World Pals - 꼬마 세계 탐험대",
+  "short_name": "World Pals",
+  "description": "수도와 국기를 맞히고 나라 도장을 모으는 세계 탐험 게임",
+  "lang": "ko",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff7e8",
+  "theme_color": "#ff8a3d",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

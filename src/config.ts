@@ -10,4 +10,6 @@ export const CONFIG = {
   challengeMinCorrect: 4, // 오늘의 탐험에서 이만큼 맞히면 그날 도전장을 만들 수 있다
   challengeMinQuestions: 3,
   challengeMaxQuestions: 5,
+  challengeStarsPerCorrect: 1, // 친구의 도전장을 처음 풀 때 맞힌 문제 하나당 보너스 별
+  challengeBonusDailyMax: 6, // 하루에 도전장으로 받을 수 있는 보너스 별 상한
 } as const;

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BottomNavigation, type NavTab } from './components/BottomNavigation';
 import { content } from './data/content';
+import { applyChallengeBonus, bonusResultText, bonusStatus, markChallengeMade, type BonusOutcome } from './features/challenge/bonus';
 import {
   canCreateChallenge,
   challengeCodeFromHash,
@@ -37,7 +38,7 @@ type Screen =
       newBadges: Badge[];
       practice: boolean;
       challengeUnlocked: boolean;
-      challenge?: { challenge: Challenge; correct: boolean[] };
+      challenge?: { challenge: Challenge; correct: boolean[]; bonus: BonusOutcome };
     };
 
 // 제작 도구와 세계지도(큰 지도 데이터)는 필요할 때만 내려받는다.
@@ -142,8 +143,13 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
     // 퀴즈를 푸는 동안 다른 탭에서 기록이 바뀌었을 수 있으므로, 저장소의 최신 기록 위에 결과를 더한다.
     // (저장소를 읽을 수 없을 때만 화면에 들고 있던 기록을 쓴다.)
     const base = readStoredProgress() ?? progress;
-    const result = completeSession(base, answers, todayString(), content, { practice });
-    update(result.progress);
+    const today = todayString();
+    const result = completeSession(base, answers, today, content, { practice });
+    // 친구의 도전장은 처음 풀 때만, 맞힌 만큼 보너스 별을 더한다 (오늘의 탐험 별과는 따로 계산)
+    const bonus = challenge
+      ? applyChallengeBonus(result.progress, challenge.code, answers.filter((a) => a.correct).length, today)
+      : null;
+    update(bonus ? bonus.progress : result.progress);
     setScreen({
       name: 'result',
       summary: result.summary,
@@ -151,7 +157,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
       newBadges: result.newBadges,
       practice,
       challengeUnlocked: result.challengeUnlocked,
-      challenge: challenge ? { challenge, correct: answers.map((a) => a.correct) } : undefined,
+      challenge: challenge && bonus ? { challenge, correct: answers.map((a) => a.correct), bonus: bonus.outcome } : undefined,
     });
   };
 
@@ -187,11 +193,20 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
       )}
       {screen.name === 'customize' && <CustomizePage progress={progress} content={content} onChange={update} />}
       {screen.name === 'challengeMake' && (
-        <ChallengeMakePage progress={progress} content={content} today={todayString()} onBack={goHome} />
+        <ChallengeMakePage
+          progress={progress}
+          content={content}
+          today={todayString()}
+          onBack={goHome}
+          onCreated={(code) => update(markChallengeMade(readStoredProgress() ?? progress, code))}
+        />
       )}
       {screen.name === 'challengeIntro' &&
         (screen.challenge ? (
-          <ChallengeIntroPage challenge={screen.challenge} onStart={() => startChallenge(screen.challenge!)} onHome={goHome} />
+          <ChallengeIntroPage
+            challenge={screen.challenge}
+            bonus={bonusStatus(progress, screen.challenge.code, todayString())}
+            onStart={() => startChallenge(screen.challenge!)} onHome={goHome} />
         ) : (
           <ChallengeIntroPage failure={screen.failure ?? 'format'} onHome={goHome} />
         ))}
@@ -213,7 +228,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
           onHome={goHome}
           onAgain={screen.challenge ? () => startChallenge(screen.challenge!.challenge) : start}
           title={screen.challenge ? '도전 끝!' : undefined}
-          practiceNote={screen.challenge ? '도전장은 별 없이 도장만 받아요! 😊' : undefined}
+          practiceNote={screen.challenge ? bonusResultText(screen.challenge.bonus) : undefined}
           againLabel={screen.challenge ? '다시 풀어 보기' : undefined}
         >
           {screen.challenge ? (

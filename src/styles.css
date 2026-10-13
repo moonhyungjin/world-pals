@@ -271,3 +271,4 @@ h1 { margin: 0; text-align: center; }
 .new-friends small { font-weight: 600; color: #8a6d4b; text-align: center; max-width: 150px; }
 .detail-friend { font-weight: 700; }
 .new-friends li { min-width: 84px; }
+.bonus-line { font-weight: 800; color: #b45309; background: #fff6d6; border-radius: 12px; padding: 6px 10px; margin: 6px 0 0; }

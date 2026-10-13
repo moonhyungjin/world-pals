@@ -1,4 +1,5 @@
 import { Character } from '../../components/Character';
+import { bonusIntroText, type BonusStatus } from './bonus';
 import { CHALLENGE_MESSAGES, type Challenge, type ChallengeFailure } from './challenge';
 
 const FAILURE_TEXT: Record<ChallengeFailure, string> = {
@@ -10,8 +11,8 @@ const FAILURE_TEXT: Record<ChallengeFailure, string> = {
 };
 
 type Props =
-  | { challenge: Challenge; failure?: undefined; onStart: () => void; onHome: () => void }
-  | { challenge?: undefined; failure: ChallengeFailure; onStart?: undefined; onHome: () => void };
+  | { challenge: Challenge; bonus: BonusStatus; failure?: undefined; onStart: () => void; onHome: () => void }
+  | { challenge?: undefined; bonus?: undefined; failure: ChallengeFailure; onStart?: undefined; onHome: () => void };
 
 /** 친구가 보낸 도전장을 열었을 때의 첫 화면. 잘못된 링크도 여기서 부드럽게 안내한다. */
 export function ChallengeIntroPage(props: Props) {
@@ -43,7 +44,7 @@ export function ChallengeIntroPage(props: Props) {
           {capitals > 0 && flags > 0 && ' · '}
           {flags > 0 && `🚩 국기 ${flags}개`}
         </p>
-        <p className="hint">별은 없지만 맞히면 나라 도장을 받아요!</p>
+        <p className={props.bonus.kind === 'available' ? 'bonus-line' : 'hint'}>{bonusIntroText(props.bonus)}</p>
       </section>
       <button type="button" className="btn primary big" onClick={props.onStart}>도전 시작!</button>
       <button type="button" className="btn" onClick={props.onHome}>나중에 할래요</button>

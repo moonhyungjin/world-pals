@@ -18,10 +18,16 @@ import {
 
 const TYPE_LABEL: Record<QuestionType, string> = { capital: '수도', flag: '국기' };
 
-type Props = { progress: PlayerProgress; content: Content; today: string; onBack: () => void };
+type Props = {
+  progress: PlayerProgress;
+  content: Content;
+  today: string;
+  onBack: () => void;
+  onCreated: (code: string) => void; // 링크를 만들었을 때 (내가 만든 도전장으로 기록하기 위해)
+};
 
 /** 도전장 만들기: 내가 도장을 받은 나라 중에서 고르고, 링크를 만들어 친구에게 보낸다. */
-export function ChallengeMakePage({ progress, content, today, onBack }: Props) {
+export function ChallengeMakePage({ progress, content, today, onBack, onCreated }: Props) {
   const [picks, setPicks] = useState<ChallengeEntry[]>([]);
   const [message, setMessage] = useState<number>(0);
   const [created, setCreated] = useState<string | null>(null);
@@ -165,7 +171,11 @@ export function ChallengeMakePage({ progress, content, today, onBack }: Props) {
         type="button"
         className="btn primary big"
         disabled={!ready}
-        onClick={() => setCreated(encodeChallenge(picks, message))}
+        onClick={() => {
+          const code = encodeChallenge(picks, message);
+          setCreated(code);
+          onCreated(code);
+        }}
       >
         {ready ? '💌 도전장 만들기' : `나라를 ${limits.min}개 이상 골라요`}
       </button>

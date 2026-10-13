@@ -19,6 +19,8 @@ export function defaultProgress(): PlayerProgress {
     reviewCorrectCount: 0,
     rewardEventIds: [],
     companionId: null,
+    challengeBonusDate: '',
+    challengeBonusToday: 0,
     challengeUnlockedDates: [],
   };
 }
@@ -61,6 +63,8 @@ export function sanitizeProgress(raw: unknown): PlayerProgress {
     reviewCorrectCount: nonNegInt(r.reviewCorrectCount),
     rewardEventIds: stringArray(r.rewardEventIds),
     companionId: typeof r.companionId === 'string' && r.companionId ? r.companionId : null,
+    challengeBonusDate: typeof r.challengeBonusDate === 'string' ? r.challengeBonusDate : '',
+    challengeBonusToday: nonNegInt(r.challengeBonusToday),
     challengeUnlockedDates: stringArray(r.challengeUnlockedDates),
   };
 }

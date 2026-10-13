@@ -464,13 +464,14 @@ describe('도전장 (친구에게 문제 내기)', () => {
     expect(screen.queryByText('💌 친구에게 도전장 보내기')).toBeNull();
   });
 
-  it('친구의 링크를 열면 소개 → 풀기 → 결과(별 없음, 도장은 받음)로 이어진다', async () => {
+  it('친구의 링크를 열면 소개 → 풀기 → 결과(맞힌 만큼 보너스 별과 도장)로 이어진다', async () => {
     const writeText = clipboard();
     await openWithHash('#/c/KRc.JPf.FRc~1');
     render(<App />);
     expect(screen.getByText('💌 도전장이 왔어요!')).toBeTruthy();
     expect(screen.getByText(/같이 세계 여행을 떠나자/)).toBeTruthy();
     expect(screen.getByText('3문제')).toBeTruthy();
+    expect(screen.getByText(/맞힌 만큼 보너스 별을 받아요.*오늘 최대 ⭐ 6개/)).toBeTruthy();
     expect(screen.getByText(/수도 2개 · 🚩 국기 1개/)).toBeTruthy();
 
     clickText('도전 시작!');
@@ -483,10 +484,10 @@ describe('도전장 (친구에게 문제 내기)', () => {
     expect(screen.getByText('도전 끝!')).toBeTruthy();
     expect(document.querySelector('.marks')?.textContent).toMatch(/^[⭕❌]{3}$/);
     expect(document.querySelectorAll('.marks')[0].textContent).toContain('❌');
-    expect(screen.getByText(/별 없이 도장만 받아요/)).toBeTruthy();
+    expect(screen.getByText(/보너스 별 2개를 받았어요/)).toBeTruthy();
 
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!);
-    expect(saved.totalStars).toBe(0); // 별 없음
+    expect(saved.totalStars).toBe(2); // 맞힌 2문제 = 보너스 별 2개 (오늘의 탐험 별은 아님)
     expect(saved.completedDates).toEqual([]); // 오늘의 탐험으로 치지 않음
     expect(saved.challengeUnlockedDates).toEqual([]); // 도전장을 풀어도 만들기가 열리지는 않음
     expect(Object.values(saved.stampTiers)).toEqual(['basic', 'basic']); // 맞힌 2개만 기본 도장
@@ -612,5 +613,79 @@ describe('탐험 친구 (나라별 동물)', () => {
     const draft = JSON.parse(localStorage.getItem(STORAGE_KEYS.labDraft)!);
     expect(draft.companions[0].nameKo).toBe('');
     expect(draft.companions).toHaveLength(25);
+  });
+});
+
+describe('도전장 보너스 별 (실제 클릭)', () => {
+  const playLink = async (hash: string, answerPlan: boolean[]) => {
+    await openWithHash(hash);
+    const view = render(<App />);
+    clickText('도전 시작!');
+    for (let i = 0; i < answerPlan.length; i++) {
+      answerCurrentQuestion(answerPlan[i]);
+      clickText(i === answerPlan.length - 1 ? '결과 보기' : '다음 문제');
+    }
+    return view;
+  };
+  const saved = () => JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!);
+
+  it('같은 도전장을 다시 풀면 보너스 별이 없다 (새로고침 후에도)', async () => {
+    const first = await playLink('#/c/KRc.JPf.FRc', [true, true, true]);
+    expect(screen.getByText(/보너스 별 3개를 받았어요/)).toBeTruthy();
+    expect(saved().totalStars).toBe(3);
+    first.unmount();
+
+    // 같은 도전장을 순서만 바꿔서 다시 연다
+    await openWithHash('#/c/FRc.KRc.JPf~2');
+    render(<App />);
+    expect(screen.getByText(/이미 푼 도전장이에요/)).toBeTruthy();
+    clickText('도전 시작!');
+    for (let i = 0; i < 3; i++) {
+      answerCurrentQuestion(true);
+      clickText(i === 2 ? '결과 보기' : '다음 문제');
+    }
+    expect(screen.getByText(/이미 푼 도전장이에요/)).toBeTruthy();
+    expect(saved().totalStars).toBe(3); // 늘지 않음
+  });
+
+  it('내가 만든 도전장은 같은 기기에서 풀어도 별이 없다', async () => {
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ discoveredCountryIds: ['KR', 'JP', 'FR'], stampTiers: { KR: 'gold', JP: 'gold', FR: 'gold' }, challengeUnlockedDates: [todayString()] }),
+    );
+    const view = render(<App />);
+    clickText('💌 친구에게 도전장 보내기');
+    Array.from(document.querySelectorAll<HTMLButtonElement>('.pick-cell')).forEach((c) => fireEvent.click(c));
+    fireEvent.click(screen.getByRole('button', { name: /^💌 도전장 만들기$/ }));
+    const link = (screen.getByLabelText('도전장 링크') as HTMLInputElement).value;
+    const hash = link.slice(link.indexOf('#'));
+    expect(saved().rewardEventIds.some((e: string) => e.startsWith('challenge-made:'))).toBe(true);
+    view.unmount();
+
+    await openWithHash(hash);
+    render(<App />);
+    expect(screen.getByText(/내가 만든 도전장이라 보너스 별은 없어요/)).toBeTruthy();
+    clickText('도전 시작!');
+    for (let i = 0; i < 3; i++) {
+      answerCurrentQuestion(true);
+      clickText(i === 2 ? '결과 보기' : '다음 문제');
+    }
+    expect(saved().totalStars).toBe(0);
+  });
+
+  it('오늘 보너스를 다 받았으면 안내만 나오고, 푼 것으로 기록되지 않는다', async () => {
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify({ challengeBonusDate: todayString(), challengeBonusToday: 6, totalStars: 6 }));
+    await playLink('#/c/KRc.JPf.FRc', [true, true, true]);
+    expect(screen.getByText(/오늘의 보너스 별은 다 받았어요/)).toBeTruthy();
+    expect(saved().totalStars).toBe(6);
+    expect(saved().rewardEventIds.some((e: string) => e.startsWith('challenge-solved:'))).toBe(false);
+  });
+
+  it('오답은 별이 없고 오늘의 탐험 별과는 따로 계산된다', async () => {
+    await playLink('#/c/KRc.JPf.FRc', [true, false, false]);
+    expect(screen.getByText(/보너스 별 1개를 받았어요/)).toBeTruthy();
+    expect(saved().totalStars).toBe(1);
+    expect(saved().completedDates).toEqual([]);
+    expect(saved().challengeBonusToday).toBe(1);
   });
 });

@@ -17,5 +17,7 @@ export type PlayerProgress = {
   reviewCorrectCount: number; // 복습 대상 문제를 다시 맞힌 횟수
   rewardEventIds: string[];
   companionId: string | null; // 지금 함께 다니는 탐험 친구 (만난 친구 중에서만)
+  challengeBonusDate: string; // 도전장 보너스 별을 마지막으로 받은 날짜
+  challengeBonusToday: number; // 그날 이미 받은 도전장 보너스 별
   challengeUnlockedDates: string[]; // 도전장 만들기가 열린 날짜 (오늘의 탐험을 잘 푼 날) // 지급 완료된 보상 이벤트 (중복 지급 방지)
 };
