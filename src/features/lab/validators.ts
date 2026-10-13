@@ -1,7 +1,7 @@
 import type { Content } from '../../data/content';
 
 export type Severity = 'error' | 'warning';
-export type ContentKind = 'country' | 'question' | 'badge' | 'cosmetic';
+export type ContentKind = 'country' | 'question' | 'badge' | 'cosmetic' | 'companion';
 
 export type Issue = { severity: Severity; kind: ContentKind; id: string; message: string };
 
@@ -125,6 +125,32 @@ export function validateContent(content: Content): Issue[] {
     if (cond.type === 'continentDiscovered') {
       if (blank(cond.continent)) add('error', 'badge', b.id, '조건의 대륙을 입력해 주세요.');
       else if (!continents.has(cond.continent)) add('error', 'badge', b.id, `조건의 대륙 "${cond.continent}"에 해당하는 국가가 없어요.`);
+    }
+  }
+  // ---- 탐험 친구 ----
+  for (const id of new Set(duplicates(content.companions.map((c) => c.id)))) {
+    add('error', 'companion', id, `탐험 친구 ID "${id}"가 중복돼요.`);
+  }
+  for (const c of content.companions) {
+    if (blank(c.id)) add('error', 'companion', c.id, '탐험 친구 ID가 비어 있어요.');
+    if (blank(c.nameKo)) add('error', 'companion', c.id, '표시 이름을 입력해 주세요.');
+    if (blank(c.emoji)) add('error', 'companion', c.id, '이미지(이모지)를 입력해 주세요.');
+    if (blank(c.descriptionKo)) add('warning', 'companion', c.id, '설명이 비어 있어요.');
+    if (!STATUSES.includes(c.status)) add('error', 'companion', c.id, `상태 "${c.status}"를 알 수 없어요.`);
+    if (!countryById.has(c.countryId)) {
+      add('error', 'companion', c.id, `연결된 국가 ID "${c.countryId}"가 존재하지 않아요.`);
+    } else if (c.status === 'verified' && countryById.get(c.countryId)!.status !== 'verified') {
+      add('warning', 'companion', c.id, '연결된 국가가 검수 완료 상태가 아니라서 이 친구는 만날 수 없어요.');
+    }
+    if (c.status === 'verified' && blank(c.sourceNote)) {
+      add('warning', 'companion', c.id, '검수 완료(verified)인데 출처/근거 메모가 없어요.');
+    }
+  }
+  const perCountry = new Map<string, number>();
+  for (const c of content.companions) perCountry.set(c.countryId, (perCountry.get(c.countryId) ?? 0) + 1);
+  for (const [countryId, n] of perCountry) {
+    if (n > 1 && countryById.has(countryId)) {
+      add('warning', 'companion', countryId, `국가 "${countryId}"에 탐험 친구가 ${n}마리 연결돼 있어요. 보통은 나라마다 한 마리예요.`);
     }
   }
   return issues;

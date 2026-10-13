@@ -1,4 +1,5 @@
 import type { Content } from '../../data/content';
+import type { Companion } from '../../types/companion';
 import type { Country } from '../../types/country';
 import type { Question } from '../../types/question';
 import type { Badge, BadgeCondition, Cosmetic } from '../../types/reward';
@@ -77,6 +78,19 @@ function normalizeCosmetic(o: Obj): Cosmetic {
   };
 }
 
+function normalizeCompanion(o: Obj): Companion {
+  const c: Companion = {
+    id: str(o.id),
+    countryId: str(o.countryId),
+    nameKo: str(o.nameKo),
+    emoji: str(o.emoji),
+    descriptionKo: str(o.descriptionKo),
+    status: str(o.status, 'draft') as Companion['status'],
+  };
+  if (typeof o.sourceNote === 'string') c.sourceNote = o.sourceNote;
+  return c;
+}
+
 /** 가져온 텍스트를 해석한다. 형식이 잘못돼도 예외 없이 사람이 읽을 수 있는 오류 목록을 돌려준다. */
 export function parseImport(text: string): ImportResult {
   let raw: unknown;
@@ -115,11 +129,14 @@ export function parseImport(text: string): ImportResult {
     questions: collect('questions', '문제', normalizeQuestion),
     badges: collect('badges', '배지', normalizeBadge),
     cosmetics: collect('cosmetics', '장식', normalizeCosmetic),
+    // 탐험 친구가 생기기 전에 만든 백업 파일에는 없을 수 있다.
+    companions: raw.companions === undefined ? [] : collect('companions', '탐험 친구', normalizeCompanion),
   };
   if (errors.length > 0) return { ok: false, errors };
   notes.push(
-    `국가 ${content.countries.length}개, 문제 ${content.questions.length}개, 배지 ${content.badges.length}개, 장식 ${content.cosmetics.length}개를 읽었어요.`,
+    `국가 ${content.countries.length}개, 문제 ${content.questions.length}개, 배지 ${content.badges.length}개, 장식 ${content.cosmetics.length}개, 탐험 친구 ${content.companions.length}개를 읽었어요.`,
   );
+  if (raw.companions === undefined) notes.push('이 파일에는 탐험 친구 목록이 없어서 빈 목록으로 가져와요.');
   return { ok: true, content, notes };
 }
 
@@ -136,6 +153,7 @@ export function gameDataFiles(content: Content): { name: string; text: string }[
     { name: 'questions.json', text: json(content.questions) },
     { name: 'badges.json', text: json(content.badges) },
     { name: 'rewards.json', text: json(content.cosmetics) },
+    { name: 'companions.json', text: json(content.companions) },
   ];
 }
 

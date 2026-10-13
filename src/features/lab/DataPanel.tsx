@@ -49,7 +49,7 @@ export function DataPanel({ content, onReplace, hasBlockingErrors }: Props) {
   const exportGameFiles = () => {
     const stamp = timestampForFile();
     gameDataFiles(content).forEach((f, i) => setTimeout(() => downloadText(f.name, f.text), i * 250));
-    setMessage(`게임 데이터 파일 4개를 내려받아요 (${stamp}). src/data/ 폴더의 같은 이름 파일을 교체해 주세요.`);
+    setMessage(`게임 데이터 파일 5개를 내려받아요 (${stamp}). src/data/ 폴더의 같은 이름 파일을 교체해 주세요.`);
   };
 
   const makeSnapshot = () => {
@@ -82,15 +82,15 @@ export function DataPanel({ content, onReplace, hasBlockingErrors }: Props) {
             백업 파일(JSON 1개) 내려받기
           </button>
           <button type="button" className="lab-btn" disabled={hasBlockingErrors} onClick={exportGameFiles}>
-            게임 데이터 파일 4개 내려받기
+            게임 데이터 파일 5개 내려받기
           </button>
         </div>
         {hasBlockingErrors && <p className="lab-note error">❌ 검증 오류가 있어서 게임 데이터 파일은 내보낼 수 없어요. '검증' 탭에서 오류를 먼저 고쳐 주세요.</p>}
         <details>
           <summary>게임에 반영하는 방법</summary>
           <ol>
-            <li>'게임 데이터 파일 4개'를 내려받아요.</li>
-            <li>프로젝트의 <code>src/data/</code> 에서 같은 이름의 파일(countries, questions, badges, rewards)을 교체해요.</li>
+            <li>'게임 데이터 파일 5개'를 내려받아요.</li>
+            <li>프로젝트의 <code>src/data/</code> 에서 같은 이름의 파일(countries, questions, badges, rewards, companions)을 교체해요.</li>
             <li><code>npm test</code> 와 <code>npm run build</code> 로 확인한 뒤 배포해요. 교체 전 아래 '버전 사본'을 만들어 두면 안전해요.</li>
           </ol>
         </details>

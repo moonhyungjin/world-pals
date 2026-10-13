@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Character } from '../../components/Character';
 import type { Content } from '../../data/content';
 import type { Badge, BadgeCondition, Cosmetic, CosmeticSlot } from '../../types/reward';
+import { CompanionEditor } from './CompanionEditor';
 import { replaceById, uniqueId } from './labOps';
 import { EntityList, Field, IssueList, StatusSelect, rowFlag } from './labUi';
 import type { Issue } from './validators';
@@ -18,10 +19,13 @@ const CONDITION_LABEL: Record<BadgeCondition['type'], string> = {
 };
 
 export function RewardEditor({ content, onChange, issues, focusId }: Props) {
-  const [kind, setKind] = useState<'cosmetic' | 'badge'>('cosmetic');
+  const [kind, setKind] = useState<'cosmetic' | 'badge' | 'companion'>('cosmetic');
   useEffect(() => {
-    if (focusId) setKind(content.badges.some((b) => b.id === focusId) ? 'badge' : 'cosmetic');
-  }, [focusId, content.badges]);
+    if (!focusId) return;
+    if (content.badges.some((b) => b.id === focusId)) setKind('badge');
+    else if (content.companions.some((c) => c.id === focusId)) setKind('companion');
+    else setKind('cosmetic');
+  }, [focusId, content.badges, content.companions]);
 
   return (
     <div>
@@ -32,15 +36,16 @@ export function RewardEditor({ content, onChange, issues, focusId }: Props) {
         <button type="button" role="tab" aria-selected={kind === 'badge'} className={kind === 'badge' ? 'active' : ''} onClick={() => setKind('badge')}>
           배지 ({content.badges.length})
         </button>
+        <button type="button" role="tab" aria-selected={kind === 'companion'} className={kind === 'companion' ? 'active' : ''} onClick={() => setKind('companion')}>
+          탐험 친구 ({content.companions.length})
+        </button>
       </div>
       <p className="lab-note">
         별은 설정값(<code>src/config.ts</code>)으로, 국가 도장은 국가 발견 시 자동으로 지급돼요. 여기서는 장식과 배지를 편집해요.
       </p>
-      {kind === 'cosmetic' ? (
-        <CosmeticEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />
-      ) : (
-        <BadgeEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />
-      )}
+      {kind === 'cosmetic' && <CosmeticEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
+      {kind === 'badge' && <BadgeEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
+      {kind === 'companion' && <CompanionEditor content={content} onChange={onChange} issues={issues} focusId={focusId} />}
     </div>
   );
 }

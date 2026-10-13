@@ -3,6 +3,7 @@ import { CountryDetail } from '../../components/CountryDetail';
 import { Flag } from '../../components/Flag';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
+import { companionOfCountry } from '../companions/companionEngine';
 import { regionView, toPercent } from './mapView';
 import { WORLD_LAND_PATH } from './worldLand';
 
@@ -75,7 +76,7 @@ export function MapPage({ progress, content }: { progress: PlayerProgress; conte
         <li><span className="legend-dot locked" aria-hidden="true">?</span> 아직 못 찾았어요</li>
       </ul>
 
-      {selected && <CountryDetail country={selected} tier={progress.stampTiers[selected.id]} onClose={() => setSelectedId(null)} />}
+      {selected && <CountryDetail country={selected} tier={progress.stampTiers[selected.id]} companion={companionOfCountry(content, selected.id)} onClose={() => setSelectedId(null)} />}
     </div>
   );
 }

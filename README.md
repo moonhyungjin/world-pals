@@ -22,6 +22,7 @@ src/data/        콘텐츠(countries, questions, badges, rewards[장식] .json) 
 src/config.ts    세션 크기, 복습 개수, 보상 수치
 src/features/quiz/  quizEngine.ts(출제·보상 로직, 순수 함수), QuizPage.tsx
 src/features/rewards/  rewardEngine.ts(배지 조건, 장식 해금/장착)
+src/features/companions/  탐험 친구(동물) 판정 로직
 src/features/challenge/  도전장(친구에게 문제 내기: 링크 코드, 만들기/받기 화면)
 src/features/passport/, customization/, map/  여권, 꾸미기, 세계지도 화면 (map/worldLand.ts는 생성된 지도 데이터)
 src/features/lab/  World Pals Lab (validators, importExport, labOps, labStorage + 편집기 화면)
@@ -72,6 +73,14 @@ src/pages/       HomePage, ResultPage
 - **받기**: 링크를 열면 소개 → 풀기 → 결과(⭕❌ 줄)로 이어집니다. 별은 없고(연습 모드) 맞힌 나라의 기본 도장과 오답 복습 기록만 반영됩니다. 결과 문구를 복사해 친구에게 보낼 수 있습니다.
 - **한계**: 서버가 없어서 친구가 풀었는지/점수는 만든 사람에게 돌아오지 않습니다(결과를 직접 보내야 함). 링크를 가진 사람은 누구나 열 수 있습니다. 링크는 만든 날 이후에도 계속 열립니다.
 - 새 문제 유형이나 나라가 추가되어도 기존 링크는 그대로 열립니다. 나라를 삭제하거나 `verified`를 해제하면 그 링크는 "문제를 찾을 수 없어요"로 안내됩니다.
+
+## 탐험 친구 (나라별 동물)
+
+- 나라의 도장을 받으면 그 나라의 동물 친구를 만나고(결과 화면에 "새 친구를 만났어요!"), 꾸미기에서 한 마리를 골라 폭시 옆에 데려갑니다. 25개 나라에 하나씩, 이모지가 겹치지 않게 정했습니다.
+- 못 만난 친구는 실루엣과 `???`로만 보이고, 접근성 이름에는 나라 대신 대륙만 나옵니다.
+- 데이터는 `src/data/companions.json` (ID 기반, `countryId`로 나라와 연결). Lab의 보상 > 탐험 친구 탭에서 편집·검증·내보내기를 할 수 있습니다. 예전 백업 파일처럼 `companions`가 없어도 가져올 수 있습니다.
+- 설명은 사실에 가까운 짧은 문장으로 쓰고, 공식 국가동물인지는 각 항목의 `sourceNote`에 적었습니다. **공식 지정 여부는 대부분 출시 전 확인이 필요합니다.**
+- 이모지는 Windows 10에서도 보이도록 Unicode 12 이하만 사용했습니다.
 
 ## 세계지도
 

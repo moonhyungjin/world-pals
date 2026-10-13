@@ -252,3 +252,22 @@ h1 { margin: 0; text-align: center; }
 .share-result { text-align: center; }
 .marks { font-size: 30px; letter-spacing: 2px; margin: 4px 0; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- 탐험 친구(동물) ---- */
+.character .companion { position: absolute; left: -0.42em; bottom: -0.1em; font-size: 0.48em; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25)); animation: hop 2.4s ease-in-out infinite 0.4s; }
+@keyframes hop { 50% { transform: translateY(-4px); } }
+.friend-grid { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.friend-cell { position: relative; width: 100%; min-height: 84px; padding: 6px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 3px solid var(--line); border-radius: 16px; background: #fffdf8; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.friend-cell .friend-emoji { font-size: 32px; line-height: 1.1; }
+.friend-cell.on { border-color: var(--primary); background: #fff3e6; }
+.friend-cell.locked { background: #f1ede6; color: #8a8174; cursor: default; }
+.friend-cell.locked .friend-emoji { filter: grayscale(1) brightness(0.5) opacity(0.35); }
+.friend-cell:focus-visible { outline: 4px solid #4f8df5; outline-offset: 2px; }
+.friend-with { position: absolute; top: 2px; right: 4px; font-size: 13px; }
+.friend-detail { text-align: center; font-size: 15px; margin: 8px 0 0; }
+.new-friends { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.new-friends li { display: flex; flex-direction: column; align-items: center; background: var(--bg); border: 2px solid var(--line); border-radius: 16px; padding: 6px 14px; font-weight: 800; }
+.new-friends .friend-emoji { font-size: 36px; line-height: 1.1; }
+.new-friends small { font-weight: 600; color: #8a6d4b; text-align: center; max-width: 150px; }
+.detail-friend { font-weight: 700; }
+.new-friends li { min-width: 84px; }

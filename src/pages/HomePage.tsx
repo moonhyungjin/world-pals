@@ -1,6 +1,7 @@
 import { CONFIG } from '../config';
 import { Character } from '../components/Character';
 import type { Content } from '../data/content';
+import { activeCompanion } from '../features/companions/companionEngine';
 import { canCreateChallenge } from '../features/challenge/challenge';
 import { countReviewable, hasCompletedToday } from '../features/quiz/quizEngine';
 import { todayString } from '../lib/random';
@@ -25,7 +26,7 @@ export function HomePage({ progress, content, onStart, onReview, onMakeChallenge
     <div className="home">
       <h1>World Pals</h1>
       <p className="subtitle">꼬마 세계 탐험대</p>
-      <Character size={120} equipped={equipped} />
+      <Character size={120} equipped={equipped} companion={activeCompanion(content, progress)} />
       <p className="speech">
         {doneToday ? '오늘 탐험은 완료! 한 번 더 연습해 볼까요?' : '오늘은 어디를 탐험할까요?'}
       </p>

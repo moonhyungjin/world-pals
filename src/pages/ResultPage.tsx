@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Character } from '../components/Character';
 import { Stamp } from '../components/Stamp';
 import type { Content } from '../data/content';
+import { newlyMetCompanions } from '../features/companions/companionEngine';
 import type { SessionSummary } from '../features/quiz/quizEngine';
 import type { Badge } from '../types/reward';
 
@@ -38,6 +39,7 @@ export function ResultPage({
     return country ? [{ ...s, country }] : [];
   });
   const hasBasic = stamps.some((s) => s.tier === 'basic');
+  const newFriends = newlyMetCompanions(content, summary.stamps);
 
   return (
     <div className="result">
@@ -72,6 +74,21 @@ export function ResultPage({
           </div>
         )}
       </section>
+
+      {newFriends.length > 0 && (
+        <section className="card" role="status">
+          <p>🐾 새 친구를 만났어요!</p>
+          <ul className="new-friends">
+            {newFriends.map((f) => (
+              <li key={f.id}>
+                <span className="friend-emoji" aria-hidden="true">{f.emoji}</span>
+                <strong>{f.nameKo}</strong>
+              </li>
+            ))}
+          </ul>
+          <p className="hint">꾸미기에서 친구 이야기를 읽고, 함께 다닐 친구를 고를 수 있어요.</p>
+        </section>
+      )}
 
       {newBadges.length > 0 && (
         <section className="card">

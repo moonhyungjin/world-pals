@@ -246,7 +246,7 @@ describe('Lab (실제 클릭)', () => {
     fireEvent.click(tab(/검증/));
     expect(screen.getByText(/수도명을 입력해 주세요/)).toBeTruthy();
     fireEvent.click(tab(/가져오기\/내보내기/));
-    expect((buttonByText('게임 데이터 파일 4개 내려받기') as HTMLButtonElement).disabled).toBe(true);
+    expect((buttonByText('게임 데이터 파일 5개 내려받기') as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByText(/검증 오류가 있어서 게임 데이터 파일은 내보낼 수 없어요/)).toBeTruthy();
   });
 
@@ -517,5 +517,100 @@ describe('도전장 (친구에게 문제 내기)', () => {
     render(<App />);
     window.location.hash = '#/c/KRc.JPc.FRc';
     expect(await screen.findByText('💌 도전장이 왔어요!')).toBeTruthy();
+  });
+});
+
+describe('탐험 친구 (나라별 동물)', () => {
+  const seed = (extra: object = {}) =>
+    localStorage.setItem(
+      STORAGE_KEYS.progress,
+      JSON.stringify({ discoveredCountryIds: ['KR', 'AU'], stampTiers: { KR: 'gold', AU: 'basic' }, ...extra }),
+    );
+  const goCustomize = () => fireEvent.click(buttonByText(/꾸미기/));
+
+  it('꾸미기: 만난 친구만 고를 수 있고, 못 만난 친구는 이름과 나라가 보이지 않는다', () => {
+    seed();
+    render(<App />);
+    goCustomize();
+    expect(document.querySelectorAll('.friend-grid li')).toHaveLength(25);
+    expect(document.querySelectorAll('button.friend-cell')).toHaveLength(2); // 호랑이, 캥거루
+    const locked = screen.getAllByRole('img', { name: /아직 못 만난 친구/ });
+    expect(locked).toHaveLength(23);
+    for (const el of locked) {
+      expect(el.getAttribute('aria-label')).toMatch(/의 나라에서 만나요/);
+      expect(el.textContent).toContain('???'); // 이름 대신 물음표
+      expect(el.getAttribute('aria-label')).not.toMatch(/대한민국|호주|일본|프랑스/);
+    }
+    expect(screen.getByText(/🐾 탐험 친구 \(2\/25\)/)).toBeTruthy();
+  });
+
+  it('친구를 고르면 홈 캐릭터와 함께 다니고, 새로고침해도 유지되고, 다시 누르면 혼자가 된다', () => {
+    seed();
+    const first = render(<App />);
+    goCustomize();
+    const tiger = screen.getByRole('button', { name: /호랑이/ });
+    expect(tiger.getAttribute('aria-pressed')).toBe('false');
+    fireEvent.click(tiger);
+    expect(screen.getByRole('button', { name: /호랑이/ }).getAttribute('aria-pressed')).toBe('true');
+    expect(screen.getByRole('img', { name: /함께 다니는 호랑이/ })).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!).companionId).toBe('companion.kr');
+
+    // 다른 친구로 바꾸기
+    fireEvent.click(screen.getByRole('button', { name: /캥거루/ }));
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!).companionId).toBe('companion.au');
+
+    // 새로고침 후 홈에서도 보인다
+    first.unmount();
+    render(<App />);
+    expect(screen.getByRole('img', { name: /함께 다니는 캥거루/ })).toBeTruthy();
+
+    // 다시 누르면 혼자
+    goCustomize();
+    fireEvent.click(screen.getByRole('button', { name: /캥거루/ }));
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!).companionId).toBeNull();
+    expect(screen.queryByRole('img', { name: /함께 다니는/ })).toBeNull();
+  });
+
+  it('못 만난 친구를 가리키는 저장 값이 있어도 앱이 멈추지 않고 혼자 다닌다', () => {
+    seed({ companionId: 'companion.jp' }); // 일본은 아직 못 만남
+    render(<App />);
+    expect(screen.getByRole('img', { name: '탐험 친구 폭시' })).toBeTruthy();
+  });
+
+  it('오늘의 탐험에서 새 나라 도장을 받으면 결과 화면에서 새 친구를 만난다', () => {
+    render(<App />);
+    clickText('오늘의 탐험 시작!');
+    for (let i = 0; i < 5; i++) {
+      answerCurrentQuestion(true);
+      clickText(i === 4 ? '결과 보기' : '다음 문제');
+    }
+    expect(screen.getByText(/새 친구를 만났어요/)).toBeTruthy();
+    expect(document.querySelectorAll('.new-friends li')).toHaveLength(5);
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)!);
+    expect(saved.discoveredCountryIds).toHaveLength(5);
+  });
+
+  it('여권 상세: 만난 나라는 친구를 소개하고, 못 만난 나라에는 친구 정보가 없다', () => {
+    seed();
+    render(<App />);
+    fireEvent.click(buttonByText(/여권/));
+    fireEvent.click(screen.getByRole('button', { name: /대한민국, 황금 도장/ }));
+    expect(screen.getByText(/친구: 호랑이/)).toBeTruthy();
+    fireEvent.click(buttonByText('닫기'));
+    fireEvent.click(screen.getAllByRole('button', { name: /아직 발견 못한 나라/ })[0]);
+    expect(screen.queryByText(/친구:/)).toBeNull();
+  });
+
+  it('Lab: 탐험 친구 탭에서 목록과 편집, 검증 오류가 보인다', () => {
+    render(<LabLayout onExit={() => {}} />);
+    fireEvent.click(tab(/보상 \(/));
+    fireEvent.click(screen.getByRole('tab', { name: /^탐험 친구 \(25\)/ }));
+    const name = screen.getByLabelText('이름') as HTMLInputElement;
+    expect(name.value).toBe('호랑이');
+    fireEvent.change(name, { target: { value: '' } });
+    expect(screen.getByText(/표시 이름을 입력해 주세요/)).toBeTruthy();
+    const draft = JSON.parse(localStorage.getItem(STORAGE_KEYS.labDraft)!);
+    expect(draft.companions[0].nameKo).toBe('');
+    expect(draft.companions).toHaveLength(25);
   });
 });

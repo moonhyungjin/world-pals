@@ -13,8 +13,8 @@ import './lab.css';
 type Tab = 'countries' | 'questions' | 'rewards' | 'check' | 'data' | 'playtest';
 type Focus = { tab: Tab; id: string; n: number } | null;
 
-const KIND_TAB: Record<ContentKind, Tab> = { country: 'countries', question: 'questions', badge: 'rewards', cosmetic: 'rewards' };
-const KIND_LABEL: Record<ContentKind, string> = { country: '국가', question: '문제', badge: '배지', cosmetic: '장식' };
+const KIND_TAB: Record<ContentKind, Tab> = { country: 'countries', question: 'questions', badge: 'rewards', cosmetic: 'rewards', companion: 'rewards' };
+const KIND_LABEL: Record<ContentKind, string> = { country: '국가', question: '문제', badge: '배지', cosmetic: '장식', companion: '탐험 친구' };
 
 export function LabLayout({ onExit }: { onExit: () => void }) {
   const [initial] = useState(() => loadDraft());
@@ -46,7 +46,7 @@ export function LabLayout({ onExit }: { onExit: () => void }) {
   const tabs: { id: Tab; label: string }[] = [
     { id: 'countries', label: `국가 (${content.countries.length})` },
     { id: 'questions', label: `문제 (${content.questions.length})` },
-    { id: 'rewards', label: `보상 (${content.cosmetics.length + content.badges.length})` },
+    { id: 'rewards', label: `보상 (${content.cosmetics.length + content.badges.length + content.companions.length})` },
     { id: 'check', label: errorCount > 0 ? `검증 ❌${errorCount}` : warnCount > 0 ? `검증 ⚠️${warnCount}` : '검증 ✅' },
     { id: 'playtest', label: '플레이 테스트' },
     { id: 'data', label: '가져오기/내보내기' },

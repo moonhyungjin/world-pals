@@ -122,11 +122,55 @@ describe('parseImport / export', () => {
     const r = parseImport(JSON.stringify({ version: 99, countries: [], questions: [], badges: [], cosmetics: [] }));
     expect(r.ok).toBe(false);
   });
-  it('게임 데이터 파일 4개는 src/data 형식과 같다', () => {
+  it('게임 데이터 파일 5개는 src/data 형식과 같다', () => {
     const files = gameDataFiles(fresh());
-    expect(files.map((f) => f.name)).toEqual(['countries.json', 'questions.json', 'badges.json', 'rewards.json']);
+    expect(files.map((f) => f.name)).toEqual(['countries.json', 'questions.json', 'badges.json', 'rewards.json', 'companions.json']);
     expect(JSON.parse(files[0].text)).toEqual(builtIn.countries);
     expect(JSON.parse(files[3].text)).toEqual(builtIn.cosmetics);
+    expect(JSON.parse(files[4].text)).toEqual(builtIn.companions);
+  });
+  it('탐험 친구가 없던 예전 백업 파일도 읽는다 (친구 목록은 빈 목록)', () => {
+    const old = { format: 'world-pals-content', version: 1, countries: [], questions: [], badges: [], cosmetics: [] };
+    const r = parseImport(JSON.stringify(old));
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.content.companions).toEqual([]);
+      expect(r.notes.join(' ')).toContain('탐험 친구 목록이 없어서');
+    }
+  });
+  it('companions가 있으나 형식이 틀리면 거부한다', () => {
+    const r = parseImport(JSON.stringify({ countries: [], questions: [], badges: [], cosmetics: [], companions: 5 }));
+    expect(r.ok).toBe(false);
+  });
+});
+
+describe('탐험 친구 검증', () => {
+  it('기본 콘텐츠: 검수 완료 나라마다 친구가 한 마리씩 있고 이모지가 겹치지 않는다', () => {
+    const verified = builtIn.countries.filter((c) => c.status === 'verified');
+    for (const c of verified) {
+      const mine = builtIn.companions.filter((x) => x.countryId === c.id && x.status === 'verified');
+      expect(mine, c.nameKo).toHaveLength(1);
+    }
+    const emojis = builtIn.companions.map((c) => c.emoji);
+    expect(new Set(emojis).size).toBe(emojis.length);
+    expect(new Set(builtIn.companions.map((c) => c.id)).size).toBe(builtIn.companions.length);
+  });
+  it('없는 나라/중복 ID/빈 이름·이모지를 찾는다', () => {
+    const c = fresh();
+    c.companions[0].countryId = 'ZZ';
+    c.companions[1].id = c.companions[2].id;
+    c.companions[3].nameKo = '';
+    c.companions[4].emoji = ' ';
+    const m = msgs(c);
+    expect(m.some((x) => x.includes('연결된 국가 ID "ZZ"가 존재하지 않아요'))).toBe(true);
+    expect(m.some((x) => x.includes('탐험 친구 ID') && x.includes('중복'))).toBe(true);
+    expect(m.some((x) => x.startsWith('error:companion') && x.includes('표시 이름'))).toBe(true);
+    expect(m.some((x) => x.startsWith('error:companion') && x.includes('이모지'))).toBe(true);
+  });
+  it('검수 완료가 아닌 나라에 연결된 검수 완료 친구는 만날 수 없다는 주의를 준다', () => {
+    const c = fresh();
+    c.countries.find((x) => x.id === 'KR')!.status = 'review';
+    expect(msgs(c).some((x) => x.startsWith('warning:companion:companion.kr') && x.includes('만날 수 없어요'))).toBe(true);
   });
 });
 

@@ -3,6 +3,7 @@ import { Character } from '../../components/Character';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
 import type { Cosmetic } from '../../types/reward';
+import { activeCompanion, setActiveCompanion, unlockedCompanions } from '../companions/companionEngine';
 import { equipCosmetic, unequipCosmetic, unlockCosmetic } from '../rewards/rewardEngine';
 
 const SLOT_LABEL: Record<Cosmetic['slot'], string> = { head: '머리', face: '얼굴', neck: '목', back: '등' };
@@ -13,6 +14,12 @@ export function CustomizePage({ progress, content, onChange }: Props) {
   const [message, setMessage] = useState('');
   const items = content.cosmetics.filter((c) => c.status === 'verified');
   const equipped = items.filter((c) => progress.equippedCosmeticIds.includes(c.id));
+
+  // 탐험 친구: 도장을 받은 나라의 친구를 만나고, 한 마리를 골라 함께 다닌다.
+  const verifiedCountries = new Map(content.countries.filter((c) => c.status === 'verified').map((c) => [c.id, c]));
+  const allFriends = content.companions.filter((c) => c.status === 'verified' && verifiedCountries.has(c.countryId));
+  const metIds = new Set(unlockedCompanions(content, progress).map((c) => c.id));
+  const active = activeCompanion(content, progress);
 
   const unlock = (item: Cosmetic) => {
     const r = unlockCosmetic(progress, item);
@@ -28,10 +35,57 @@ export function CustomizePage({ progress, content, onChange }: Props) {
     <div className="customize">
       <h1>🎒 꾸미기</h1>
       <div className="preview card">
-        <Character size={120} equipped={equipped} />
+        <Character size={120} equipped={equipped} companion={active} />
         <p className="stars-have">보유 별 ⭐ <strong>{progress.totalStars}</strong></p>
       </div>
       <p className="hint" role="status" aria-live="polite">{message}</p>
+
+      {allFriends.length > 0 && (
+        <section className="card" aria-labelledby="friends-title">
+          <h2 id="friends-title" className="section-title">🐾 탐험 친구 ({metIds.size}/{allFriends.length})</h2>
+          <p className="hint">나라의 도장을 받으면 그 나라의 동물 친구를 만나요. 한 마리와 함께 다닐 수 있어요.</p>
+          <ul className="friend-grid">
+            {allFriends.map((f) => {
+              const met = metIds.has(f.id);
+              const withMe = active?.id === f.id;
+              if (!met) {
+                // 못 만난 친구는 모습과 이름을 숨기고 대륙만 알려준다 (어느 나라인지 힌트가 되지 않게)
+                const continent = verifiedCountries.get(f.countryId)?.continent;
+                return (
+                  <li key={f.id}>
+                    <div className="friend-cell locked" role="img" aria-label={`아직 못 만난 친구, ${continent}의 나라에서 만나요`}>
+                      <span className="friend-emoji" aria-hidden="true">{f.emoji}</span>
+                      <span aria-hidden="true">???</span>
+                    </div>
+                  </li>
+                );
+              }
+              return (
+                <li key={f.id}>
+                  <button
+                    type="button"
+                    className={`friend-cell ${withMe ? 'on' : ''}`}
+                    aria-pressed={withMe}
+                    onClick={() => {
+                      onChange(setActiveCompanion(progress, content, withMe ? null : f.id));
+                      setMessage(withMe ? `${f.nameKo}가 쉬러 갔어요.` : `🐾 ${f.nameKo}와 함께 떠나요!`);
+                    }}
+                  >
+                    <span className="friend-emoji" aria-hidden="true">{f.emoji}</span>
+                    <span>{f.nameKo}</span>
+                    {withMe && <span className="friend-with" aria-hidden="true">✅</span>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          {active && (
+            <p className="friend-detail" role="status">
+              {active.emoji} <strong>{active.nameKo}</strong> · {active.descriptionKo}
+            </p>
+          )}
+        </section>
+      )}
 
       <ul className="cosmetic-list">
         {items.map((item) => {

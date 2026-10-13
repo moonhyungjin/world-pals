@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CountryDetail } from '../../components/CountryDetail';
 import { Flag, LockedFlag } from '../../components/Flag';
+import { companionOfCountry } from '../companions/companionEngine';
 import type { Content } from '../../data/content';
 import type { PlayerProgress } from '../../types/progress';
 
@@ -23,7 +24,7 @@ export function PassportPage({ progress, content }: { progress: PlayerProgress; 
         <div style={{ width: `${countries.length ? (found / countries.length) * 100 : 0}%` }} />
       </div>
 
-      {selected && <CountryDetail country={selected} tier={tierOf(selected.id)} onClose={() => setSelectedId(null)} />}
+      {selected && <CountryDetail country={selected} tier={tierOf(selected.id)} companion={companionOfCountry(content, selected.id)} onClose={() => setSelectedId(null)} />}
 
       {continents.map((continent) => (
         <section key={continent}>

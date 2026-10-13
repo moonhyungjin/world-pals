@@ -1,0 +1,227 @@
+[
+  {
+    "id": "companion.kr",
+    "countryId": "KR",
+    "nameKo": "호랑이",
+    "emoji": "🐯",
+    "descriptionKo": "한국의 옛이야기에는 호랑이가 자주 나와요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.jp",
+    "countryId": "JP",
+    "nameKo": "사슴",
+    "emoji": "🦌",
+    "descriptionKo": "일본 나라 공원에는 사람과 가까이 지내는 사슴이 많아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.cn",
+    "countryId": "CN",
+    "nameKo": "판다",
+    "emoji": "🐼",
+    "descriptionKo": "판다는 중국의 대나무 숲에 살고, 대나무를 아주 좋아해요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.in",
+    "countryId": "IN",
+    "nameKo": "벵골호랑이",
+    "emoji": "🐅",
+    "descriptionKo": "인도의 숲에는 벵골호랑이가 살아요. 인도를 대표하는 동물이기도 해요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.th",
+    "countryId": "TH",
+    "nameKo": "코끼리",
+    "emoji": "🐘",
+    "descriptionKo": "태국에서는 코끼리가 나라를 대표하는 동물로 사랑받아요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.vn",
+    "countryId": "VN",
+    "nameKo": "물소",
+    "emoji": "🐃",
+    "descriptionKo": "베트남의 논에서는 물소가 농부를 도와줘요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.tr",
+    "countryId": "TR",
+    "nameKo": "고양이",
+    "emoji": "🐈",
+    "descriptionKo": "튀르키예 이스탄불 거리에는 사람과 친한 고양이가 많아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ru",
+    "countryId": "RU",
+    "nameKo": "불곰",
+    "emoji": "🐻",
+    "descriptionKo": "러시아의 넓은 숲에는 커다란 불곰이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.fr",
+    "countryId": "FR",
+    "nameKo": "수탉",
+    "emoji": "🐓",
+    "descriptionKo": "프랑스에서는 수탉이 나라를 상징하는 동물로 알려져 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.gb",
+    "countryId": "GB",
+    "nameKo": "사자",
+    "emoji": "🦁",
+    "descriptionKo": "영국의 문장(나라를 나타내는 그림)에는 사자가 그려져 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.de",
+    "countryId": "DE",
+    "nameKo": "닥스훈트",
+    "emoji": "🐕",
+    "descriptionKo": "몸이 길쭉한 닥스훈트는 독일에서 태어난 강아지예요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.it",
+    "countryId": "IT",
+    "nameKo": "늑대",
+    "emoji": "🐺",
+    "descriptionKo": "이탈리아 로마의 옛이야기에는 쌍둥이 아기를 돌본 늑대가 나와요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.es",
+    "countryId": "ES",
+    "nameKo": "황소",
+    "emoji": "🐂",
+    "descriptionKo": "스페인에서는 황소가 유명한 상징 중 하나예요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.gr",
+    "countryId": "GR",
+    "nameKo": "올빼미",
+    "emoji": "🦉",
+    "descriptionKo": "그리스 아테네의 옛이야기에는 지혜의 여신과 올빼미가 함께 나와요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.eg",
+    "countryId": "EG",
+    "nameKo": "악어",
+    "emoji": "🐊",
+    "descriptionKo": "이집트의 나일강에는 악어가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ke",
+    "countryId": "KE",
+    "nameKo": "기린",
+    "emoji": "🦒",
+    "descriptionKo": "케냐의 넓은 초원에는 기린이 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ma",
+    "countryId": "MA",
+    "nameKo": "낙타",
+    "emoji": "🐪",
+    "descriptionKo": "모로코의 사하라 사막에서는 낙타를 타고 여행할 수 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.us",
+    "countryId": "US",
+    "nameKo": "흰머리독수리",
+    "emoji": "🦅",
+    "descriptionKo": "미국의 나라 새는 흰머리독수리예요.",
+    "status": "verified",
+    "sourceNote": "나라를 대표하는 동물/새로 널리 알려져 있음. 공식 지정 여부는 출시 전 확인 필요."
+  },
+  {
+    "id": "companion.ca",
+    "countryId": "CA",
+    "nameKo": "연어",
+    "emoji": "🐟",
+    "descriptionKo": "캐나다의 맑은 강에는 연어가 힘차게 올라와요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.mx",
+    "countryId": "MX",
+    "nameKo": "제왕나비",
+    "emoji": "🦋",
+    "descriptionKo": "멕시코의 숲에는 겨울마다 제왕나비가 수없이 모여들어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.br",
+    "countryId": "BR",
+    "nameKo": "앵무새",
+    "emoji": "🦜",
+    "descriptionKo": "브라질의 열대우림에는 알록달록한 앵무새가 살아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.ar",
+    "countryId": "AR",
+    "nameKo": "말",
+    "emoji": "🐎",
+    "descriptionKo": "아르헨티나의 넓은 초원에서는 가우초가 말을 타고 소를 돌봐요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.pe",
+    "countryId": "PE",
+    "nameKo": "라마",
+    "emoji": "🦙",
+    "descriptionKo": "페루의 높은 산에서는 라마가 짐을 나르는 친구예요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.au",
+    "countryId": "AU",
+    "nameKo": "캥거루",
+    "emoji": "🦘",
+    "descriptionKo": "호주에서는 캥거루를 만날 수 있어요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  },
+  {
+    "id": "companion.nz",
+    "countryId": "NZ",
+    "nameKo": "양",
+    "emoji": "🐑",
+    "descriptionKo": "뉴질랜드에는 양이 사람보다 훨씬 많아요.",
+    "status": "verified",
+    "sourceNote": "공식 지정 여부는 확인 전. 일반적으로 알려진 특징/상징을 바탕으로 한 초안."
+  }
+]
