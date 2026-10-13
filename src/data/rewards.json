@@ -1,0 +1,7 @@
+[
+  { "id": "cosmetic.explorer-hat", "nameKo": "탐험가 모자", "descriptionKo": "멋진 탐험가의 모자예요.", "slot": "head", "emoji": "🤠", "cost": 5, "status": "verified" },
+  { "id": "cosmetic.sunglasses", "nameKo": "선글라스", "descriptionKo": "햇빛이 쨍쨍한 곳도 문제없어요.", "slot": "face", "emoji": "🕶️", "cost": 8, "status": "verified" },
+  { "id": "cosmetic.scarf", "nameKo": "포근 목도리", "descriptionKo": "추운 나라도 따뜻하게!", "slot": "neck", "emoji": "🧣", "cost": 10, "status": "verified" },
+  { "id": "cosmetic.backpack", "nameKo": "탐험 배낭", "descriptionKo": "여행 짐을 가득 담아요.", "slot": "back", "emoji": "🎒", "cost": 12, "status": "verified" },
+  { "id": "cosmetic.crown", "nameKo": "반짝 왕관", "descriptionKo": "탐험대장의 왕관이에요.", "slot": "head", "emoji": "👑", "cost": 20, "status": "verified" }
+]

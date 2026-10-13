@@ -1,0 +1,8 @@
+[
+  { "id": "badge.first-session", "nameKo": "첫 탐험 완료", "descriptionKo": "오늘의 탐험을 처음 끝냈어요.", "emoji": "🎒", "condition": { "type": "sessionsCompleted", "count": 1 }, "status": "verified" },
+  { "id": "badge.first-country", "nameKo": "첫 나라 발견", "descriptionKo": "첫 번째 나라 도장을 받았어요.", "emoji": "🌱", "condition": { "type": "countriesDiscovered", "count": 1 }, "status": "verified" },
+  { "id": "badge.asia-5", "nameKo": "아시아 탐험가", "descriptionKo": "아시아 나라 5곳을 발견했어요.", "emoji": "🏯", "condition": { "type": "continentDiscovered", "continent": "아시아", "count": 5 }, "status": "verified" },
+  { "id": "badge.review-1", "nameKo": "다시 도전!", "descriptionKo": "헷갈렸던 문제를 다시 맞혔어요.", "emoji": "💪", "condition": { "type": "reviewCorrect", "count": 1 }, "status": "verified" },
+  { "id": "badge.countries-10", "nameKo": "나라 수집가", "descriptionKo": "나라 10곳을 발견했어요.", "emoji": "🌍", "condition": { "type": "countriesDiscovered", "count": 10 }, "status": "verified" },
+  { "id": "badge.answered-25", "nameKo": "문제 척척박사", "descriptionKo": "문제를 25개 풀었어요.", "emoji": "📚", "condition": { "type": "questionsAnswered", "count": 25 }, "status": "verified" }
+]
