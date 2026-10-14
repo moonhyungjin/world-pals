@@ -115,9 +115,10 @@ export function resultMarks(correct: boolean[]): string {
   return correct.map((c) => (c ? '⭕' : '❌')).join('');
 }
 
-export function resultShareText(correct: boolean[], url: string): string {
+export function resultShareText(correct: boolean[], url: string, resultCode?: string): string {
   const n = correct.filter(Boolean).length;
-  return `World Pals 도전장 결과 ${resultMarks(correct)} (${n}/${correct.length})\n너도 도전해 봐! 👉 ${url}`;
+  const codeLine = resultCode ? `\n확인코드: ${resultCode}` : '';
+  return `World Pals 도전장 결과 ${resultMarks(correct)} (${n}/${correct.length})${codeLine}\n너도 도전해 봐! 👉 ${url}`;
 }
 
 export const limits = {

@@ -6,18 +6,20 @@ import { challengeUrl, resultMarks, resultShareText } from './challenge';
 /** 도전장을 푼 뒤 결과 화면에 붙는 영역: ⭕❌ 결과, 결과 보내기, 나도 도전장 만들기. */
 export function ChallengeResultExtras({
   code,
+  resultCode,
   correct,
   canMake,
   onMake,
 }: {
   code: string;
+  resultCode?: string;
   correct: boolean[];
   canMake: boolean;
   onMake: () => void;
 }) {
   const [status, setStatus] = useState('');
   const copy = async () => {
-    const ok = await copyText(resultShareText(correct, challengeUrl(code)));
+    const ok = await copyText(resultShareText(correct, challengeUrl(code), resultCode));
     setStatus(ok ? '📋 복사했어요! 친구에게 붙여넣어 보내요.' : '복사하지 못했어요.');
   };
   return (

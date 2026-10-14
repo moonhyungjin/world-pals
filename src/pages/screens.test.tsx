@@ -29,7 +29,7 @@ const progress: PlayerProgress = {
 
 describe('화면 스모크 렌더링', () => {
   it('홈: 복습 버튼, 배지, 장착 장식', () => {
-    const html = renderToString(<HomePage progress={progress} content={content} onStart={noop} onReview={noop} onMakeChallenge={noop} onPickCharacter={noop} />);
+    const html = renderToString(<HomePage progress={progress} content={content} onStart={noop} onReview={noop} onMakeChallenge={noop} onClaimFriend={() => ({ stars: 0, status: { kind: "self" } })} onPickCharacter={noop} />);
     expect(html).toContain('헷갈린 문제 다시 풀기 (1)');
     expect(html).toContain('첫 탐험 완료');
     expect(html).toContain('cosmetic-art slot-head');
@@ -37,7 +37,7 @@ describe('화면 스모크 렌더링', () => {
   });
   it('홈: 오답이 없으면 복습 버튼이 없다', () => {
     const html = renderToString(
-      <HomePage progress={{ ...progress, wrongQuestionIds: [] }} content={content} onStart={noop} onReview={noop} onMakeChallenge={noop} onPickCharacter={noop} />,
+      <HomePage progress={{ ...progress, wrongQuestionIds: [] }} content={content} onStart={noop} onReview={noop} onMakeChallenge={noop} onClaimFriend={() => ({ stars: 0, status: { kind: "self" } })} onPickCharacter={noop} />,
     );
     expect(html).not.toContain('헷갈린 문제 다시 풀기');
   });

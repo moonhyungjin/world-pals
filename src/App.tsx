@@ -12,6 +12,8 @@ import {
 } from './features/challenge/challenge';
 import { ChallengeIntroPage } from './features/challenge/ChallengeIntroPage';
 import { ChallengeMakePage } from './features/challenge/ChallengeMakePage';
+import { claimFriendResult, ensureSolverId, makeResultCode } from './features/challenge/friendResult';
+import { challengeKey } from './features/challenge/bonus';
 import { ChallengeResultExtras, ChallengeUnlockedNotice } from './features/challenge/ChallengeResultExtras';
 import { activeCharacter, setCharacter } from './features/characters/characterEngine';
 import { CustomizePage } from './features/customization/CustomizePage';
@@ -40,7 +42,7 @@ type Screen =
       newBadges: Badge[];
       practice: boolean;
       challengeUnlocked: boolean;
-      challenge?: { challenge: Challenge; correct: boolean[]; bonus: BonusOutcome };
+      challenge?: { challenge: Challenge; correct: boolean[]; bonus: BonusOutcome; resultCode?: string };
     };
 
 // 제작 도구와 세계지도(큰 지도 데이터)는 필요할 때만 내려받는다.
@@ -151,7 +153,14 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
     const bonus = challenge
       ? applyChallengeBonus(result.progress, challenge.code, answers.filter((a) => a.correct).length, today)
       : null;
-    update(bonus ? bonus.progress : result.progress);
+    const after = bonus ? bonus.progress : result.progress;
+    const solved = challenge ? ensureSolverId(after) : after;
+    update(solved);
+    const key = challenge ? challengeKey(challenge.code) : null;
+    const resultCode =
+      key && solved.solverId
+        ? makeResultCode({ key, score: answers.filter((a) => a.correct).length, total: answers.length, solverId: solved.solverId })
+        : undefined;
     setScreen({
       name: 'result',
       summary: result.summary,
@@ -159,7 +168,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
       newBadges: result.newBadges,
       practice,
       challengeUnlocked: result.challengeUnlocked,
-      challenge: challenge && bonus ? { challenge, correct: answers.map((a) => a.correct), bonus: bonus.outcome } : undefined,
+      challenge: challenge && bonus ? { challenge, correct: answers.map((a) => a.correct), bonus: bonus.outcome, resultCode } : undefined,
     });
   };
 
@@ -185,6 +194,11 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
           onStart={start}
           onReview={startReview}
           onMakeChallenge={openMake}
+          onClaimFriend={(text) => {
+            const r = claimFriendResult(readStoredProgress() ?? progress, text, todayString());
+            if (r.outcome.stars > 0) update(r.progress);
+            return r.outcome;
+          }}
           onPickCharacter={(id) => update(setCharacter(progress, content, id))}
           onOpenLab={LAB_ENABLED ? onOpenLab : undefined}
         />
@@ -244,6 +258,7 @@ function Game({ onOpenLab }: { onOpenLab: () => void }) {
           {screen.challenge ? (
             <ChallengeResultExtras
               code={screen.challenge.challenge.code}
+              resultCode={screen.challenge.resultCode}
               correct={screen.challenge.correct}
               canMake={canCreateChallenge(progress, todayString())}
               onMake={openMake}

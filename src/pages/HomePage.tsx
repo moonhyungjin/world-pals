@@ -4,6 +4,8 @@ import { CharacterPicker } from '../components/CharacterPicker';
 import type { Content } from '../data/content';
 import { activeCharacter, isNewPlayer, selectableCharacters } from '../features/characters/characterEngine';
 import { activeCompanion } from '../features/companions/companionEngine';
+import { FriendResultBox } from '../features/challenge/FriendResultBox';
+import { hasMadeChallenge, type ClaimOutcome } from '../features/challenge/friendResult';
 import { canCreateChallenge } from '../features/challenge/challenge';
 import { countReviewable, hasCompletedToday } from '../features/quiz/quizEngine';
 import { todayString } from '../lib/random';
@@ -15,11 +17,12 @@ type Props = {
   onStart: () => void;
   onReview: () => void;
   onMakeChallenge: () => void;
+  onClaimFriend: (text: string) => ClaimOutcome;
   onPickCharacter: (id: string) => void;
   onOpenLab?: () => void;
 };
 
-export function HomePage({ progress, content, onStart, onReview, onMakeChallenge, onPickCharacter, onOpenLab }: Props) {
+export function HomePage({ progress, content, onStart, onReview, onMakeChallenge, onClaimFriend, onPickCharacter, onOpenLab }: Props) {
   const characters = selectableCharacters(content);
   const hero = activeCharacter(content, progress);
   const today = todayString();
@@ -65,6 +68,7 @@ export function HomePage({ progress, content, onStart, onReview, onMakeChallenge
           {doneToday ? ' (내일 다시 도전!)' : '!'}
         </p>
       )}
+      {hasMadeChallenge(progress) && <FriendResultBox onClaim={onClaimFriend} />}
       <ul className="stats card">
         <li><span>⭐</span><strong>{progress.totalStars}</strong><small>별</small></li>
         <li><span>🌍</span><strong>{progress.discoveredCountryIds.length}</strong><small>발견한 나라</small></li>

@@ -18,6 +18,9 @@ export type PlayerProgress = {
   rewardEventIds: string[];
   characterId: string | null; // 고른 주인공 캐릭터 (null이면 첫 번째 캐릭터)
   companionId: string | null; // 지금 함께 다니는 탐험 친구 (만난 친구 중에서만)
+  solverId: string; // 이 기기의 무작위 번호 (도전장 결과 코드에 들어간다. 개인 정보 아님)
+  friendBonusDate: string; // 친구 결과로 별을 마지막으로 받은 날짜
+  friendBonusToday: number; // 그날 친구 결과로 받은 별
   challengeBonusDate: string; // 도전장 보너스 별을 마지막으로 받은 날짜
   challengeBonusToday: number; // 그날 이미 받은 도전장 보너스 별
   challengeUnlockedDates: string[]; // 도전장 만들기가 열린 날짜 (오늘의 탐험을 잘 푼 날) // 지급 완료된 보상 이벤트 (중복 지급 방지)
