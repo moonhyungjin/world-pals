@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Character } from '../components/Character';
+import { Confetti } from '../components/Confetti';
 import { Stamp } from '../components/Stamp';
 import type { Content } from '../data/content';
 import { newlyMetCompanions } from '../features/companions/companionEngine';
@@ -41,10 +42,14 @@ export function ResultPage({
   const hasBasic = stamps.some((s) => s.tier === 'basic');
   const newFriends = newlyMetCompanions(content, summary.stamps);
 
+  const perfect = summary.total > 0 && summary.correctCount === summary.total;
+
   return (
-    <div className="result">
+    <div className={`result${perfect ? ' perfect' : ''}`}>
+      {perfect && <Confetti />}
       <Character mood="cheer" size={110} />
       <h1>{title}</h1>
+      {perfect && <p className="perfect-banner" role="status">🎉 만점이에요! 최고의 탐험가!</p>}
       <p className="score">
         {summary.total}문제 중 <strong>{summary.correctCount}문제</strong>를 맞혔어요
       </p>

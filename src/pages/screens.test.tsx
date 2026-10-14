@@ -96,4 +96,26 @@ describe('화면 스모크 렌더링', () => {
     expect(html).toContain('stamp-basic');
     expect(html).toContain('새 배지를 받았어요');
   });
+  it('결과: 5개를 다 맞히면 색종이와 만점 문구가 나오고, 하나라도 틀리면 나오지 않는다', () => {
+    const view = (correctCount: number) =>
+      renderToString(
+        <ResultPage
+          summary={{ correctCount, total: 5, starsEarned: 5, rewarded: true, stamps: [] }}
+          wrongCount={5 - correctCount}
+          newBadges={[]}
+          practice={false}
+          content={content}
+          onHome={noop}
+          onAgain={noop}
+        />,
+      );
+    const perfect = view(5);
+    expect(perfect).toContain('만점이에요');
+    expect(perfect).toContain('class="confetti"');
+    expect(perfect).toContain('aria-hidden="true"');
+    const almost = view(4);
+    expect(almost).not.toContain('만점이에요');
+    expect(almost).not.toContain('confetti');
+    expect(view(0)).not.toContain('confetti');
+  });
 });
