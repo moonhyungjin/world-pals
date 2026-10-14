@@ -116,7 +116,8 @@ h1 { margin: 0; text-align: center; }
   flex: 1; max-width: 180px; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;
   border: 0; border-radius: 18px; background: transparent; color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
 }
-.bottom-nav button > span:first-child { font-size: 24px; line-height: 1.1; }
+.bottom-nav .nav-icon { width: 26px; height: 26px; margin-bottom: 2px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bottom-nav button.active .nav-icon { stroke-width: 2.2; fill: rgba(244, 162, 74, 0.28); }
 .bottom-nav button.active { background: #ffe9d2; color: #9a4a08; }
 .bottom-nav button:focus-visible { outline: 4px solid #4f8df5; outline-offset: -2px; }
 
