@@ -82,3 +82,35 @@ export function mixView(a: View, b: View, t: number): View {
 }
 
 export const sameView = (a: View, b: View) => a.x === b.x && a.y === b.y && a.w === b.w && a.h === b.h;
+
+// ---- 손으로 확대/이동 ----
+
+/** 가장 크게 확대했을 때의 폭(도). 이보다 더 들어가면 단순화한 해안선이 각져 보인다(지도 데이터는 0.5도 간격). */
+export const MIN_VIEW_W = 10;
+
+/** 영역을 지도 범위 안으로 맞춘다: 2:1 비율 유지, 폭은 MIN_VIEW_W~360, 위/아래는 세계 안, 오른쪽은 이어 붙인 만큼만. */
+export function clampView(v: View): View {
+  const w = Math.min(Math.max(v.w, MIN_VIEW_W), WORLD_VIEW.w);
+  const h = w / 2;
+  return { x: clampX(v.x, w), y: Math.min(Math.max(v.y, 0), WORLD_VIEW.h - h), w, h };
+}
+
+/**
+ * (fx, fy)(0~1, 영역 안의 위치)에 있는 지점을 고정한 채로 factor배 확대한다 (factor < 1이면 축소).
+ * 마우스 커서나 두 손가락 가운데 아래의 지도 위치가 그대로 그 자리에 머문다. 범위를 넘으면 clampView가 맞춘다.
+ */
+export function zoomAt(v: View, fx: number, fy: number, factor: number): View {
+  const w = Math.min(Math.max(v.w / factor, MIN_VIEW_W), WORLD_VIEW.w);
+  const h = w / 2;
+  const anchorX = v.x + fx * v.w;
+  const anchorY = v.y + fy * v.h;
+  return clampView({ x: anchorX - fx * w, y: anchorY - fy * h, w, h });
+}
+
+/** 화면 비율(0~1)만큼 끌어서 옮긴다. 오른쪽으로 끌면(dxFrac > 0) 지도가 오른쪽으로 따라오므로 영역은 왼쪽으로 간다. */
+export function panBy(v: View, dxFrac: number, dyFrac: number): View {
+  return clampView({ ...v, x: v.x - dxFrac * v.w, y: v.y - dyFrac * v.h });
+}
+
+/** 영역의 한가운데를 기준으로 확대/축소 (버튼, 키보드용). */
+export const zoomBy = (v: View, factor: number): View => zoomAt(v, 0.5, 0.5, factor);

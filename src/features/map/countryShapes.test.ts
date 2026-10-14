@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { content } from '../../data/content';
 import { COUNTRY_SHAPES } from './countryShapes';
-import { EAST_OVERHANG, focusView, mixView, project, toPercent, toPercentRaw, WORLD_VIEW } from './mapView';
+import { clampView, EAST_OVERHANG, focusView, MIN_VIEW_W, mixView, panBy, project, toPercent, toPercentRaw, WORLD_VIEW, zoomAt, zoomBy } from './mapView';
 
 const all = content.countries;
 
@@ -94,5 +94,75 @@ describe('애니메이션 도우미', () => {
     expect(mixView(a, b, 0)).toEqual(a);
     expect(mixView(a, b, 1)).toEqual(b);
     expect(mixView(a, b, 0.5)).toEqual({ x: 50, y: 20, w: 200, h: 100 });
+  });
+});
+
+describe('손으로 확대/이동 계산', () => {
+  const world = { x: 0, y: 0, w: 360, h: 180 };
+  const close = (a: number, b: number) => expect(a).toBeCloseTo(b, 6);
+
+  it('clampView: 2:1 비율, 폭 범위, 위/아래/왼쪽/오른쪽(이어 붙인 만큼) 범위를 지킨다', () => {
+    const v = clampView({ x: -50, y: -50, w: 1, h: 1 });
+    expect(v.w).toBe(MIN_VIEW_W);
+    expect(v.h).toBe(MIN_VIEW_W / 2);
+    expect(v.x).toBe(0);
+    expect(v.y).toBe(0);
+    const far = clampView({ x: 9999, y: 9999, w: 40, h: 20 });
+    expect(far.x).toBe(360 + EAST_OVERHANG - 40);
+    expect(far.y).toBe(180 - 20);
+    expect(clampView({ x: 0, y: 0, w: 5000, h: 1 }).w).toBe(360);
+  });
+  it('zoomAt: 확대하면 폭이 줄고, 기준 지점은 화면의 같은 위치에 머문다', () => {
+    const v = { x: 100, y: 40, w: 100, h: 50 };
+    const z = zoomAt(v, 0.25, 0.75, 2); // 영역의 (25%, 75%) 지점을 고정한 채 2배 확대
+    close(z.w, 50);
+    close(z.h, 25);
+    // 같은 지도 지점이 같은 화면 위치에 있다
+    close(z.x + 0.25 * z.w, v.x + 0.25 * v.w);
+    close(z.y + 0.75 * z.h, v.y + 0.75 * v.h);
+  });
+  it('zoomAt: 확대 후 축소하면 원래대로 돌아온다 (범위에 걸리지 않는 경우)', () => {
+    const v = { x: 120, y: 50, w: 80, h: 40 };
+    const back = zoomAt(zoomAt(v, 0.3, 0.6, 1.8), 0.3, 0.6, 1 / 1.8);
+    close(back.x, v.x);
+    close(back.y, v.y);
+    close(back.w, v.w);
+  });
+  it('zoomAt: 최대로 확대/축소한 뒤에는 더 변하지 않는다', () => {
+    const tiny = zoomAt({ x: 100, y: 50, w: 10, h: 5 }, 0.5, 0.5, 100);
+    expect(tiny.w).toBe(MIN_VIEW_W);
+    expect(zoomAt(tiny, 0.5, 0.5, 100)).toEqual(tiny);
+    expect(zoomAt(world, 0.5, 0.5, 0.01)).toEqual(world); // 세계 전체보다 더 축소되지 않음
+  });
+  it('panBy: 오른쪽으로 끌면 영역은 왼쪽으로, 범위를 넘지 않는다', () => {
+    const v = { x: 100, y: 50, w: 80, h: 40 };
+    const p = panBy(v, 0.25, 0.5); // 오른쪽으로 25%, 아래로 50% 끎
+    close(p.x, 100 - 20);
+    close(p.y, 50 - 20);
+    expect(p.w).toBe(80);
+    expect(panBy(v, 10, 10).x).toBe(0);
+    expect(panBy(v, -10, -10).x).toBe(360 + EAST_OVERHANG - 80);
+    expect(panBy(v, 0, -10).y).toBe(180 - 40);
+  });
+  it('zoomBy: 한가운데 기준 확대', () => {
+    const v = { x: 100, y: 40, w: 100, h: 50 };
+    const z = zoomBy(v, 2);
+    close(z.x + z.w / 2, v.x + v.w / 2);
+    close(z.y + z.h / 2, v.y + v.h / 2);
+  });
+  it('어떤 결과든 항상 2:1 비율이고 지도 안에 있다 (여러 조합 무작위 확인)', () => {
+    let v = world;
+    let seed = 7;
+    const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+    for (let i = 0; i < 500; i++) {
+      v = rnd() < 0.5 ? zoomAt(v, rnd(), rnd(), 0.5 + rnd() * 2) : panBy(v, rnd() - 0.5, rnd() - 0.5);
+      expect(v.w / v.h).toBeCloseTo(2);
+      expect(v.w).toBeGreaterThanOrEqual(MIN_VIEW_W - 1e-9);
+      expect(v.w).toBeLessThanOrEqual(360 + 1e-9);
+      expect(v.x).toBeGreaterThanOrEqual(-1e-9);
+      expect(v.y).toBeGreaterThanOrEqual(-1e-9);
+      expect(v.x + v.w).toBeLessThanOrEqual(360 + EAST_OVERHANG + 1e-9);
+      expect(v.y + v.h).toBeLessThanOrEqual(180 + 1e-9);
+    }
   });
 });

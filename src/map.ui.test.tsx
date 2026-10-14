@@ -172,6 +172,19 @@ describe('지도: 나라 영역 색칠과 확대', () => {
     }
   });
 
+  it('이어 붙인 지도는 오른쪽 끝 구간(360~420)만 보이게 잘려 있다 (안 자르면 본토 영역 색을 가린다)', async () => {
+    await openMap();
+    const wrapper = document.querySelector('[data-testid="east-copy"]')!;
+    expect(wrapper.getAttribute('clip-path')).toBe('url(#east-overhang)');
+    const rect = document.querySelector('clipPath#east-overhang rect')!;
+    expect(Number(rect.getAttribute('x'))).toBe(360);
+    expect(Number(rect.getAttribute('width'))).toBe(EAST_OVERHANG);
+    // 이어 붙인 그림은 반드시 잘린 래퍼 안에 있고, 잘린 래퍼 밖에는 하나도 없다
+    const uses = Array.from(document.querySelectorAll('use[href="#map-layer"]'));
+    expect(uses).toHaveLength(1);
+    expect(uses[0].parentElement).toBe(wrapper);
+  });
+
   it('기본 상태의 지도 마커 수와 범례가 그대로다', async () => {
     await openMap();
     expect(markers()).toHaveLength(PLAYABLE);
