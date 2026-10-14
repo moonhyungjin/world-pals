@@ -69,7 +69,8 @@ describe('캐릭터 고르기 (실제 클릭)', () => {
     fireEvent.click(buttonByText(/꾸미기/));
     fireEvent.click(buttonByText(/펭펭/));
     expect(heroLabel()).toBe('캐릭터 펭펭, 함께 다니는 호랑이');
-    expect(document.querySelector('.customize .cosmetic.slot-head')?.textContent).toBe('🧢');
+    // 모자는 그림(SVG)으로 캐릭터 위에 얹힌다
+    expect(document.querySelector('.customize .character .cosmetic-art.slot-head')?.getAttribute('src')).toMatch(/explorer-hat.*\.svg/);
     expect(saved().equippedCosmeticIds).toEqual(['cosmetic.explorer-hat']);
     expect(saved().companionId).toBe('companion.kr');
   });

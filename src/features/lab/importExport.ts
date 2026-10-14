@@ -1,5 +1,5 @@
 import type { Content } from '../../data/content';
-import type { PlayCharacter } from '../../types/character';
+import type { PlayCharacter, SlotFit } from '../../types/character';
 import type { Companion } from '../../types/companion';
 import type { Country } from '../../types/country';
 import type { Question } from '../../types/question';
@@ -68,7 +68,7 @@ function normalizeBadge(o: Obj): Badge {
 }
 
 function normalizeCosmetic(o: Obj): Cosmetic {
-  return {
+  const c: Cosmetic = {
     id: str(o.id),
     nameKo: str(o.nameKo),
     descriptionKo: str(o.descriptionKo),
@@ -77,6 +77,8 @@ function normalizeCosmetic(o: Obj): Cosmetic {
     cost: num(o.cost) ?? 0,
     status: str(o.status, 'draft') as Cosmetic['status'],
   };
+  if (typeof o.assetKey === 'string') c.assetKey = o.assetKey;
+  return c;
 }
 
 function normalizeCompanion(o: Obj): Companion {
@@ -92,14 +94,30 @@ function normalizeCompanion(o: Obj): Companion {
   return c;
 }
 
+/** 캐릭터의 장식 위치 보정값. 슬롯마다 {dx, dy, s}이고, 숫자가 아니거나 모르는 슬롯은 버린다 (범위 검사는 검증에서). */
+function normalizeFit(v: unknown): PlayCharacter['fit'] {
+  if (!isObj(v)) return undefined;
+  const fit: NonNullable<PlayCharacter['fit']> = {};
+  for (const slot of ['head', 'face', 'neck', 'back'] as const) {
+    const f = v[slot];
+    if (isObj(f) && num(f.dx) !== undefined && num(f.dy) !== undefined && num(f.s) !== undefined) {
+      fit[slot] = { dx: f.dx as number, dy: f.dy as number, s: f.s as number } satisfies SlotFit;
+    }
+  }
+  return Object.keys(fit).length > 0 ? fit : undefined;
+}
+
 function normalizeCharacter(o: Obj): PlayCharacter {
-  return {
+  const c: PlayCharacter = {
     id: str(o.id),
     nameKo: str(o.nameKo),
     descriptionKo: str(o.descriptionKo),
     assetKey: str(o.assetKey),
     status: str(o.status, 'draft') as PlayCharacter['status'],
   };
+  const fit = normalizeFit(o.fit);
+  if (fit) c.fit = fit;
+  return c;
 }
 
 /** 가져온 텍스트를 해석한다. 형식이 잘못돼도 예외 없이 사람이 읽을 수 있는 오류 목록을 돌려준다. */

@@ -1,5 +1,6 @@
 import type { Content } from '../../data/content';
 import { CHARACTER_ASSET_KEYS } from '../characters/characterAssets';
+import { COSMETIC_ASSET_KEYS } from '../rewards/cosmeticAssets';
 
 export type Severity = 'error' | 'warning';
 export type ContentKind = 'country' | 'question' | 'badge' | 'cosmetic' | 'companion' | 'character';
@@ -106,7 +107,11 @@ export function validateContent(content: Content): Issue[] {
     if (blank(c.nameKo)) add('error', 'cosmetic', c.id, '표시 이름을 입력해 주세요.');
     if (!Number.isInteger(c.cost) || c.cost < 0) add('error', 'cosmetic', c.id, '비용은 0 이상의 정수여야 해요.');
     if (!SLOTS.includes(c.slot)) add('error', 'cosmetic', c.id, `장착 위치 "${c.slot}"를 알 수 없어요.`);
-    if (blank(c.emoji)) add('error', 'cosmetic', c.id, '이미지(이모지)를 입력해 주세요.');
+    if (blank(c.emoji) && blank(c.assetKey)) add('error', 'cosmetic', c.id, '그림 키나 이모지 중 하나는 입력해 주세요.');
+    if (!blank(c.assetKey) && !COSMETIC_ASSET_KEYS.includes(c.assetKey!)) {
+      add('error', 'cosmetic', c.id, `그림 파일 "${c.assetKey}"이(가) 없어요. 사용할 수 있는 그림: ${COSMETIC_ASSET_KEYS.join(', ')}`);
+    }
+    if (blank(c.assetKey) && !blank(c.emoji)) add('warning', 'cosmetic', c.id, '그림 키가 없어서 이모지로 보여요 (기기마다 모양이 달라요).');
     if (!STATUSES.includes(c.status)) add('error', 'cosmetic', c.id, `상태 "${c.status}"를 알 수 없어요.`);
   }
 
@@ -165,6 +170,15 @@ export function validateContent(content: Content): Issue[] {
     if (!STATUSES.includes(c.status)) add('error', 'character', c.id, `상태 "${c.status}"를 알 수 없어요.`);
     if (!CHARACTER_ASSET_KEYS.includes(c.assetKey)) {
       add('error', 'character', c.id, `그림 파일 "${c.assetKey}"이(가) 없어요. 사용할 수 있는 그림: ${CHARACTER_ASSET_KEYS.join(', ')}`);
+    }
+  }
+  for (const c of content.characters) {
+    for (const [slot, f] of Object.entries(c.fit ?? {})) {
+      const ok = ['head', 'face', 'neck', 'back'].includes(slot) && [f.dx, f.dy, f.s].every((n) => Number.isFinite(n));
+      if (!ok) add('error', 'character', c.id, `장식 위치 보정값 "${slot}"이(가) 올바르지 않아요.`);
+      else if (Math.abs(f.dx) > 80 || Math.abs(f.dy) > 80 || f.s < 0.3 || f.s > 2) {
+        add('error', 'character', c.id, `장식 위치 보정값 "${slot}"이(가) 너무 커요 (이동은 ±80 이내, 크기는 0.3~2배).`);
+      }
     }
   }
   if (!content.characters.some((c) => c.status === 'verified')) {

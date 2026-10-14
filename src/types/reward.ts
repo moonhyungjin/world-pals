@@ -8,7 +8,8 @@ export type Cosmetic = {
   nameKo: string;
   descriptionKo: string;
   slot: CosmeticSlot;
-  emoji: string; // 이미지 에셋 키로 교체 가능
+  emoji: string; // 그림(assetKey)이 없을 때 대신 보여주는 이모지
+  assetKey?: string; // src/assets/cosmetics/<assetKey>.svg (캐릭터 그림과 같은 좌표계로 그려서 정확한 자리에 얹는다)
   cost: number;
   status: ContentStatus;
 };

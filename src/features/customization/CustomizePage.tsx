@@ -119,7 +119,10 @@ export function CustomizePage({ progress, content, onChange }: Props) {
           const canAfford = progress.totalStars >= item.cost;
           return (
             <li key={item.id} className="card cosmetic-item">
-              <span className="cosmetic-emoji" aria-hidden="true">{item.emoji}</span>
+              {/* 목록의 그림: 지금 고른 캐릭터가 이 장식을 입은 모습 */}
+              <span className="cosmetic-thumb" aria-hidden="true">
+                <Character size={50} equipped={[item]} />
+              </span>
               <div className="cosmetic-info">
                 <strong>{item.nameKo}</strong>
                 <small>{SLOT_LABEL[item.slot]} · {item.descriptionKo}</small>

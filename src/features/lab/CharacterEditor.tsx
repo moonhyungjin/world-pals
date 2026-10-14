@@ -92,6 +92,12 @@ export function CharacterEditor({ content, onChange, issues, focusId }: Props) {
               {CHARACTER_ASSET_KEYS.map((k) => <option key={k} value={k}>{k}</option>)}
             </select>
           </Field>
+          <Field
+            label="장식 위치 보정값"
+            hint="캐릭터마다 얼굴 모양이 달라 모자/선글라스/목도리/배낭 위치를 조금씩 옮겨요. 값은 characters.json의 fit에서 직접 고쳐요 (이동 ±80 이내, 크기 0.3~2배)."
+          >
+            <input readOnly value={item.fit ? Object.entries(item.fit).map(([slot, f]) => `${slot}: 이동(${f.dx}, ${f.dy}) 크기 ${f.s}`).join(' · ') : '보정 없음'} />
+          </Field>
           <Field label="검수 상태" hint="검수 완료만 플레이어가 고를 수 있어요.">
             <StatusSelect value={item.status} onChange={(status) => patch({ status })} />
           </Field>

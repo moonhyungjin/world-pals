@@ -332,3 +332,13 @@ h1 { margin: 0; text-align: center; }
 .map-ctl:disabled { opacity: 0.4; cursor: not-allowed; }
 .map-ctl:focus-visible { outline: 4px solid #4f8df5; outline-offset: 2px; }
 .map-gesture-hint { font-size: 13px; margin: 2px 0 6px; }
+
+/* ---- 장식 그림(SVG): 캐릭터와 같은 좌표계라 캐릭터 위에 그대로 겹친다 (크기/위치는 Character.tsx가 정함) ---- */
+.character { isolation: isolate; }
+.character-face { position: relative; z-index: 1; }
+.cosmetic-art { position: absolute; transform-origin: 50% 50%; pointer-events: none; user-select: none; z-index: 2; }
+.cosmetic-art.slot-back { z-index: 0; }
+.character .companion, .character-badge { z-index: 3; }
+.cosmetic-thumb { flex: none; width: 76px; height: 76px; display: grid; place-items: center; }
+.cosmetic-thumb .character { animation: none; }
+.cosmetic-thumb .character-badge { display: none; }

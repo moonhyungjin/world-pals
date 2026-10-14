@@ -1,6 +1,71 @@
 [
-  { "id": "character.fox", "nameKo": "폭시", "descriptionKo": "호기심이 가득한 탐험가 여우예요.", "assetKey": "fox", "status": "verified" },
-  { "id": "character.bunny", "nameKo": "토토", "descriptionKo": "깡충깡충 뛰어다니는 걸 좋아하는 토끼예요.", "assetKey": "bunny", "status": "verified" },
-  { "id": "character.penguin", "nameKo": "펭펭", "descriptionKo": "씩씩하게 뒤뚱뒤뚱 걷는 펭귄이에요.", "assetKey": "penguin", "status": "verified" },
-  { "id": "character.cat", "nameKo": "냥냥", "descriptionKo": "조용히 살금살금 탐험하는 고양이예요.", "assetKey": "cat", "status": "verified" }
+  {
+    "id": "character.fox",
+    "nameKo": "폭시",
+    "descriptionKo": "호기심이 가득한 탐험가 여우예요.",
+    "assetKey": "fox",
+    "status": "verified"
+  },
+  {
+    "id": "character.bunny",
+    "nameKo": "토토",
+    "descriptionKo": "깡충깡충 뛰어다니는 걸 좋아하는 토끼예요.",
+    "assetKey": "bunny",
+    "status": "verified",
+    "fit": {
+      "head": {
+        "dx": 0,
+        "dy": 4,
+        "s": 1
+      },
+      "face": {
+        "dx": 0,
+        "dy": 10,
+        "s": 1
+      }
+    }
+  },
+  {
+    "id": "character.penguin",
+    "nameKo": "펭펭",
+    "descriptionKo": "씩씩하게 뒤뚱뒤뚱 걷는 펭귄이에요.",
+    "assetKey": "penguin",
+    "status": "verified",
+    "fit": {
+      "head": {
+        "dx": 0,
+        "dy": 8,
+        "s": 0.95
+      },
+      "face": {
+        "dx": 0,
+        "dy": -1,
+        "s": 0.8
+      },
+      "neck": {
+        "dx": 0,
+        "dy": -4,
+        "s": 0.95
+      }
+    }
+  },
+  {
+    "id": "character.cat",
+    "nameKo": "냥냥",
+    "descriptionKo": "조용히 살금살금 탐험하는 고양이예요.",
+    "assetKey": "cat",
+    "status": "verified",
+    "fit": {
+      "head": {
+        "dx": 0,
+        "dy": 4,
+        "s": 1
+      },
+      "face": {
+        "dx": 0,
+        "dy": 4,
+        "s": 1
+      }
+    }
+  }
 ]

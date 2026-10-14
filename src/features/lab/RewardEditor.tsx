@@ -3,6 +3,7 @@ import { Character } from '../../components/Character';
 import type { Content } from '../../data/content';
 import type { Badge, BadgeCondition, Cosmetic, CosmeticSlot } from '../../types/reward';
 import { CharacterEditor } from './CharacterEditor';
+import { COSMETIC_ASSET_KEYS } from '../rewards/cosmeticAssets';
 import { CompanionEditor } from './CompanionEditor';
 import { replaceById, uniqueId } from './labOps';
 import { EntityList, Field, IssueList, StatusSelect, rowFlag } from './labUi';
@@ -123,8 +124,15 @@ function CosmeticEditor({ content, onChange, issues, focusId }: Props) {
                 {(Object.keys(SLOT_LABEL) as CosmeticSlot[]).map((s) => <option key={s} value={s}>{SLOT_LABEL[s]}</option>)}
               </select>
             </Field>
-            <Field label="이미지/에셋 키 (이모지)"><input value={item.emoji} onChange={(e) => patch({ emoji: e.target.value })} /></Field>
+            <Field label="그림 키" hint="src/assets/cosmetics/ 의 SVG 파일 이름이에요. 새 그림은 파일을 넣고 다시 빌드해야 목록에 나와요.">
+              <select value={item.assetKey ?? ''} onChange={(e) => patch({ assetKey: e.target.value || undefined })}>
+                <option value="">(그림 없음 - 이모지로 보여요)</option>
+                {item.assetKey && !COSMETIC_ASSET_KEYS.includes(item.assetKey) && <option value={item.assetKey}>⚠️ 없는 그림 ({item.assetKey})</option>}
+                {COSMETIC_ASSET_KEYS.map((k) => <option key={k} value={k}>{k}</option>)}
+              </select>
+            </Field>
           </div>
+          <Field label="대신 보여줄 이모지 (그림이 없을 때)"><input value={item.emoji} onChange={(e) => patch({ emoji: e.target.value })} /></Field>
           <div className="lab-row2">
             <Field label="비용(별)" hint="해금 조건: 별을 사용해 해금">
               <input type="number" min={0} step={1} value={item.cost} onChange={(e) => patch({ cost: Number(e.target.value || 0) })} />

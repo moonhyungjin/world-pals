@@ -89,8 +89,8 @@ describe('플레이어 흐름 (실제 클릭)', () => {
     render(<App />);
     let found = false;
     for (let attempt = 0; attempt < 30 && !found; attempt++) {
-      clickText(attempt === 0 ? '오늘의 탐험 시작!' : '← 그만하기');
-      if (attempt > 0) clickText('오늘의 탐험 시작!');
+      // 첫 세션은 '오늘의 탐험 시작!', 한 번 끝낸 뒤에는 홈 버튼이 '다시 연습하기'로 바뀐다
+      clickText(screen.queryByText('오늘의 탐험 시작!') ? '오늘의 탐험 시작!' : '다시 연습하기');
       for (let i = 0; i < 5 && !found; i++) {
         const heading = screen.getByRole('heading', { level: 2 }).textContent ?? '';
         if (heading.includes('국기는')) {
